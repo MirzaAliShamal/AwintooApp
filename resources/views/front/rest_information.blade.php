@@ -2,6 +2,7 @@
 @section('panel')
 <div class="col-lg-8">
  <table class="table table-bordered">
+    @if(!empty($client->restInfo))
         <tbody>
             <tr>
                 <td>Body Size</td>
@@ -87,5 +88,6 @@
             </tr>
         </tbody>
     </table>
+    @endif
 </div>
 @endsection

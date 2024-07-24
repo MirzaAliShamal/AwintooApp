@@ -1,7 +1,9 @@
 <div class="col-lg-4">
     <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
         <div class="d-flex align-items-center mb-5">
+                @if(!empty($client->restInfo->photo))
                 <img class="flex-shrink-0 img-fluid border rounded w-25" src="{{ getImage(getFilePath('restInfoPhoto'). '/' .$client->restInfo->photo) }}" alt="Client Photo" >
+                @endif
             <div class="text-start ps-4">
                 <div>
                     <h4 class="mb-3">{{ $client->full_name }}</h4>
