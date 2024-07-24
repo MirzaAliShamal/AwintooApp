@@ -16,7 +16,7 @@ class GeneralSettingSeeder extends Seeder
         $data = [
             'site_title' => 'Website',
             'email_from' => 'website@example.com',
-            'copyright_text' => 'Copyright © 2024 Muzamil. All Rights Reserved.'
+            'copyright_text' => 'Copyright © 2024. All Rights Reserved.'
         ];
         DB::table('general_settings')->insert($data);
     }

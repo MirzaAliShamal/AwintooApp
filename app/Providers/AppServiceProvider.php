@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Models\Notification;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
-use Auth;
+use App\Models\Client;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +33,13 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'notifications' => $unreadNotifications,
                 'unreadNotificationsCount' => $unreadNotificationsCount,
+            ]);
+        });
+
+        view()->composer('front.partials.sidebar', function ($view) {
+            $client = Client::with('restInfo')->where('id', auth('client')->id())->first();
+            $view->with([
+                'client' => $client,
             ]);
         });
         
