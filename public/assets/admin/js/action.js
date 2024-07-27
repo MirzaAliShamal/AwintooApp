@@ -39,6 +39,7 @@ $(document).ready(function(){
         });
 
         $('button[type=submit]').prop('disabled', true);
+        $('#loading-screen').fadeIn();
         $.ajax({
             url: storeUrl,
             type: 'post',
@@ -48,7 +49,7 @@ $(document).ready(function(){
             dataType: 'json',
             success: function(data) {
                 $('button[type=submit]').prop('disabled', false);
-
+                $('#loading-screen').fadeOut();
                 if (data['status'] == true) {
                     formElement[0].reset();
                     messageShow("<div class='alert alert-success'>"+data['message']+"</div>");
@@ -59,6 +60,7 @@ $(document).ready(function(){
                     }
 
                 } else {
+                    $('#loading-screen').fadeOut();
                     messageShow("<div class='alert alert-danger'>"+data['message']+"</div>");
                     $.each(data['errors'], function(key, value) {
                         $('#' + key)
@@ -71,6 +73,7 @@ $(document).ready(function(){
                 }
             },
             error: function(jqXHR, exception) {
+                $('#loading-screen').fadeOut();
                 console.log("Something went wrong");
             }
         });
@@ -121,10 +124,8 @@ $(document).ready(function(){
                     if (response.status) {
                         $('#client_name').val(response.client.full_name);
                         $('#passport_number').val(response.client.passport_number);
-                        $('#issue_date').val(response.client.issue_date);
-                        $('#expiry_date').val(response.client.expiry_date);
-                        $('#dob').val(response.client.dob);
                         $('#job_id').val(response.client.job_id);
+                        $('#price').val(response.client.job.price);
                     } else {
                         alert(response.message);
                     }

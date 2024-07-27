@@ -51,7 +51,7 @@ class NotifyExpiringDriver extends Command
                 'email' => $detail->client->email,
             ];
 
-            Mail::to($detail->client->email)->send(new ExpiryMail((object) $client, 'Driver Licence'));
+            // Mail::to($detail->client->email)->send(new ExpiryMail((object) $client, 'Driver Licence'));
         }
 
         $this->info('Notifications have been sent successfully.');

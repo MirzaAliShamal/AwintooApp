@@ -17,6 +17,7 @@
     <link href="{{ asset('assets/front/lib/animate/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/front/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/front/css/style.css') }}" rel="stylesheet">
+    @stack('style')
 </head>
 
 <body>

@@ -51,7 +51,7 @@ class NotifyExpiringInsurance extends Command
                 'email' => $detail->client->email,
             ];
 
-            Mail::to($detail->client->email)->send(new ExpiryMail((object) $client, 'Insurance'));
+            // Mail::to($detail->client->email)->send(new ExpiryMail((object) $client, 'Insurance'));
         }
 
         $this->info('Notifications have been sent successfully.');

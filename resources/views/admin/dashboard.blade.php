@@ -18,6 +18,9 @@
                 <h3>{{ $totalClients }}</h3>
                 <p>Clients</p>
               </div>
+              <div class="icon">
+               <i class="text-muted fas fa-user-tie"></i>
+              </div>
               <a href="{{ route('admin.client.create') }}" class="small-box-footer">Add Client <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
@@ -26,6 +29,9 @@
               <div class="inner">
                 <h3>{{ $totalInfo }}</h3>
                 <p>Rest Information</p>
+              </div>
+              <div class="icon">
+               <i class="text-muted fas fa-credit-card"></i>
               </div>
               <a href="{{ route('admin.info.create') }}" class="small-box-footer">Add Rest Info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -37,6 +43,9 @@
                 <h3>{{ $totalUsers }}</h3>
                 <p>Admins / Agents</p>
               </div>
+              <div class="icon">
+               <i class="text-muted fas fa-users"></i>
+              </div>
               <a href="{{ route('admin.user.create') }}" class="small-box-footer">Add Admin / Agents <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
@@ -45,6 +54,9 @@
               <div class="inner">
                 <h3>{{ $totalJobs }}</h3>
                 <p>Job</p>
+              </div>
+              <div class="icon">
+               <i class="text-muted fas fa-briefcase"></i>
               </div>
               <a href="{{ route('admin.job.create') }}" class="small-box-footer">Add Job <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -55,6 +67,9 @@
               <div class="inner">
                 <h3>{{ $totalPayments }}</h3>
                 <p>Payemnt</p>
+              </div>
+              <div class="icon">
+               <i class="text-muted fas fa-dollar-sign"></i>
               </div>
               <a href="{{ route('admin.payment.create') }}" class="small-box-footer">Add Payment <i class="fas fa-arrow-circle-right"></i></a>
             </div>

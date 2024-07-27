@@ -1,90 +1,93 @@
+@push('style')
+<style>
+    .rest-info-table th {
+        color: #000;
+    }
+</style>
+@endpush
 @extends('front.layouts.app')
 @section('panel')
 <div class="col-lg-8">
- <table class="table table-bordered">
+    <div class="mt-2">
+        <h4>Rest Information</h4>
+    </div>
+ <table class="table table-bordered rest-info-table">
     @if(!empty($client->restInfo))
-        <tbody>
+        <tbody class="text-center">
             <tr>
-                <td>Body Size</td>
+                <th>Body Size</th>
                 <td>{{ $client->restInfo->body_size }}</td>
-                <td>Phone Type</td>
-                <td>{{ $client->restInfo->phone_type }}</td>
-            </tr>
-            <tr>
-                <td>Job Apply</td>
-                <td>{{ $client->restInfo->job_apply }}</td>
-                <td>Name with Vietnam Characters</td>
+                <th>Name with Vietnam Characters</th>
                 <td>{{ $client->restInfo->name_with_vietnam_characters }}</td>
             </tr>
             <tr>
-                <td>Training Program</td>
+                <th>Interview Date</th>
+                <td>{{ $client->restInfo->interview_date }}</td>
+                <th>Training Program</th>
                 <td>{{ $client->restInfo->training_program }}</td>
-                <td>System Email</td>
-                <td>{{ $client->restInfo->system_email }}</td>
             </tr>
             <tr>
-                <td>English Characters Living Address</td>
-                <td>{{ $client->restInfo->english_characters_living_address }}</td>
-                <td>Vietnam Living Address</td>
-                <td>{{ $client->restInfo->vietnam_living_address }}</td>
+                <th colspan="4">Driver License</th>
             </tr>
             <tr>
-                <td>Bank in Vietnam</td>
-                <td>{{ $client->restInfo->bank_in_vn }}</td>
-                <td>Country To Go</td>
-                <td>{{ $client->restInfo->country_to_go }}</td>
-            </tr>
-            <tr>
-                <td>School Diploma</td>
-                <td>{{ $client->restInfo->school_diploma }}</td>
-                <td>Original English LegalizedFM Equalize</td>
-                <td>{{ $client->restInfo->original_english_legalizedFM_equalize }}</td>
-            </tr>
-            <tr>
-                <td>Driver Licence Issue Date</td>
+                <th>Driver Licence Issue Date</th>
                 <td>{{ $client->restInfo->driver_licence_issue_date }}</td>
-                <td>Driver License Expiry Date</td>
+                <th>Driver License Expiry Date</th>
                 <td>{{ $client->restInfo->driver_license_expiry_date }}</td>
             </tr>
             <tr>
-                <td>Photo</td>
-                <td><img src="{{ getImage(getFilePath('restInfoPhoto'). '/' .$client->restInfo->photo) }}" alt="Client Photo"></td>
-                <td>Video Working Link</td>
-                <td>{{ $client->restInfo->video_working_link }}</td>
+                <th colspan="4">Police Certificate & Visa Application</th>
             </tr>
             <tr>
-                <td>Police Certificate Expiry Date</td>
+                <th>Police Certificate Expiry Date</th>
                 <td>{{ $client->restInfo->police_certificate_expiry_date }}</td>
-                <td>Visa Application Number</td>
+                <th>Visa Application Number</th>
                 <td>{{ $client->restInfo->visa_application_number }}</td>
             </tr>
             <tr>
-                <td>Interview Date</td>
-                <td>{{ $client->restInfo->interview_date }}</td>
-                <td>Insurance Type</td>
+                <th colspan="4">Insurance</th>
+            </tr>
+            <tr>
+                <th>Insurance Type</th>
                 <td>{{ $client->restInfo->insurance_type }}</td>
-            </tr>
-            <tr>
-                <td>Insurance Expiry Date</td>
+                <th>Insurance Expiry Date</th>
                 <td>{{ $client->restInfo->insurance_expiry_date }}</td>
-                <td>Amount Paid</td>
+            </tr>
+             
+            <tr>
+                <th colspan="2">System Email</th>
+                <td colspan="2">{{ $client->restInfo->system_email }}</td>
+            </tr>
+            <tr>
+                <th colspan="4">Living Address</th>
+            </tr>
+            <tr>
+                <th>English Characters Living Address</th>
+                <td>{{ $client->restInfo->english_characters_living_address }}</td>
+                <th>Vietnam Living Address</th>
+                <td>{{ $client->restInfo->vietnam_living_address }}</td>
+            </tr>           
+            <tr>
+                <th colspan="4">Amount Detail</th>
+            </tr>
+            <tr>
+                <th>Amount Paid</th>
                 <td>{{ $client->restInfo->amount_paid }}</td>
-            </tr>
-            <tr>
-                <td>Balance Amount</td>
+                <th>Balance Amount</th>
                 <td>{{ $client->restInfo->balance_amount }}</td>
-                <td>Document To Upload</td>
-                <td>{{ $client->restInfo->document_to_upload }}</td>
             </tr>
             <tr>
-                <td>Working Place</td>
+                <th colspan="4">Abroad Detail</th>
+            </tr>
+            <tr>
+                <th>Working Place</th>
                 <td>{{ $client->restInfo->working_place }}</td>
-                <td>Address Abroad</td>
+                <th>Address Abroad</th>
                 <td>{{ $client->restInfo->address_abroad }}</td>
             </tr>
             <tr>
-                <td>Phone Abroad</td>
-                <td>{{ $client->restInfo->phone_abroad }}</td>
+                <th colspan="2">Phone Abroad</th>
+                <td colspan="2">{{ $client->restInfo->phone_abroad }}</td>
             </tr>
         </tbody>
     </table>

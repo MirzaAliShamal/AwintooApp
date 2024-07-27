@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Validator;
 
 class PaymentController extends Controller
 {
-    public function index() {
+    public function index() 
+    {
         $pageTitle = 'Payment';
         $user = Auth::user();
         $data = Payment::all();
@@ -51,14 +52,15 @@ class PaymentController extends Controller
 
     public function getClientInfo($id)
     {
-        $client = Client::find($id);
+        $client = Client::with('job')->find($id);
         if (!$client) {
             return response()->json(['status' => false, 'message' => 'Client not found.']);
         }
         return response()->json(['status' => true, 'client' => $client]);
     }
     
-    public function create() {
+    public function create() 
+    {
         $pageTitle = 'Add';
         $jobs = Job::get();
         $clients = Client::get();
@@ -69,19 +71,16 @@ class PaymentController extends Controller
         return view('admin.payment.add', compact('pageTitle', 'jobs', 'clients'));
     }
 
-    public function store(Request $request) {
+    public function store(Request $request) 
+    {
         $validator = Validator::make($request->all(), [
             'client_id' => 'required|exists:clients,id',
             'client_name' => 'required|string|max:255',
             'passport_number' => 'required|string|max:255',
-            'issue_date' => 'required|date',
-            'expiry_date' => 'required|date',
-            'address' => 'required|string|max:255',
-            'dob' => 'required|date',
-            'birth_place' => 'required|string|max:255',
             'payment' => 'required|numeric',
             'job_id' => 'required|exists:jobs,id',
             'price' => 'required|numeric',
+            'proof_of_payment' => 'required|mimes:jpeg,jpg,pdf|max:2048',
             'after_deduction' => 'required|numeric',
         ]);
         if ($validator->passes()) {
@@ -94,7 +93,9 @@ class PaymentController extends Controller
                 ]);
             }
             if ($authenticatedUser->role == 1) {
-                Payment::create($request->all());
+                $paymentData = $request->all();
+                $paymentData['proof_of_payment'] = fileUploader($request->proof_of_payment, getFilePath('proof_of_payment'));
+                Payment::create($paymentData);
                 return response()->json([
                     'status' => true,
                     'redirect' => route('admin.payment.index'),
@@ -102,8 +103,9 @@ class PaymentController extends Controller
                 ]);
             } else if ($authenticatedUser->role == 2) {
                 if ($client->user_id == $authenticatedUser->id) {
-                    Payment::create($request->all());
-
+                    $paymentData = $request->all();
+                    $paymentData['proof_of_payment'] = fileUploader($request->proof_of_payment, getFilePath('proof_of_payment'));
+                    Payment::create($paymentData);
                     return response()->json([
                         'status' => true,
                         'redirect' => route('admin.payment.index'),
@@ -139,6 +141,10 @@ class PaymentController extends Controller
             return redirect()->route('admin.payment.index')->with('error', 'Payment not found.');
         }
 
+        $fileTypes = [
+            'proof_of_payment' => $payment->proof_of_payment ? strtolower(pathinfo($payment->proof_of_payment, PATHINFO_EXTENSION)) : null,
+        ];
+
         if ($user->role == 2) {
             $client = $payment->client;
             if ($client && $client->user_id != $user->id) {
@@ -152,7 +158,7 @@ class PaymentController extends Controller
             $clients = Client::where('user_id', $user->id)->get();
         }
 
-        return view('admin.payment.edit', compact('clients', 'jobs', 'payment', 'pageTitle'));
+        return view('admin.payment.edit', compact('clients', 'jobs', 'payment', 'pageTitle', 'fileTypes'));
     }
 
     public function update(Request $request, $id)
@@ -163,14 +169,10 @@ class PaymentController extends Controller
             'client_id' => 'required|exists:clients,id',
             'client_name' => 'required|string|max:255',
             'passport_number' => 'required|string|max:255',
-            'issue_date' => 'required|date',
-            'expiry_date' => 'required|date',
-            'address' => 'required|string|max:255',
-            'dob' => 'required|date',
-            'birth_place' => 'required|string|max:255',
             'payment' => 'required|numeric',
             'job_id' => 'required|exists:jobs,id',
             'price' => 'required|numeric',
+            'proof_of_payment' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
             'after_deduction' => 'required|numeric',
         ]);
         if ($validator->fails()) {
@@ -188,7 +190,13 @@ class PaymentController extends Controller
         }
         $client = Client::find($request->client_id);
         if ($user->role == 1) {
-            $payment->update($request->all());
+            $paymentData = $request->all();
+
+           if(!empty($request->proof_of_payment)) {
+                $old = $payment->proof_of_payment;
+                $paymentData['proof_of_payment'] = fileUploader($request->proof_of_payment, getFilePath('proof_of_payment'), null, $old);
+            }
+            $payment->update($paymentData);
             return response()->json([
                 'status' => true,
                 'message' => 'Payment updated successfully.',
@@ -196,7 +204,12 @@ class PaymentController extends Controller
             ]);
         } else if ($user->role == 2) {
             if ($client && $client->user_id == $user->id) {
-                $payment->update($request->all());
+                $paymentData = $request->all();
+                if(!empty($request->proof_of_payment)) {
+                    $old = $payment->proof_of_payment;
+                    $paymentData['proof_of_payment'] = fileUploader($request->proof_of_payment, getFilePath('proof_of_payment'), null, $old);
+                }
+                $payment->update($paymentData);
                 return response()->json([
                     'status' => true,
                     'message' => 'Payment updated successfully.',

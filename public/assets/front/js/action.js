@@ -110,31 +110,20 @@ $(document).ready(function(){
         }
     });
 
-    $('#client_id').change(function() {
-        var clientId = $(this).val();
-
-        if (clientId) {
-            $.ajax({
-                url: '/admin/client-info/' + clientId,
-                type: 'GET',
-                success: function(response) {
-                    if (response.status) {
-                        $('#client_name').val(response.client.full_name);
-                        $('#passport_number').val(response.client.passport_number);
-                        $('#issue_date').val(response.client.issue_date);
-                        $('#expiry_date').val(response.client.expiry_date);
-                        $('#dob').val(response.client.dob);
-                        $('#job_id').val(response.client.job_id);
-                    } else {
-                        alert(response.message);
-                    }
-                },
-                error: function() {
-                    alert('Error fetching client information.');
+    $('.mark-as-read').on('click', function(e) {
+        e.preventDefault();
+        var url = $(this).data('read');
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function(data) {
+                if (data['status'] == true) {
+                    window.location.href = data['redirect'];
                 }
-            });
-        } else {
-            $('#full_name').val('');
-        }
+            },
+            error: function(xhr) {
+                console.error('Error marking notification as read:', xhr.responseText);
+            }
+        });
     });
 });

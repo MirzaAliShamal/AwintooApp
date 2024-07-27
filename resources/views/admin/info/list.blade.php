@@ -27,8 +27,9 @@
                     <tr>
                         <th>Client Name</th>
                         <th>Body Size</th>
-                        <th>Job Apply </th>
-                        <th width="100">Action</th>
+                        @if(auth()->user()->role == 1)
+                            <th width="100">Action</th>
+                        @endif
                     </tr>
                 </thead>
                  <tbody>
@@ -36,7 +37,7 @@
                     <tr>
                         <td>{{ $row->client->full_name }}</td>
                         <td>{{ $row->body_size }}</td>
-                        <td>{{ $row->job_apply }}</td>
+                        @if(auth()->user()->role == 1)
                         <td>
                             <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.info.edit', $row->id) }}">
                                 <i class="fa fa-pen"></i>
@@ -45,6 +46,7 @@
                                 <i class="fa fa-trash"></i>
                             </a>
                         </td>
+                        @endif
                     </tr>
                     @empty
                     <tr>

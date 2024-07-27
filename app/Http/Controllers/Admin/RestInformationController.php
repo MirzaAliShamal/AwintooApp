@@ -76,32 +76,27 @@ class RestInformationController extends Controller
         $validator = Validator::make($request->all(), [
             'client_id' => 'required|exists:clients,id',
             'body_size' => 'required|string|max:255',
-            'phone_type' => 'required|string|max:255',
             'name_with_vietnam_characters' => 'required|string|max:255',
-            'job_apply' => 'required|string|max:255',
             'training_program' => 'nullable|string|max:255',
-            'system_email' => 'required|email|max:255',
+            'system_email' => 'nullable|email|max:255',
             'english_characters_living_address' => 'required|string',
             'vietnam_living_address' => 'required|string',
-            'bank_in_vn' => 'required|in:yes,no',
-            'country_to_go' => 'required|string|max:255',
-            'school_diploma' => 'required|string|max:255',
-            'original_english_legalizedFM_equalize' => 'nullable|string|max:255',
             'driver_licence_issue_date' => 'required|date',
             'driver_license_expiry_date' => 'required|date',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_working_link' => 'nullable|url',
             'police_certificate_expiry_date' => 'required|date',
-            'visa_application_number' => 'required|numeric',
-            'interview_date' => 'required|date',
-            'insurance_type' => 'required|string|max:255',
-            'insurance_expiry_date' => 'required|date',
-            'amount_paid' => 'required|numeric|min:0',
-            'balance_amount' => 'required|numeric|min:0',
-            'document_to_upload' => 'nullable|file|max:2048',
-            'working_place' => 'required|string|max:255',
-            'address_abroad' => 'required|string',
-            'phone_abroad' => 'required|string',
+            'visa_application_number' => 'nullable|numeric',
+            'interview_date' => 'nullable|date',
+            'insurance_type' => 'nullable|string|max:255',
+            'insurance_expiry_date' => 'nullable|date',
+            'amount_paid' => 'nullable|numeric|min:0',
+            'balance_amount' => 'nullable|numeric|min:0',
+            'working_place' => 'nullable|string|max:255',
+            'address_abroad' => 'nullable|string',
+            'phone_abroad' => 'nullable|string',
+            'five_minutes_work_video' => 'required|mimes:zip|max:20480',
+            'legalized_police_certificate' => 'required|mimes:jpeg,jpg,pdf|max:2048',
+            'legalized_school_certificate' => 'required|mimes:jpeg,jpg,pdf|max:2048',
+            'legalized_driver_license' => 'required|mimes:jpeg,jpg,pdf|max:2048',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -124,15 +119,13 @@ class RestInformationController extends Controller
                 'message' => 'This client already has rest information.'
             ]);
         }
-        $restInfo = RestInformation::create($request->all());
-        if ($request->hasFile('photo')) {
-            $restInfo->photo = fileUploader($request->photo, getFilePath('restInfoPhoto'));
-            $restInfo->save();
-        }
-        if ($request->hasFile('document_to_upload')) {
-            $restInfo->document_to_upload = fileUploader($request->document_to_upload, getFilePath('documentPath'));
-            $restInfo->save();
-        }
+        $restInfoData = $request->all();
+        $restInfoData['five_minutes_work_video'] = fileUploader($request->five_minutes_work_video, getFilePath('five_minutes_work_video'));
+        $restInfoData['legalized_police_certificate'] = fileUploader($request->legalized_police_certificate, getFilePath('legalized_police_certificate'), getFileSize('legalized_police_certificate'));
+        $restInfoData['legalized_school_certificate'] = fileUploader($request->legalized_school_certificate, getFilePath('legalized_school_certificate'), getFileSize('legalized_school_certificate'));
+        $restInfoData['legalized_driver_license'] = fileUploader($request->legalized_driver_license, getFilePath('legalized_driver_license'), getFileSize('legalized_driver_license'));
+        
+        $restInfo = RestInformation::create($restInfoData);
         return response()->json([
             'status' => true,
             'redirect' => route('admin.info.index'),
@@ -148,12 +141,17 @@ class RestInformationController extends Controller
             return redirect()->route('admin.info.index')->with('error', 'Rest Info not found.');
         }
         $client = Client::find($restInfo->client_id);
-        if ($user->role == 2 && $client->user_id != $user->id) {
+        if ($user->role == 2) {
             return redirect()->route('admin.info.index')->with('error', 'Unauthorized to edit this rest information.');
         }
+        $fileTypes = [
+                'legalized_police_certificate' => $restInfo->legalized_police_certificate ? strtolower(pathinfo($restInfo->legalized_police_certificate, PATHINFO_EXTENSION)) : null,
+                'legalized_school_certificate' => $restInfo->legalized_school_certificate ? strtolower(pathinfo($restInfo->legalized_school_certificate, PATHINFO_EXTENSION)) : null,
+                'legalized_driver_license' => $restInfo->legalized_driver_license ? strtolower(pathinfo($restInfo->legalized_driver_license, PATHINFO_EXTENSION)) : null,
+            ];
         $clients = Client::get();
         $pageTitle = "Edit Rest Information";
-        return view('admin.info.edit', compact('restInfo', 'pageTitle', 'clients'));
+        return view('admin.info.edit', compact('restInfo', 'pageTitle', 'clients', 'fileTypes'));
     }
 
     public function update(Request $request, $id) 
@@ -176,32 +174,27 @@ class RestInformationController extends Controller
         $validator = Validator::make($request->all(), [
             'client_id' => 'required|exists:clients,id',
             'body_size' => 'required|string|max:255',
-            'phone_type' => 'required|string|max:255',
             'name_with_vietnam_characters' => 'required|string|max:255',
-            'job_apply' => 'required|string|max:255',
             'training_program' => 'nullable|string|max:255',
-            'system_email' => 'required|email|max:255',
+            'system_email' => 'nullable|email|max:255',
             'english_characters_living_address' => 'required|string',
             'vietnam_living_address' => 'required|string',
-            'bank_in_vn' => 'required|in:yes,no',
-            'country_to_go' => 'required|string|max:255',
-            'school_diploma' => 'required|string|max:255',
-            'original_english_legalizedFM_equalize' => 'nullable|string|max:255',
             'driver_licence_issue_date' => 'required|date',
             'driver_license_expiry_date' => 'required|date',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-            'video_working_link' => 'nullable|url|',
             'police_certificate_expiry_date' => 'required|date',
-            'visa_application_number' => 'required|numeric',
-            'interview_date' => 'required|date',
-            'insurance_type' => 'required|string|max:255',
-            'insurance_expiry_date' => 'required|date',
-            'amount_paid' => 'required|numeric|min:0',
-            'balance_amount' => 'required|numeric|min:0',
-            'document_to_upload' => 'nullable|file|max:2048',
-            'working_place' => 'required|string|max:255',
-            'address_abroad' => 'required|string',
-            'phone_abroad' => 'required|string',
+            'visa_application_number' => 'nullable|numeric',
+            'interview_date' => 'nullable|date',
+            'insurance_type' => 'nullable|string|max:255',
+            'insurance_expiry_date' => 'nullable|date',
+            'amount_paid' => 'nullable|numeric|min:0',
+            'balance_amount' => 'nullable|numeric|min:0',
+            'working_place' => 'nullable|string|max:255',
+            'address_abroad' => 'nullable|string',
+            'phone_abroad' => 'nullable|string',
+            'five_minutes_work_video' => 'nullable|mimes:zip|max:20480',
+            'legalized_police_certificate' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'legalized_school_certificate' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'legalized_driver_license' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -217,45 +210,24 @@ class RestInformationController extends Controller
                 'message' => 'This client already has rest information.'
             ]);
         }
-        if ($request->hasFile('photo')) {  
-            $old = $restInfo->photo;
-            $restInfo->photo = fileUploader($request->photo, getFilePath('restInfoPhoto'), getFileSize('restInfoPhoto'), $old);
+        $restInfoData = $request->all();
+        if(!empty($request->five_minutes_work_video)) {
+            $old = $restInfo->five_minutes_work_video;
+            $restInfoData['five_minutes_work_video'] = fileUploader($request->five_minutes_work_video, getFilePath('five_minutes_work_video'), null, $old);
         }
-        if ($request->hasFile('document_to_upload')) {
-            $oldDocument = $restInfo->document_to_upload;
-            $documentPath = public_path('assets/document_files/' . $oldDocument);
-            if (file_exists($documentPath)) {
-                unlink($documentPath);
-            }
-            $restInfo->document_to_upload = fileUploader($request->document_to_upload, getFilePath('documentPath'));
+        if(!empty($request->legalized_police_certificate)) {
+            $old = $restInfo->legalized_police_certificate;
+            $restInfoData['legalized_police_certificate'] = fileUploader($request->legalized_police_certificate, getFilePath('legalized_police_certificate'), getFileSize('legalized_police_certificate'), $old);
         }
-        $restInfo->client_id = $request->client_id;
-        $restInfo->body_size = $request->body_size;
-        $restInfo->phone_type = $request->phone_type;
-        $restInfo->name_with_vietnam_characters = $request->name_with_vietnam_characters;
-        $restInfo->job_apply = $request->job_apply;
-        $restInfo->training_program = $request->training_program;
-        $restInfo->system_email = $request->system_email;
-        $restInfo->english_characters_living_address = $request->english_characters_living_address;
-        $restInfo->vietnam_living_address = $request->vietnam_living_address;
-        $restInfo->bank_in_vn = $request->bank_in_vn;
-        $restInfo->country_to_go = $request->country_to_go;
-        $restInfo->school_diploma = $request->school_diploma;
-        $restInfo->original_english_legalizedFM_equalize = $request->original_english_legalizedFM_equalize;
-        $restInfo->driver_licence_issue_date = $request->driver_licence_issue_date;
-        $restInfo->driver_license_expiry_date = $request->driver_license_expiry_date;
-        $restInfo->video_working_link = $request->video_working_link;
-        $restInfo->police_certificate_expiry_date = $request->police_certificate_expiry_date;
-        $restInfo->visa_application_number = $request->visa_application_number;
-        $restInfo->interview_date = $request->interview_date;
-        $restInfo->insurance_type = $request->insurance_type;
-        $restInfo->insurance_expiry_date = $request->insurance_expiry_date;
-        $restInfo->amount_paid = $request->amount_paid;
-        $restInfo->balance_amount = $request->balance_amount;
-        $restInfo->working_place = $request->working_place;
-        $restInfo->address_abroad = $request->address_abroad;
-        $restInfo->phone_abroad = $request->phone_abroad;
-        $restInfo->save();
+        if(!empty($request->legalized_school_certificate)) {
+            $old = $restInfo->legalized_school_certificate;
+            $restInfoData['legalized_school_certificate'] = fileUploader($request->legalized_school_certificate, getFilePath('legalized_school_certificate'), getFileSize('legalized_school_certificate'), $old);
+        }
+        if(!empty($request->legalized_driver_license)) {
+            $old = $restInfo->legalized_driver_license;
+            $restInfoData['legalized_driver_license'] = fileUploader($request->legalized_driver_license, getFilePath('legalized_driver_license'), getFileSize('legalized_driver_license'), $old);
+        }
+        $restInfo->update($restInfoData);
         return response()->json([
             'status' => true,
             'message' => 'Rest Information updated successfully.',
@@ -274,22 +246,24 @@ class RestInformationController extends Controller
         }
         $client = Client::find($restInfo->client_id);
         $user = Auth::user();
-        if ($user->role == 2 && $client->user_id != $user->id) {
+        if ($user->role == 2) {
             return response()->json([
                 'status' => false,
                 'message' => 'Unauthorized to delete this rest information.'
             ]);
         }
-        if ($restInfo->document_to_upload) {
-            $documentPath = public_path('assets/document_files/' . $restInfo->document_to_upload);
-            if (file_exists($documentPath)) {
-                unlink($documentPath);
-            }
-        }
-        if ($restInfo->photo) {
-            $photoPath = public_path('assets/images/restInfoPhoto/' . $restInfo->photo);
-            if (file_exists($photoPath)) {
-                unlink($photoPath);
+        $paths = [
+            'five_minutes_work_video' => 'five_minutes_work_video',
+            'legalized_police_certificate' => 'legalized_police_certificate',
+            'legalized_school_certificate' => 'legalized_school_certificate',
+            'legalized_driver_license' => 'legalized_driver_license',
+        ];
+        foreach ($paths as $attribute => $folder) {
+            if ($restInfo->{$attribute}) {
+                $photoPath = public_path("assets/admin/clientDocs/clientRestInfo/{$folder}/" . $restInfo->{$attribute});
+                if (file_exists($photoPath)) {
+                    unlink($photoPath);
+                }
             }
         }
         $restInfo->delete();

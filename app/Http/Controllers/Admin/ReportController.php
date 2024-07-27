@@ -64,9 +64,9 @@ class ReportController extends Controller
         $clientId = $request->client_id;
         $client = Client::find($clientId);
         if($client) {
-            // $pdf = PDF::loadView('reports.rpt', compact('client'));
-            // return $pdf->download('rpt-Application.pdf');
-            return view('reports.rpt', compact('client'));
+            $pdf = PDF::loadView('reports.rpt', compact('client'));
+            return $pdf->download('rpt-Application.pdf');
+            // return view('reports.rpt', compact('client'));
         } else {
             return back();
         }

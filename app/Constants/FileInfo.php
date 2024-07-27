@@ -20,19 +20,70 @@ class FileInfo
         $data['default'] = [
             'path'      => 'assets/images/default.png',
         ];
-        $data['logoIcon'] = [
-            'path'      => 'assets/images/logoIcon',
+
+        // Payment
+        $data['proof_of_payment'] = [
+            'path'      => 'assets/admin/proof_of_payment',
         ];
-        $data['favIcon'] = [
-            'size'      => '128x128',
+        // Client
+        $data['clientPhoto'] = [
+            'path'      => 'assets/admin/clientDocs/images/clientPhoto',
+            'size'      => '354x472',
         ];
-        $data['documentPath'] = [
-            'path'      => 'assets/document_files',
+        $data['id_front'] = [
+            'path'      => 'assets/admin/clientDocs/images/idFront',
+            'size'      => '1011 x 638'
         ];
-        $data['restInfoPhoto'] = [
-            'path'      => 'assets/images/restInfoPhoto',
-            'size'      => '400x400',
+        $data['id_back'] = [
+            'path'      => 'assets/admin/clientDocs/images/idBack',
+            'size'      => '1011 x 638'
         ];
+        $data['license_front'] = [
+            'path'      => 'assets/admin/clientDocs/images/licenseFront',
+            'size'      => '1011 x 638'
+        ];
+        $data['license_back'] = [
+            'path'      => 'assets/admin/clientDocs/images/licenseBack',
+            'size'      => '1011 x 638'
+        ];
+        $data['job_application_sign'] = [
+            'path'      => 'assets/admin/clientDocs/job_application_sign',
+        ];
+        $data['passport_copy'] = [
+            'path'      => 'assets/admin/clientDocs/passport_copy',
+            'size'      => '1011 x 638'
+        ];
+        $data['police_certificate'] = [
+            'path'      => 'assets/admin/clientDocs/police_certificate',
+            'size'      => '1011 x 638'
+        ];
+        $data['school_certificate'] = [
+            'path'      => 'assets/admin/clientDocs/school_certificate',
+            'size'      => '1011 x 638'
+        ];
+        $data['bank_certificate'] = [
+            'path'      => 'assets/admin/clientDocs/bank_certificate',
+            'size'      => '1011 x 638'
+        ];
+
+        // Rest Information
+        $data['five_minutes_work_video'] = [
+            'path'      => 'assets/admin/clientDocs/clientRestInfo/five_minutes_work_video',
+        ];
+        $data['legalized_police_certificate'] = [
+            'path'      => 'assets/admin/clientDocs/clientRestInfo/legalized_police_certificate',
+            'size'      => '1011 x 638'
+        ];
+        $data['legalized_school_certificate'] = [
+            'path'      => 'assets/admin/clientDocs/clientRestInfo/legalized_school_certificate',
+            'size'      => '1011 x 638'
+        ];
+        $data['legalized_driver_license'] = [
+            'path'      => 'assets/admin/clientDocs/clientRestInfo/legalized_driver_license',
+            'size'      => '1011 x 638'
+        ];
+
+        // Admin Profile Pic 
         $data['adminProfilePic'] = [
             'path'      =>'assets/admin/images/profile',
             'size'      =>'400x400',

@@ -51,7 +51,7 @@ class NotifyExpiringPolice extends Command
                 'email' => $detail->client->email,
             ];
 
-            Mail::to($detail->client->email)->send(new ExpiryMail((object) $client, 'Police'));
+            // Mail::to($detail->client->email)->send(new ExpiryMail((object) $client, 'Police'));
         }
 
         $this->info('Notifications have been sent successfully.');

@@ -28,8 +28,8 @@ Route::namespace('Front')->middleware('client')->name('front.')->group(function 
     Route::controller('ClientController')->group(function () {
         Route::get('dashboard', 'dashboard')->name('dashboard');
         Route::get('rest-information', 'restInfo')->name('restInfo');
-        Route::get('password', 'password')->name('password');
-        Route::post('password/update', 'passwordUpdate')->name('password.update');
+        Route::get('notification', 'notify')->name('notify');
+        Route::get('notification/{id}/read', 'readNotify')->name('read.notify');
     });
 
 });

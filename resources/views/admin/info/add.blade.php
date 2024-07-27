@@ -42,24 +42,8 @@
 
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label for="phone_type">Phone Type</label>
-                                        <input type="text" name="phone_type" id="phone_type" class="form-control" placeholder="Phone Type">
-                                        <p></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="mb-3">
                                         <label for="name_with_vietnam_characters">Name with Vietnam Characters</label>
                                         <input type="text" name="name_with_vietnam_characters" id="name_with_vietnam_characters" class="form-control" placeholder="Name with Vietnam Characters">
-                                        <p></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="job_apply">Job Apply</label>
-                                        <input type="text" name="job_apply" id="job_apply" class="form-control" placeholder="Job Apply">
                                         <p></p>
                                     </div>
                                 </div>
@@ -75,7 +59,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="system_email">System Email</label>
-                                        <input type="email" name="system_email" id="system_email" class="form-control" placeholder="System Email">
+                                        <input type="email" name="system_email" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="system_email" class="form-control" placeholder="System Email">
                                         <p></p>
                                     </div>
                                 </div>
@@ -98,42 +82,6 @@
 
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label for="bank_in_vn">Bank in VN</label>
-                                        <select name="bank_in_vn" id="bank_in_vn" class="form-control">
-                                            <option value="">Select</option>
-                                            <option value="yes">Yes</option>
-                                            <option value="no">No</option>
-                                        </select>
-                                        <p></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="country_to_go">Country to Go</label>
-                                        <input type="text" name="country_to_go" id="country_to_go" class="form-control" placeholder="Country to Go">
-                                        <p></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="school_diploma">School Diploma</label>
-                                        <input type="text" name="school_diploma" id="school_diploma" class="form-control" placeholder="School Diploma">
-                                        <p></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="original_english_legalizedFM_equalize">Original English Legalized FM Equalize</label>
-                                        <input type="text" name="original_english_legalizedFM_equalize" id="original_english_legalizedFM_equalize" class="form-control" placeholder="Original English Legalized FM Equalize">
-                                        <p></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="mb-3">
                                         <label for="driver_licence_issue_date">Driver Licence Issue Date</label>
                                         <input type="date" name="driver_licence_issue_date" id="driver_licence_issue_date" class="form-control">
                                         <p></p>
@@ -150,22 +98,6 @@
 
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label for="photo">Photo</label>
-                                        <input type="file" name="photo" id="photo" class="form-control">
-                                        <p></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="video_working_link">Video Working Link</label>
-                                        <input type="text" name="video_working_link" id="video_working_link" class="form-control" placeholder="Video Working Link">
-                                        <p></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="mb-3">
                                         <label for="police_certificate_expiry_date">Police Certificate Expiry Date</label>
                                         <input type="date" name="police_certificate_expiry_date" id="police_certificate_expiry_date" class="form-control">
                                         <p></p>
@@ -175,7 +107,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="visa_application_number">Visa Application Number</label>
-                                        <input type="text" name="visa_application_number" id="visa_application_number" class="form-control" placeholder="Visa Application Number">
+                                        <input type="text" name="visa_application_number" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="visa_application_number" class="form-control" placeholder="Visa Application Number">
                                         <p></p>
                                     </div>
                                 </div>
@@ -183,7 +115,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="interview_date">Interview Date</label>
-                                        <input type="date" name="interview_date" id="interview_date" class="form-control">
+                                        <input type="date" name="interview_date" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="interview_date" class="form-control">
                                         <p></p>
                                     </div>
                                 </div>
@@ -191,7 +123,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="insurance_type">Insurance Type</label>
-                                        <input type="text" name="insurance_type" id="insurance_type" class="form-control" placeholder="Insurance Type">
+                                        <input type="text" name="insurance_type" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="insurance_type" class="form-control" placeholder="Insurance Type">
                                         <p></p>
                                     </div>
                                 </div>
@@ -199,7 +131,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="insurance_expiry_date">Insurance Expiry Date</label>
-                                        <input type="date" name="insurance_expiry_date" id="insurance_expiry_date" class="form-control">
+                                        <input type="date" name="insurance_expiry_date" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="insurance_expiry_date" class="form-control">
                                         <p></p>
                                     </div>
                                 </div>
@@ -207,7 +139,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="amount_paid">Amount Paid</label>
-                                        <input type="number" step="0.01" name="amount_paid" id="amount_paid" class="form-control" placeholder="Amount Paid">
+                                        <input type="number" step="0.01" name="amount_paid" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="amount_paid" class="form-control" placeholder="Amount Paid">
                                         <p></p>
                                     </div>
                                 </div>
@@ -215,15 +147,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="balance_amount">Balance Amount</label>
-                                        <input type="number" step="0.01" name="balance_amount" id="balance_amount" class="form-control" placeholder="Balance Amount">
-                                        <p></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="document_to_upload">Document to Upload</label>
-                                        <input type="file" name="document_to_upload" id="document_to_upload" class="form-control">
+                                        <input type="number" step="0.01" name="balance_amount" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="balance_amount" class="form-control" placeholder="Balance Amount">
                                         <p></p>
                                     </div>
                                 </div>
@@ -231,7 +155,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="working_place">Working Place</label>
-                                        <input type="text" name="working_place" id="working_place" class="form-control" placeholder="Working Place">
+                                        <input type="text" name="working_place" id="working_place" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} class="form-control" placeholder="Working Place">
                                         <p></p>
                                     </div>
                                 </div>
@@ -239,7 +163,7 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="address_abroad">Address Abroad</label>
-                                        <input type="text" name="address_abroad" id="address_abroad" class="form-control" placeholder="Address Abroad">
+                                        <input type="text" name="address_abroad" id="address_abroad" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} class="form-control" placeholder="Address Abroad">
                                         <p></p>
                                     </div>
                                 </div>
@@ -247,8 +171,57 @@
                                 <div class="col-md-4">
                                     <div class="mb-3">
                                         <label for="phone_abroad">Phone Abroad</label>
-                                        <input type="text" name="phone_abroad" id="phone_abroad" class="form-control" placeholder="Phone Abroad">
+                                        <input type="text" name="phone_abroad" id="phone_abroad" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} class="form-control" placeholder="Phone Abroad">
                                         <p></p>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <h3>Documents To Upload</h3>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="five_minutes_work_video">Video at least 5 minutes on working (Zip File Compressed)</label>
+                                        <input type="file" name="five_minutes_work_video" id="five_minutes_work_video" accept=".zip" class="form-control">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="mb-3 row">
+                                        <div class="col-md-6">
+                                        <label for="legalized_police_certificate">Foreign Ministry Legalized Police Certificate</label>
+                                        <input type="file" name="legalized_police_certificate" id="legalized_police_certificate" class="form-control">
+                                        <p></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img id="police_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="mb-3 row">
+                                        <div class="col-md-6">
+                                        <label for="legalized_school_certificate">Foreign Ministry Legalized School Certificate</label>
+                                        <input type="file" name="legalized_school_certificate" id="legalized_school_certificate" class="form-control">
+                                        <p></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img id="school_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="mb-3 row">
+                                        <div class="col-md-6">
+                                        <label for="legalized_driver_license">Foreign Ministry Legalized Driver Certificate</label>
+                                        <input type="file" name="legalized_driver_license" id="legalized_driver_license" class="form-control">
+                                        <p></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img id="driver_license_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -263,3 +236,33 @@
     </div>
 </section>
 @endsection
+
+@push('script')
+<script>
+$(document).ready(function() {
+    function handleFilePreview(input, previewId) {
+        $(input).on('change', function(event) {
+            var file = event.target.files[0];
+            var previewElement = $(previewId);
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var fileType = file.type;
+                    if (fileType.startsWith('image/')) {
+                        previewElement.attr('src', e.target.result).show();
+                    } else {
+                        previewElement.hide();
+                    }
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewElement.hide();
+            }
+        });
+    }
+    handleFilePreview('#legalized_police_certificate', '#police_certificate_photo');
+    handleFilePreview('#legalized_school_certificate', '#school_certificate_photo');
+    handleFilePreview('#legalized_driver_license', '#driver_license_photo');
+});
+</script>
+@endpush

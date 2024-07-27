@@ -7,6 +7,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto p-4 p-lg-0"></div>
+                <a href="{{ route('front.notify') }}" class="nav-item nav-link"><i class="far fa-bell"></i>
+                    @if($unreadNotificationsCount > 0)
+                        <span class="bg-primary notify-count">{{ $unreadNotificationsCount }}</span>
+                    @endif
+                </a>
                @php
                     $currentRoute = \Illuminate\Support\Facades\Route::currentRouteName();
                 @endphp

@@ -46,7 +46,7 @@ class NotifyExpiringId extends Command
                 'days_left' => $daysLeft,
             ]);
             $client['daysLeft'] = $notify->days_left;
-            Mail::to($client->email)->send(new ExpiryMail($client, 'ID'));
+            // Mail::to($client->email)->send(new ExpiryMail($client, 'ID'));
         }
 
         $this->info('Notifications have been sent successfully.');

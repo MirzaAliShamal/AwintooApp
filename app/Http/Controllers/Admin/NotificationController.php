@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Client;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,8 +22,13 @@ class NotificationController extends Controller
         ];
 
         $pageTitle = $titles[$type] ?? 'ID Expiry';
-
-        $data = Notification::where('type', $type)->get();
+        if(auth()->user()->role == 2) {
+            $userId = auth()->id();
+            $clients = Client::where('user_id', $userId)->pluck('id');
+            $data = Notification::whereIn('client_id', $clients)->where('type', $type)->get();
+        } else {
+            $data = Notification::where('type', $type)->get();
+        }
         if ($readIds) {
             Notification::where('id', $readIds)->update(['read' => 1]);
         }

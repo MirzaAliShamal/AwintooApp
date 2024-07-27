@@ -26,14 +26,26 @@ class AppServiceProvider extends ServiceProvider
         
         $viewShare['general'] = $general;
         view()->share($viewShare);
-
+      
         view()->composer('admin.partials.navbar', function ($view) {
-            $unreadNotifications = Notification::where('read', false)->get();
-            $unreadNotificationsCount = $unreadNotifications->count();
-            $view->with([
-                'notifications' => $unreadNotifications,
-                'unreadNotificationsCount' => $unreadNotificationsCount,
-            ]);
+            $user = auth()->user();
+            
+            if ($user) {
+                $userId = $user->id;
+                if ($user->role == 1) {
+                    $unreadNotifications = Notification::where('read', false)->get();
+                } else {
+                    $clients = Client::where('user_id', $userId)->pluck('id');
+                    $unreadNotifications = Notification::whereIn('client_id', $clients)
+                                                        ->where('read', false)
+                                                        ->get();
+                }
+                $unreadNotificationsCount = $unreadNotifications->count();
+                $view->with([
+                    'notifications' => $unreadNotifications,
+                    'unreadNotificationsCount' => $unreadNotificationsCount,
+                ]);
+            }
         });
 
         view()->composer('front.partials.sidebar', function ($view) {
@@ -41,6 +53,14 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'client' => $client,
             ]);
+        });
+        
+        view()->composer('front.partials.navbar', function ($view) {
+            $unreadNotifications = Notification::where('client_id', auth('client')->id())->where('read', false)->get();
+            $unreadNotificationsCount = $unreadNotifications->count();
+            $view->with([
+                'unreadNotificationsCount' => $unreadNotificationsCount,
+            ]);            
         });
         
         Paginator::useBootstrapFive();

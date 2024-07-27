@@ -35,6 +35,14 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
+                                        <label for="password">Password</label>
+                                        <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                                        <small>Leave empty if not want to change password</small>
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
                                         <label for="phone_number">Phone Number</label>
                                         <input type="number" name="phone_number" id="phone_number" value="{{ $user->phone_number }}" class="form-control" placeholder="Phone Number">
                                         <p></p>

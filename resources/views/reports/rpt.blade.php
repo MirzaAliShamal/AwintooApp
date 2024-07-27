@@ -4,283 +4,526 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application for Employment</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        @font-face {
-            font-family: 'DejaVu Sans';
-            src: url('/fonts/DejaVuSans.ttf') format('truetype');
+        label {
+            font-weight: 500;
         }
-        body {
-            font-family: 'DejaVu Sans', sans-serif;
-            font-size: 10px; /* Smaller font size for a more compact PDF */
-            margin: 0;
-            padding: 0;
-            line-height: 1.4;
-        }
-        .container {
-            padding: 15px; /* Reduced padding for a more compact layout */
-            max-width: 700px; /* Adjusted max width for better fit */
-            margin: auto;
-            position: relative;
-        }
-        .header {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .header h1 {
-            font-size: 16px; /* Slightly smaller heading size */
-            margin: 0;
-        }
-        .header p {
-            font-size: 12px; /* Reduced font size */
-            margin: 5px 0;
-        }
-        .confidential-container {
+        .confidential {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 20px;
+            right: 20px;
             text-align: center;
         }
-        .confidential-box {
-            border: 1px solid #000;
-            width: 80px; /* Reduced width */
-            height: 80px; /* Reduced height */
-            display: inline-block;
-        }
-        .confidential-text {
-            font-size: 10px; /* Reduced font size */
-            font-weight: bold;
-            color: #000;
-            margin-bottom: 5px;
-        }
-        .form-row {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap; /* Allows fields to wrap if needed */
-        }
-        .form-row label {
+        .confidential p {
+            font-size: 18px;
+            color: red;
             font-weight: bold;
         }
-        .form-row input[type="text"] {
-            flex: 1;
-            padding: 3px; /* Reduced padding */
-            border: none;
-            border-bottom: 1px dotted #000; /* Adjusted border size */
-            border-radius: 0;
-            outline: none;
-        }
-        .form-row input[type="checkbox"] {
-            margin-right: 5px;
-        }
-        .form-row span {
-            display: block;
-            margin-top: 5px;
-            font-style: italic;
-        }
-        .fields {
-            margin-top: 80px;
-        }
-        .personal-info {
+        .confidential .box {
+            border: 1px solid black;
+            height: 100px;
+            width: 100px;
             margin-top: 10px;
         }
-        .personal-info h2 {
-            margin-top: 20px;
+        .form-section {
+            margin-top: 30px;
         }
-        .form-row.multi-field {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .form-row.multi-field label {
+        .form-section h6 {
             font-weight: bold;
+            font-size: 17px;
         }
-        .form-row.multi-field input {
-            flex: 1;
-            margin-right: 10px;
+        .form-section p {
+            margin-bottom: 0;
         }
-        .form-row.multi-field .input-group {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
+        .dotted-input {
+            border: none;
+            border-bottom: 1px dotted #000;
+            width: calc(100% - 20px);
+            outline: none;
         }
-        .form-row.multi-field .input-group input {
-            margin-right: 10px;
+        .dotted-input.short {
+            width: 150px;
         }
-        .additional-info {
-            margin-top: 20px;
+        .dotted-input.medium {
+            width: 260px;
         }
-        .additional-info h2 {
-            margin-top: 20px;
+        .dotted-input.long {
+            width: 600px;
         }
+
+        .dotted-input {
+        border: none;
+        border-bottom: 1px dotted black;
+        width: 100%;
+        display: inline-block;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    .form-section {
+        margin-bottom: 2rem;
+    }
+    .table-bordered td,
+    .table-bordered th {
+        border: 1px solid black;
+    }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>APPLICATION FOR EMPLOYMENT</h1>
-            <p>(Please provide the required information below)</p>
+        <div class="confidential">
+            <p>CONFIDENTIAL</p>
+            <div class="box"></div>
         </div>
-        
-        <div class="confidential-container">
-            <div class="confidential-text">CONFIDENTIAL</div>
-            <div class="confidential-box"></div>
+        <div class="text-center mt-5">
+            <h5>APPLICATION FOR EMPLOYMENT</h5>
+            <p style="color: red;">(Please provide the required information below)</p>
         </div>
-        
-        <div class="fields">
-            <div class="form-row">
-                <label for="applied-position">Applied Position:</label>
-                <input type="text" id="applied-position" name="applied_position" />
-                <label for="salary">Salary:</label>
-                <input type="text" id="salary" name="salary" />
-                <span>USD / Month</span>
-            </div>
-            <div class="form-row">
-                <label for="country">What country would you like to work in:</label>
-                <input type="text" id="country" name="country" />
-            </div>
-        </div>
-        
-        <div class="personal-info">
-            <h2>Personal Information</h2>
-            <div class="form-row multi-field">
-                <div class="input-group">
-                    <label for="first-name">First Name:</label>
-                    <input type="text" id="first-name" name="first_name" />
+        <div class="mt-5 pt-5">
+        <div class="form-section">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="position"><b>Applied Position</b></label>
+                    <input type="text" id="position" class="dotted-input medium">
                 </div>
-                <div class="input-group">
-                    <label for="middle-name">Middle Name:</label>
-                    <input type="text" id="middle-name" name="middle_name" />
-                </div>
-                <div class="input-group">
-                    <label for="last-name">Last Name:</label>
-                    <input type="text" id="last-name" name="last_name" />
+                <div class="col-md-5">
+                    <label for="salary"><b>Salary</b></label>
+                    <input type="text" id="salary" class="dotted-input medium">
                 </div>
             </div>
-            <div class="form-row multi-field">
-                <div class="input-group">
-                    <label for="title">Title:</label>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="title-mr" name="title" value="mr" />
-                        <label for="title-mr">Mr.</label>
-                        <input type="checkbox" id="title-mrs" name="title" value="mrs" />
-                        <label for="title-mrs">Mrs.</label>
-                        <input type="checkbox" id="title-ms" name="title" value="ms" />
-                        <label for="title-ms">Ms.</label>
-                        <input type="checkbox" id="title-others" name="title" value="others" />
-                        <label for="title-others">Others</label>
-                    </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="country"><b>What country would you like to work:</b></label>
+                    <input type="text" id="country" class="dotted-input long">
                 </div>
             </div>
         </div>
-        
-        <div class="additional-info">
-            <h2>Additional Information</h2>
-            <div class="form-row multi-field">
-                <div class="input-group">
+
+        <div class="form-section">
+            <h6>Personal Information</h6>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="mr" value="Mr.">
+                <label class="form-check-label" for="mr">Mr.</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="mrs" value="Mrs.">
+                <label class="form-check-label" for="mrs">Mrs.</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="ms" value="Ms.">
+                <label class="form-check-label" for="ms">Ms.</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="others" value="Others">
+                <label class="form-check-label" for="others">Others</label>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" id="first_name" class="dotted-input medium">
+                </div>
+                <div class="col-md-4">
+                    <label for="middle_name">Middle Name:</label>
+                    <input type="text" id="middle_name" class="dotted-input short">
+                </div>
+                <div class="col-md-4">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" id="last_name" class="dotted-input medium">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-4">
                     <label for="nationality">Nationality:</label>
-                    <input type="text" id="nationality" name="nationality" />
+                    <input type="text" id="nationality" class="dotted-input medium">
                 </div>
-                <div class="input-group">
+                <div class="col-md-4">
                     <label for="citizenship">Citizenship:</label>
-                    <input type="text" id="citizenship" name="citizenship" />
+                    <input type="text" id="citizenship" class="dotted-input medium">
                 </div>
-                <div class="input-group">
+                <div class="col-md-4">
                     <label for="religion">Religion:</label>
-                    <input type="text" id="religion" name="religion" />
+                    <input type="text" id="religion" class="dotted-input medium">
                 </div>
             </div>
-            <div class="form-row multi-field">
-                <div class="input-group">
-                    <label for="dob">Date Of Birth:</label>
-                    <input type="text" id="dob" name="dob" />
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="date_of_birth">Date Of Birth:</label>
+                    <input type="text" id="date_of_birth" class="dotted-input medium">
                 </div>
-                <div class="input-group">
-                    <label for="birth-place">Birth Place:</label>
-                    <input type="text" id="birth-place" name="birth_place" />
-                </div>
-            </div>
-            <div class="form-row multi-field">
-                <div class="input-group">
-                    <label for="id-card">Identity Card Number (I.D. Card):</label>
-                    <input type="text" id="id-card" name="id_card" />
-                </div>
-                <div class="input-group">
-                    <label for="id-expiration">Expiration Date:</label>
-                    <input type="text" id="id-expiration" name="id_expiration" />
-                </div>
-            </div>
-            <div class="form-row multi-field">
-                <div class="input-group">
-                    <label for="passport-number">Passport Number:</label>
-                    <input type="text" id="passport-number" name="passport_number" />
-                </div>
-                <div class="input-group">
-                    <label for="issued-at">Issued at:</label>
-                    <input type="text" id="issued-at" name="issued_at" />
-                </div>
-            </div>
-            <div class="form-row multi-field">
-                <div class="input-group">
-                    <label for="date-of-issue">Date of Issue:</label>
-                    <input type="text" id="date-of-issue" name="date_of_issue" />
-                </div>
-                <div class="input-group">
-                    <label for="expiry-date">Expiry Date:</label>
-                    <input type="text" id="expiry-date" name="expiry_date" />
-                </div>
-            </div>
-            <div class="form-row">
-                <label for="current-address">Current Present Address:</label>
-                <input type="text" id="current-address" name="current_address" />
-            </div>
-            <div class="form-row multi-field">
-                <div class="input-group">
-                    <label for="mobile">Mobile:</label>
-                    <input type="text" id="mobile" name="mobile" />
-                </div>
-                <div class="input-group">
-                    <label for="email">Email:</label>
-                    <input type="text" id="email" name="email" />
-                </div>
-            </div>
-            <div class="form-row multi-field">
-                <div class="input-group">
-                    <label for="facebook">Social Media: Facebook:</label>
-                    <input type="text" id="facebook" name="facebook" />
-                </div>
-                <div class="input-group">
-                    <label for="instagram">Instagram:</label>
-                    <input type="text" id="instagram" name="instagram" />
-                </div>
-            </div>
-            <div class="form-row multi-field">
-                <div class="input-group">
-                    <label for="height">Height:</label>
-                    <input type="text" id="height" name="height" />
-                </div>
-                <div class="input-group">
-                    <label for="weight">Weight:</label>
-                    <input type="text" id="weight" name="weight" />
-                </div>
-                <div class="input-group">
-                    <label for="hair-color">Hair Color:</label>
-                    <input type="text" id="hair-color" name="hair_color" />
-                </div>
-            </div>
-            <div class="form-row multi-field">
-                <div class="input-group">
-                    <label for="body-marks">Body Marks:</label>
-                    <input type="text" id="body-marks" name="body_marks" />
-                </div>
-                <div class="input-group">
-                    <label for="tattoos">Tattoos:</label>
-                    <input type="text" id="tattoos" name="tattoos" />
+                <div class="col-md-6">
+                    <label for="birth_place">Birth Place:</label>
+                    <input type="text" id="birth_place" class="dotted-input medium">
                 </div>
             </div>
         </div>
-        
-        <!-- Additional form content will go here -->
+
+        <div class="form-section">
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="id_card">Identity Card Number (I.D. Card):</label>
+                    <input type="text" id="id_card" class="dotted-input medium">
+                </div>
+                <div class="col-md-6">
+                    <label for="exp_date">Expiration Date:</label>
+                    <input type="text" id="exp_date" class="dotted-input short">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="passport_number">Passport Number:</label>
+                    <input type="text" id="passport_number" class="dotted-input medium">
+                </div>
+                <div class="col-md-6">
+                    <label for="issued_at">Issued at:</label>
+                    <input type="text" id="issued_at" class="dotted-input medium">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="date_of_issue">Date of Issue:</label>
+                    <input type="text" id="date_of_issue" class="dotted-input medium">
+                </div>
+                <div class="col-md-6">
+                    <label for="expiry_date">Expiry Date:</label>
+                    <input type="text" id="expiry_date" class="dotted-input medium">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address">Current Present Address:</label>
+                <input type="text" id="address" class="dotted-input long">
+                <input type="text" id="address2" class="dotted-input">
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="mobile">Mobile:</label>
+                    <input type="text" id="mobile" class="dotted-input medium">
+                </div>
+                <div class="col-md-6">
+                    <label for="email">E-mail:</label>
+                    <input type="text" id="email" class="dotted-input medium">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="facebook">Social Media: Facebook</label>
+                    <input type="text" id="facebook" class="dotted-input medium">
+                </div>
+                <div class="col-md-4">
+                    <label for="instagram">Instagram:</label>
+                    <input type="text" id="instagram" class="dotted-input medium">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label for="height">Height:</label>
+                    <input type="text" id="height" class="dotted-input short">
+                </div>
+                <div class="col-md-4">
+                    <label for="weight">Weight:</label>
+                    <input type="text" id="weight" class="dotted-input short">
+                </div>
+                <div class="col-md-4">
+                    <label for="hair_color">Hair Color:</label>
+                    <input type="text" id="hair_color" class="dotted-input short">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="body_marks">Body Marks:</label>
+                    <input type="text" id="body_marks" class="dotted-input medium">
+                </div>
+                <div class="col-md-6">
+                    <label for="tattoo">Tattoo:</label>
+                    <input type="text" id="tattoo" class="dotted-input medium">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Marital Status:</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="single" value="Single">
+                    <label class="form-check-label" for="single">Single</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="married" value="Married">
+                    <label class="form-check-label" for="married">Married</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="widowed" value="Widowed">
+                    <label class="form-check-label" for="widowed">Widowed</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="separated" value="Separated">
+                    <label class="form-check-label" for="separated">Separated</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h6>Family Information</h6>
+            <div class="form-group row">
+                <div class="col-md-5">
+                    <label for="father_name">Father's Name:</label>
+                    <input type="text" id="father_name" class="dotted-input medium">
+                </div>
+                <div class="col-md-3">
+                    <label for="father_age">Age:</label>
+                    <input type="text" id="father_age" class="dotted-input short">
+                </div>
+                <div class="col-md-4">
+                    <label for="father_occupation">Occupation:</label>
+                    <input type="text" id="father_occupation" class="dotted-input medium">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="father_contact">Contact Number:</label>
+                <input type="text" id="father_contact" class="dotted-input long">
+            </div>
+            <div class="form-group row">
+                <div class="col-md-5">
+                    <label for="mother_name">Mother's Name:</label>
+                    <input type="text" id="mother_name" class="dotted-input medium">
+                </div>
+                <div class="col-md-3">
+                    <label for="mother_age">Age:</label>
+                    <input type="text" id="mother_age" class="dotted-input short">
+                </div>
+                <div class="col-md-4">
+                    <label for="mother_occupation">Occupation:</label>
+                    <input type="text" id="mother_occupation" class="dotted-input medium">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mother_contact">Contact Number:</label>
+                <input type="text" id="mother_contact" class="dotted-input long">
+            </div>
+            <div class="form-group row">
+                <div class="col-md-5">
+                    <label for="spouse_name">Name of Wife/Husband:</label>
+                    <input type="text" id="spouse_name" class="dotted-input medium">
+                </div>
+                <div class="col-md-3">
+                    <label for="spouse_age">Age:</label>
+                    <input type="text" id="spouse_age" class="dotted-input short">
+                </div>
+                <div class="col-md-4">
+                    <label for="spouse_occupation">Occupation:</label>
+                    <input type="text" id="spouse_occupation" class="dotted-input medium">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="spouse_contact">Contact Number:</label>
+                <input type="text" id="spouse_contact" class="dotted-input long">
+            </div>
+        </div>
+        <div class="form-section">
+    <div class="form-group row">
+        <div class="col-md-5">
+            <h6>Person to be notified in case of emergency:</h6>
+        </div>
+        <div class="col-md-6">
+            <label for="emergency_name">Name-Surname:</label>
+            <input type="text" id="emergency_name" class="dotted-input medium">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-6">
+            <label for="emergency_relation">Related to the applicant as:</label>
+            <input type="text" id="emergency_relation" class="dotted-input medium">
+        </div>
+        <div class="col-md-6">
+            <label for="emergency_mobile">Mobile:</label>
+            <input type="text" id="emergency_mobile" class="dotted-input medium">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <label for="emergency_email">Email:</label>
+            <input type="text" id="emergency_email" class="dotted-input medium">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="emergency_address">Address:</label>
+        <input type="text" id="emergency_address" class="dotted-input long">
+    </div>
+</div>
+
+
+
+<div class="form-section">
+    <h6>Education</h6>
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th>Educational Level</th>
+                <th>Name of Institution</th>
+                <th>Major</th>
+                <th>From</th>
+                <th>To</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>High School</td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+            </tr>
+            <tr>
+                <td>Vocational</td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+            </tr>
+            <tr>
+                <td>Diploma</td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+            </tr>
+            <tr>
+                <td>Bachelor Degree</td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+            </tr>
+            <tr>
+                <td>Other</td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="form-section">
+    <h4>Working Experience</h4>
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th colspan="2">Time</th>
+                <th>Position</th>
+                <th>Job Description</th>
+                <th>Salary</th>
+                <th>Reason of resignation</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>From</th>
+                <th>To</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+            </tr>
+            <tr>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+            </tr>
+            <tr>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+            </tr>
+            <tr>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+                <td><input type="text" class="dotted-input"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="form-section row">
+    <h5>Language Ability</h5>
+    <div class="form-group">
+        <input type="text" id="language_ability" class="dotted-input long">
+    </div>
+</div>
+
+<div class="form-section">
+    <h4>Special Ability</h4>
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>Computer</th>
+                <td><input type="checkbox"> No <input type="checkbox"> Yes</td>
+            </tr>
+            <tr>
+                <th>Driving</th>
+                <td><input type="checkbox"> No <input type="checkbox"> Yes</td>
+            </tr>
+            <tr>
+                <th>Driving Licence No :</th>
+                <td><input type="text" class="dotted-input"></td>
+            </tr>
+            <tr>
+                <th>Machine</th>
+                <td><input type="checkbox"> No <input type="checkbox"> Yes</td>
+            </tr>
+            <tr>
+                <th>Type of Machine :</th>
+                <td><input type="text" class="dotted-input"></td>
+            </tr>
+            <tr>
+                <th>Job Description :</th>
+                <td><input type="text" class="dotted-input"></td>
+            </tr>
+            <tr>
+                <th>Special knowledge Please Mention</th>
+                <td><input type="text" class="dotted-input" style="width: 100%;"></td>
+            </tr>
+            <tr>
+                <th>Others Please Mention</th>
+                <td><input type="text" class="dotted-input" style="width: 100%;"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="form-section">
+    <p>I certify all statements given in this application form are true. If any information is found to be untrue after engagement, the Company has the right to terminate my employment without any compensation or severance pay whatsoever.</p>
+    <div style="text-align: center; margin-top: 50px;">
+        <p>.............................................</p>
+        <p><b>( Application Signature )</b></p>
+    </div>
+</div>
+
+
+         </div>
     </div>
 </body>
 </html>

@@ -67,9 +67,6 @@
                     <td><label>Issue To:</label> {{ $payment->client_name }}</td>
                 </tr>
                 <tr>
-                    <td><label>Address:</label> {{ $payment->address }}</td>
-                </tr>
-                <tr>
                     <td><label>Client ID:</label> {{ $payment->id }}</td>
                     <td align="right">
                        <small> <b>{{ \Carbon\Carbon::now()->format('l, d F Y') }}<br>
@@ -82,12 +79,6 @@
 
         <div class="invoice-info">
             <table>
-                <tr>
-                    <td><label>Issue Date:</label> {{ $payment->issue_date }}</td>
-                    <td><label>Due Date:</label> {{ $payment->expiry_date }}</td>
-                </tr>
-                <tr><td></td><td></td></tr>
-                <tr><td></td><td></td></tr>
                 <tr>
                     <td><label>Job:</label> {{ $payment->job->job_name }}</td>
                     <td><label>Price:</label> ${{ $payment->price }}</td>

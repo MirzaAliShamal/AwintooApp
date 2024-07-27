@@ -1,6 +1,6 @@
 @extends('front.layouts.master')
 @section('content')
-          <div class="container p-5">
+          <div class="container p-5" style="height: 90vh;">
             <div class="message"></div>
                 <h1 class="text-center mb-5 mt-3 wow fadeInUp" data-wow-delay="0.1s">Register</h1>
                 <div class="row g-4">

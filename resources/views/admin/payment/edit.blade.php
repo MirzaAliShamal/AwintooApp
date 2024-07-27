@@ -49,41 +49,6 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="issue_date">Issue Date</label>
-                                        <input type="date" name="issue_date" id="issue_date" value="{{ $payment->issue_date }}" class="form-control">
-                                        <p></p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="expiry_date">Expiry Date</label>
-                                        <input type="date" name="expiry_date" id="expiry_date" value="{{ $payment->expiry_date }}" class="form-control">
-                                        <p></p>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <label for="address">Customer Address</label>
-                                        <textarea class="form-control" name="address" id="address">{{ $payment->address }}</textarea>
-                                        <p></p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="dob">Date of Birth</label>
-                                        <input type="date" name="dob" id="dob" value="{{ $payment->dob }}" class="form-control">
-                                        <p></p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="birth_place">Birth Place</label>
-                                        <input type="text" name="birth_place" id="birth_place" value="{{ $payment->birth_place }}" class="form-control" placeholder="Birth Place">
-                                        <p></p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
                                         <label for="payment">Payment</label>
                                         <input type="number" name="payment" id="payment" value="{{ $payment->payment }}" class="form-control" placeholder="Payment">
                                         <p></p>
@@ -117,6 +82,22 @@
                                         <p></p>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3 row">
+                                        <div class="col-md-6">
+                                            <label for="proof_of_payment">Proof of Payment</label>
+                                            <input type="file" name="proof_of_payment" id="proof_of_payment" class="form-control">
+                                            <p></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            @if (isset($payment->proof_of_payment) && !empty($payment->proof_of_payment) && $fileTypes['proof_of_payment'] != 'pdf')
+                                                <img id="proof_of_payment" src="{{ getImage(getFilePath('proof_of_payment') . '/' . $payment->proof_of_payment) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            @else
+                                                <img id="proof_of_payment_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>                                                                        
                     </div>
@@ -129,3 +110,30 @@
     </div>
 </section>
 @endsection
+@push('script')
+<script>
+$(document).ready(function() {
+    function handleFilePreview(input, previewId) {
+        $(input).on('change', function(event) {
+            var file = event.target.files[0];
+            var previewElement = $(previewId);
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var fileType = file.type;
+                    if (fileType.startsWith('image/')) {
+                        previewElement.attr('src', e.target.result).show();
+                    } else {
+                        previewElement.hide();
+                    }
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewElement.hide();
+            }
+        });
+    }
+    handleFilePreview('#proof_of_payment', '#proof_of_payment_photo');
+});
+</script>
+@endpush

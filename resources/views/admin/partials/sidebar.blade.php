@@ -41,7 +41,7 @@
           </li>
           <li class="nav-item">
             <a href="{{ route('admin.payment.index') }}" class="nav-link {{ menuActive('admin.payment.index') }}">
-              <i class="nav-icon fas fa-credit-card"></i>
+              <i class="nav-icon fas fa-dollar-sign"></i>
               <p>
                 Payment
               </p>

@@ -98,6 +98,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|email',
+            'password' => 'nullable|string',
             'phone_number' => 'required',
             'password' => 'nullable|string',
         ]);
@@ -123,16 +124,20 @@ class UserController extends Controller
                 'message' => 'Email already exists.'
             ]);
         }
+        $updateData = $request->only(['name', 'email', 'phone_number', 'role']);
+        if ($request->filled('password')) {
+            $updateData['password'] = Hash::make($request->password);
+        }
 
         if ($user->role == 1) {
-            $user->update($request->only(['name', 'email', 'phone_number', 'role']));
+            $user->update($updateData);
             return response()->json([
                 'status' => true,
                 'message' => 'Admin updated successfully.',
                 'redirect' => route('admin.user.indexAdmin'),
             ]);
         } elseif ($user->role == 2) {
-            $user->update($request->only(['name', 'email', 'phone_number', 'role']));
+            $user->update($updateData);
             return response()->json([
                 'status' => true,
                 'message' => 'User updated successfully.',

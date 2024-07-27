@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::table('clients', function (Blueprint $table) {
+        Schema::table('clients', function (Blueprint $table) {
             $table->string('password')->nullable()->after('email');
             $table->string('father_name')->nullable()->change();
             $table->string('mother_name')->nullable()->change();
@@ -33,7 +33,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-         Schema::table('clients', function (Blueprint $table) {
+        Schema::table('clients', function (Blueprint $table) {
             $table->dropColumn('password');
             $table->string('father_name')->nullable(false)->change();
             $table->string('mother_name')->nullable(false)->change();
