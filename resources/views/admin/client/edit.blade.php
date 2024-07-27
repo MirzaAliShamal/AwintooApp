@@ -231,37 +231,37 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-md-12">
-                                    <div class="mb-3 row">
-                                        <div class="col-md-6">
-                                            <label for="license_front">License Front</label>
-                                            <input type="file" name="license_front" id="license_front" class="form-control">
-                                            <p></p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            @if (isset($client->license_front) && !empty($client->license_front) && $fileTypes['license_front'] != 'pdf')
-                                            <img id="license_front_photo" src="{{ getImage(getFilePath('license_front') . '/' . $client->license_front) }}" alt="Image preview" style="max-width: 30%; height: auto;">
-                                            @else
-                                            <img id="license_front_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
-                                            @endif
+                                <div id="driver-fields" class="row" style="display: none;">
+                                    <div class="col-md-6">
+                                        <div class="mb-3 row">
+                                            <div class="col-md-6">
+                                                <label for="license_front">Driver License Front</label>
+                                                <input type="file" name="license_front" id="license_front" class="form-control">
+                                                <p></p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                @if (isset($client->license_front) && !empty($client->license_front) && $fileTypes['license_front'] != 'pdf')
+                                                <img id="license_front_photo" src="{{ getImage(getFilePath('license_front') . '/' . $client->license_front) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                                @else
+                                                <img id="license_front_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="mb-3 row">
-                                        <div class="col-md-6">
-                                            <label for="license_back">License Back</label>
-                                            <input type="file" name="license_back" id="license_back" class="form-control">
-                                            <p></p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            @if (isset($client->license_back) && !empty($client->license_back) && $fileTypes['license_back'] != 'pdf')
-                                            <img id="license_back_photo" src="{{ getImage(getFilePath('license_back') . '/' . $client->license_back) }}" alt="Image preview" style="max-width: 30%; height: auto;">
-                                            @else
-                                            <img id="license_back_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
-                                            @endif
+                                    <div class="col-md-6">
+                                        <div class="mb-3 row">
+                                            <div class="col-md-6">
+                                                <label for="license_back">Driver License Back</label>
+                                                <input type="file" name="license_back" id="license_back" class="form-control">
+                                                <p></p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                @if (isset($client->license_back) && !empty($client->license_back) && $fileTypes['license_back'] != 'pdf')
+                                                <img id="license_back_photo" src="{{ getImage(getFilePath('license_back') . '/' . $client->license_back) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                                @else
+                                                <img id="license_back_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -367,6 +367,15 @@
 @push('script')
 <script>
     $(document).ready(function() {
+        $('#job_id').on('change', function() {
+            var selectedOption = $(this).find('option:selected');
+            var jobName = selectedOption.text();
+            if (jobName == 'Driver') {
+                $('#driver-fields').show();
+            } else {
+                $('#driver-fields').hide();
+            }
+        });
         function handleFilePreview(input, previewId) {
             $(input).on('change', function(event) {
                 var file = event.target.files[0];

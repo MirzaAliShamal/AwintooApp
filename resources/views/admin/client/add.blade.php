@@ -216,29 +216,30 @@
                                     </div>
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3 row">
+                                <div id="driver-fields" class="row" style="display: none;">
+                                    <div class="col-md-6">
+                                        <div class="mb-3 row">
+                                            <div class="col-md-6">
+                                            <label for="license_front">Driver License Front</label>
+                                            <input type="file" name="license_front" id="license_front" class="form-control">
+                                            <p></p>
+                                        </div>
                                         <div class="col-md-6">
-                                        <label for="license_front">License Front</label>
-                                        <input type="file" name="license_front" id="license_front" class="form-control">
-                                        <p></p>
+                                            <img id="license_front_photo" src="#" alt="Image preview" style="display:none; max-width: 60%; height: auto;">
+                                        </div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <img id="license_front_photo" src="#" alt="Image preview" style="display:none; max-width: 60%; height: auto;">
-                                    </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3 row">
+                                        <div class="mb-3 row">
+                                            <div class="col-md-6">
+                                            <label for="license_back">Driver License Back</label>
+                                            <input type="file" name="license_back" id="license_back" class="form-control">
+                                            <p></p>
+                                        </div>
                                         <div class="col-md-6">
-                                        <label for="license_back">License Back</label>
-                                        <input type="file" name="license_back" id="license_back" class="form-control">
-                                        <p></p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <img id="license_back_photo" src="#" alt="Image preview" style="display:none; max-width: 60%; height: auto;">
-                                    </div>
+                                            <img id="license_back_photo" src="#" alt="Image preview" style="display:none; max-width: 60%; height: auto;">
+                                        </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -322,6 +323,16 @@
 @push('script')
 <script>
 $(document).ready(function() {
+    $('#job_id').on('change', function() {
+        var selectedOption = $(this).find('option:selected');
+        var jobName = selectedOption.text();
+        if (jobName == 'Driver') {
+            $('#driver-fields').show();
+        } else {
+            $('#driver-fields').hide();
+        }
+    });
+
     function handleFilePreview(input, previewId) {
         $(input).on('change', function(event) {
             var file = event.target.files[0];

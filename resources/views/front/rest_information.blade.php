@@ -21,7 +21,7 @@
                 <td>{{ $client->restInfo->name_with_vietnam_characters }}</td>
             </tr>
             <tr>
-                <th>Interview Date</th>
+                <th><span class="text-danger">Interview Date</span></th>
                 <td>{{ $client->restInfo->interview_date }}</td>
                 <th>Training Program</th>
                 <td>{{ $client->restInfo->training_program }}</td>
@@ -67,15 +67,6 @@
                 <th>Vietnam Living Address</th>
                 <td>{{ $client->restInfo->vietnam_living_address }}</td>
             </tr>           
-            <tr>
-                <th colspan="4">Amount Detail</th>
-            </tr>
-            <tr>
-                <th>Amount Paid</th>
-                <td>{{ $client->restInfo->amount_paid }}</td>
-                <th>Balance Amount</th>
-                <td>{{ $client->restInfo->balance_amount }}</td>
-            </tr>
             <tr>
                 <th colspan="4">Abroad Detail</th>
             </tr>

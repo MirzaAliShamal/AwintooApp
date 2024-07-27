@@ -22,7 +22,6 @@
             </div>
         </div>
         <a href="{{ route('front.dashboard') }}" class="btn btn-primary w-100">Dashboard</a>
-        <a href="{{ route('front.restInfo') }}" class="btn btn-primary w-100 mt-1">Rest Information</a>
-        {{-- <a href="#" class="btn btn-primary w-100 mt-1">Update Password</a> --}}
+        <a href="{{ route('front.restInfo') }}" class="btn btn-primary text-danger w-100 mt-1">My Appointments</a>
     </div>
 </div>
