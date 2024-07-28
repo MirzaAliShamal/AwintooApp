@@ -60,18 +60,43 @@
         .contract-section ul li {
             margin-bottom: 10px;
         }
-
-        
         hr.black-line {
             height: 1px;
-            background-color: black;
+            background-color: #000;
+        }
+        .btn {
+            background: royalblue;
+            color: #fff;
+            padding: 10px;
+            width: 30px;
+            height: 20px;
+            text-decoration: none;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/logo/protech.png'))) }}" alt="Logo">
+            <table class="footer-table">
+                <tr>
+                    <td class="left">
+                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/logo/protech.png'))) }}" alt="Logo">
+                    </td>
+                    <td class="right">
+                        @php
+                            $isPdf = $isPdf ?? false;
+                        @endphp
+                        @if (!$isPdf)
+                            <form action="{{ route('admin.report.contract.print') }}" method="POST" style="display: none;" id="printForm">
+                                @csrf
+                                <input type="hidden" name="client_id" value="{{ $client->id }}">
+                            </form>
+                            <a href="#" class="btn" onclick="document.getElementById('printForm').submit();">Print</a>
+                        @endif
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="content">
             <p style="text-align: center;">
@@ -247,10 +272,7 @@
                         <p>{{ $client->full_name }}</p>
                     </td>
                 </tr>
-
             </table>
-
-
         </div>
         
         <hr class="black-line">
@@ -280,5 +302,8 @@
     <hr style="border: none; height: 1px; background-color: orange;">
     <hr style="border: none; height: 3px; background-color: #254dba;">
 </div>
+
+<script src="{{ asset('assets/global/js/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/admin/js/action.js') }}"></script>
 </body>
 </html>

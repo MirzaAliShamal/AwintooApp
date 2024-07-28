@@ -8,7 +8,7 @@
             </div>
             <div class="col-sm-6 text-right">
                 <a href="{{ route('admin.user.indexAdmin') }}" class="btn btn-outline-dark">Admins</a>
-                <a href="{{ route('admin.user.create') }}" class="btn btn-outline-dark">Add Agent</a>
+                <a href="{{ route('admin.user.create', ['type' => 'agent']) }}" class="btn btn-outline-dark">Add Agent</a>
             </div>
         </div>
     </div>
@@ -22,6 +22,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Agency Name</th>
                         <th>Email</th>
                         <th>Phone</th>
                         <th width="100">Action</th>
@@ -31,6 +32,7 @@
                     @forelse($users as $user)
                     <tr>
                         <td>{{ $user->name }}</td>
+                        <td>{{ $user->agency_name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone_number }}</td>
                         <td>

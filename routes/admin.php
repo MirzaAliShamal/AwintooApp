@@ -99,9 +99,13 @@ Route::middleware('auth')->group(function () {
     Route::controller('ReportController')->name('report.')->group(function () {
         Route::get('reports', 'index')->name('index');
         Route::post('confirm-report/', 'confirmReport')->name('confirm');
+        Route::post('confirm/report/print', 'confirmReportPrint')->name('confirm.print');
         Route::post('contract-report/', 'contractReport')->name('contract');
+        Route::post('contract/report/print', 'contractReportPrint')->name('contract.print');
         Route::post('loi-report/', 'loiReport')->name('loi');
+        Route::post('loi/report/print', 'loiReportPrint')->name('loi.print');
         Route::post('rpt-application/', 'rptApplication')->name('rptApplication');
+        Route::post('rpt/app/print', 'rptAppPrint')->name('rpt.print');
     });
 
     // General Setting

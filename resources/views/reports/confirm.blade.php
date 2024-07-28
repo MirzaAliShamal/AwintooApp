@@ -52,18 +52,58 @@
             width: 50%;
             text-align: right;
         }
-
-       
         hr.black-line {
             height: 1px;
             background-color: black;
+        }
+        .footer-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .footer-table td {
+            vertical-align: top;
+            padding: 5px;
+        }
+        .footer-table .left {
+            width: 50%;
+        }
+        .footer-table .right {
+            width: 50%;
+            text-align: right;
+        }
+        .btn {
+            background: royalblue;
+            color: #fff;
+            padding: 10px;
+            width: 30px;
+            height: 20px;
+            text-decoration: none;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/logo/protech.png'))) }}" alt="Logo">
+            <table class="footer-table">
+                <tr>
+                    <td class="left">
+                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/logo/protech.png'))) }}" alt="Logo">
+                    </td>
+                    <td class="right">
+                        @php
+                            $isPdf = $isPdf ?? false;
+                        @endphp
+                        @if (!$isPdf)
+                            <form action="{{ route('admin.report.confirm.print') }}" method="POST" style="display: none;" id="printForm">
+                                @csrf
+                                <input type="hidden" name="client_id" value="{{ $client->id }}">
+                            </form>
+                            <a href="#" class="btn" onclick="document.getElementById('printForm').submit();">Print</a>
+                        @endif
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="content">
             <p>

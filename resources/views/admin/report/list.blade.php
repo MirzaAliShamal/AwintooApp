@@ -13,15 +13,15 @@
     <div class="container-fluid my-2">
         <div class="row mb-2 text-center">
             <div class="col-sm-12">
-                <a href="#" data-route="{{ route('admin.report.contract') }}" data-title="Contract Report" class="btn w-50 bg-orange" data-toggle="modal" data-target="#confirmationModal">Contract Report</a>
+                <a href="#" data-route="{{ route('admin.report.contract') }}" data-title="Contract Report" class="btn w-50 bg-orange" data-toggle="modal" data-target="#confirmationModal">Training Contract</a>
                 </div>
             <div class="col-sm-12 mt-2">
-                <a href="#" data-route="{{ route('admin.report.confirm') }}" data-title="Confirm Report" class="btn bg-olive w-50" data-toggle="modal" data-target="#confirmationModal">Confirm Report</a>
+                <a href="#" data-route="{{ route('admin.report.confirm') }}" data-title="Confirm Report" class="btn bg-olive w-50" data-toggle="modal" data-target="#confirmationModal">Confirmation Letter</a>
             </div>
             <div class="col-sm-12 mt-2">
-                <a href="#" data-route="{{ route('admin.report.loi') }}" data-title="LOI Report" class="btn w-50 bg-purple" data-toggle="modal" data-target="#confirmationModal">LOI Report</a>
+                <a href="#" data-route="{{ route('admin.report.loi') }}" data-title="LOI Report" class="btn w-50 bg-purple" data-toggle="modal" data-target="#confirmationModal">Letter Of Intention</a>
             </div>
-            {{-- <div class="col-sm-12 mt-2">
+           {{--  <div class="col-sm-12 mt-2">
                 <a href="#" data-route="{{ route('admin.report.rptApplication') }}" data-title="rpt-Application Employeement" class="btn w-50 bg-info" data-toggle="modal" data-target="#confirmationModal">Rpt Application</a>
             </div> --}}
         </div>

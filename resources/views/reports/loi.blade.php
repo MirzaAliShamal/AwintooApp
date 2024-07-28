@@ -49,16 +49,55 @@
             width: 50%;
             text-align: right;
         }
-
-       
         hr.black-line {
             height: 1px;
             background-color: black;
+        }
+        .footer-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .footer-table td {
+            vertical-align: top;
+            padding: 5px;
+        }
+        .footer-table .left {
+            width: 50%;
+        }
+        .footer-table .right {
+            width: 50%;
+            text-align: right;
+        }
+        .btn {
+            background: royalblue;
+            color: #fff;
+            padding: 10px;
+            width: 30px;
+            height: 20px;
+            text-decoration: none;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <table class="footer-table">
+                <tr>
+                    <td class="left"></td>
+                    <td class="right">
+                        @php
+                            $isPdf = $isPdf ?? false;
+                        @endphp
+                        @if (!$isPdf)
+                            <form action="{{ route('admin.report.loi.print') }}" method="POST" style="display: none;" id="printForm">
+                                @csrf
+                                <input type="hidden" name="client_id" value="{{ $client->id }}">
+                            </form>
+                            <a href="#" class="btn" onclick="document.getElementById('printForm').submit();">Print</a>
+                        @endif
+                    </td>
+                </tr>
+            </table>
         <div class="content">
             <p>
                 <strong>To: Romanian Embassy iVietnam,</strong><br><br>

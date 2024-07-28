@@ -115,8 +115,8 @@
 
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label for="interview_date">Interview Date</label>
-                                        <input type="date" name="interview_date" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="interview_date" value="{{ $restInfo->interview_date }}" class="form-control">
+                                        <label for="interview_date">Interview Date / Time</label>
+                                        <input type="datetime-local" name="interview_date" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="interview_date" value="{{ $restInfo->interview_date }}" class="form-control">
                                         <p></p>
                                     </div>
                                 </div>

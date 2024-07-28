@@ -31,6 +31,16 @@
               </p>
             </a>
           </li>
+          @if(auth()->user()->role == 1)
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-user-check"></i> 
+              <p>
+                Client Evaluation
+              </p>
+            </a>
+          </li>
+          @endif
           <li class="nav-item">
             <a href="{{ route('admin.info.index') }}" class="nav-link {{ menuActive('admin.info.index') }}">
               <i class="nav-icon fas fa-info-circle"></i>
@@ -68,7 +78,7 @@
             <a href="{{ route('admin.report.index') }}" class="nav-link {{ menuActive('admin.report.index') }}">
               <i class="nav-icon fas fa-file"></i>
               <p>
-                Reports
+                Forms
               </p>
             </a>
           </li>

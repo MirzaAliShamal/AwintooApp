@@ -16,7 +16,7 @@ class ReportController extends Controller
     
     public function index()
     {
-        $pageTitle = "Generate Reports";
+        $pageTitle = "Generate Forms";
         return view('admin.report.list', compact('pageTitle'));
     }
 
@@ -25,9 +25,19 @@ class ReportController extends Controller
         $clientId = $request->client_id;
         $client = Client::find($clientId);
         if($client) {
-            $pdf = PDF::loadView('reports.confirm', compact('client'));
-            return $pdf->download('confirm-report.pdf');
-            // return view('reports.confirm', compact('client'));
+            return view('reports.confirm', compact('client'));
+        } else {
+            return back();
+        }
+    }
+
+    public function confirmReportPrint(Request $request)
+    {
+        $clientId = $request->client_id;
+        $client = Client::find($clientId);
+        if ($client) {
+            $pdf = PDF::loadView('reports.confirm', ['client' => $client, 'isPdf' => true]);
+            return $pdf->download('confirmation-letter.pdf');
         } else {
             return back();
         }
@@ -38,9 +48,19 @@ class ReportController extends Controller
         $clientId = $request->client_id;
         $client = Client::find($clientId);
         if($client) {
-            $pdf = PDF::loadView('reports.contract', compact('client'));
-            return $pdf->download('contract-report.pdf');
-            // return view('reports.contract', compact('client'));
+            return view('reports.contract', compact('client'));
+        } else {
+            return back();
+        }
+    }
+
+    public function contractReportPrint(Request $request)
+    {
+        $clientId = $request->client_id;
+        $client = Client::find($clientId);
+        if ($client) {
+            $pdf = PDF::loadView('reports.contract', ['client' => $client, 'isPdf' => true]);
+            return $pdf->download('training-contract.pdf');
         } else {
             return back();
         }
@@ -51,9 +71,19 @@ class ReportController extends Controller
         $clientId = $request->client_id;
         $client = Client::find($clientId);
         if($client) {
-            $pdf = PDF::loadView('reports.loi', compact('client'));
+            return view('reports.loi', compact('client'));
+        } else {
+            return back();
+        }
+    }
+
+    public function loiReportPrint(Request $request)
+    {
+        $clientId = $request->client_id;
+        $client = Client::find($clientId);
+        if ($client) {
+            $pdf = PDF::loadView('reports.loi',  ['client' => $client, 'isPdf' => true]);
             return $pdf->download('loi-report.pdf');
-            // return view('reports.loi', compact('client'));
         } else {
             return back();
         }
@@ -64,13 +94,24 @@ class ReportController extends Controller
         $clientId = $request->client_id;
         $client = Client::find($clientId);
         if($client) {
-            $pdf = PDF::loadView('reports.rpt', compact('client'));
-            return $pdf->download('rpt-Application.pdf');
-            // return view('reports.rpt', compact('client'));
+            return view('reports.rpt', compact('client'));
         } else {
             return back();
         }
     }
 
-
+    public function rptAppPrint(Request $request)
+    {
+        $clientId = $request->client_id;
+        $client = Client::find($clientId);
+        if ($client) {
+            $pdf = PDF::loadView('reports.rpt', ['client' => $client, 'isPdf' => true])
+                    ->setPaper('a4', 'portrait')
+                    ->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+                
+            return $pdf->download('rpt-Application.pdf');
+        } else {
+            return back();
+        }
+    }
 }

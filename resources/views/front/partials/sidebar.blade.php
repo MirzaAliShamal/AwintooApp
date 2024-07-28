@@ -11,13 +11,13 @@
             </div>
             <div class="mt-2 text-start">
                 <small class="profile-headline"><i class="fas fa-briefcase text-primary me-2"></i><b>Job:</b> {{ $client->job->job_name }}</small><br>
-                <small class="profile-headline"><i class="fas fa-calendar-alt text-primary me-2"></i><b>Date of Birth:</b>  {{ $client->dob }}</small><br>
+                <small class="profile-headline"><i class="fas fa-calendar-alt text-primary me-2"></i><b>Date of Birth:</b>  {{ Carbon\Carbon::parse($client->dob)->format('d-m-Y') }}</small><br>
                 <small class="profile-headline"><i class="fas fa-venus-mars text-primary me-2"></i><b> Gender:</b> {{ $client->gender }}</small><br>
                 <small class="profile-headline"><i class="fas fa-phone text-primary me-2"></i><b>Phone:</b>  {{ $client->phone_number }}</small><br>
                 <small class="profile-headline"><i class="fas fa-envelope text-primary me-2"></i><b>Email:</b> {{ $client->email }}</small><br>
                 <small class="profile-headline"><i class="fas fa-graduation-cap text-primary me-2"></i><b>School Level:</b> {{ $client->school_level }}</small><br>
                 <small class="profile-headline"><i class="fas fa-user-tie text-primary me-2"></i><b>Agent:</b> {{ $client->agent->name }}</small><br>
-                <small class="profile-headline"><i class="fas fa-file-alt text-primary me-2"></i><b>Application Date:</b> {{ $client->application_date }}</small>
+                <small class="profile-headline"><i class="fas fa-file-alt text-primary me-2"></i><b>Application Date:</b> {{ Carbon\Carbon::parse($client->application_date)->format('d-m-Y') }}</small>
 
             </div>
         </div>

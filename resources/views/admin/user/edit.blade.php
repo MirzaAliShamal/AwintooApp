@@ -19,6 +19,14 @@
                     <div class="card mb-3">
                         <div class="card-body">                             
                             <div class="row">
+                                 @if($type)
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="agency_name">Agency Name</label>
+                                        <input type="text" name="agency_name" id="agency_name" value="{{ $user->agency_name }}" class="form-control" placeholder="Agency Name">
+                                    </div>
+                                </div>
+                                @endif
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="name">Name</label>
@@ -52,8 +60,12 @@
                                     <div class="mb-3">
                                         <label for="role">Type</label>
                                         <select class="form-control" name="role" id="role">
+                                            @if(!$type))
                                             <option value="1" {{ ($user->role == 1) ? 'selected' : '' }}>Admin</option>
+                                            @endif
+                                            @if($type))
                                             <option value="2" {{ ($user->role == 2) ? 'selected' : '' }}>Agent</option>
+                                            @endif
                                         </select>
                                         <p></p>
                                     </div>

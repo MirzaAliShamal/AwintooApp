@@ -18,6 +18,14 @@
                     <div class="card mb-3">
                         <div class="card-body">                             
                             <div class="row">
+                                @if(Request::get('type'))
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="agency_name">Agency Name</label>
+                                        <input type="text" name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
+                                    </div>
+                                </div>
+                                @endif
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="name">Name</label>
@@ -50,8 +58,12 @@
                                     <div class="mb-3">
                                         <label for="role">Type</label>
                                         <select class="form-control" name="role" id="role">
+                                            @if(!Request::get('type'))
                                             <option value="1">Admin</option>
+                                            @endif
+                                            @if(Request::get('type'))
                                             <option value="2">Agent</option>
+                                            @endif
                                         </select>
                                         <p></p>
                                     </div>

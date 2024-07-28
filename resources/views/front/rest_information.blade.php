@@ -21,8 +21,14 @@
                 <td>{{ $client->restInfo->name_with_vietnam_characters }}</td>
             </tr>
             <tr>
-                <th><span class="text-danger">Interview Date</span></th>
-                <td>{{ $client->restInfo->interview_date }}</td>
+                <th>
+                    <span class="text-danger">Interview Date</span><br>
+                    <span class="text-danger">Interview Time</span>
+                </th>
+                <td>
+                    {{ Carbon\Carbon::parse($client->restInfo->interview_date)->format('d-m-Y') }}<br>
+                    {{ Carbon\Carbon::parse($client->restInfo->interview_date)->format('h:i A') }}
+                </td>
                 <th>Training Program</th>
                 <td>{{ $client->restInfo->training_program }}</td>
             </tr>
@@ -31,16 +37,16 @@
             </tr>
             <tr>
                 <th>Driver Licence Issue Date</th>
-                <td>{{ $client->restInfo->driver_licence_issue_date }}</td>
+                <td>{{ Carbon\Carbon::parse($client->restInfo->driver_licence_issue_date)->format('d-m-Y') }}</td>
                 <th>Driver License Expiry Date</th>
-                <td>{{ $client->restInfo->driver_license_expiry_date }}</td>
+                <td>{{ Carbon\Carbon::parse($client->restInfo->driver_license_expiry_date)->format('d-m-Y') }}</td>
             </tr>
             <tr>
                 <th colspan="4">Police Certificate & Visa Application</th>
             </tr>
             <tr>
                 <th>Police Certificate Expiry Date</th>
-                <td>{{ $client->restInfo->police_certificate_expiry_date }}</td>
+                <td>{{ Carbon\Carbon::parse($client->restInfo->police_certificate_expiry_date)->format('d-m-Y') }}</td>
                 <th>Visa Application Number</th>
                 <td>{{ $client->restInfo->visa_application_number }}</td>
             </tr>
@@ -51,7 +57,7 @@
                 <th>Insurance Type</th>
                 <td>{{ $client->restInfo->insurance_type }}</td>
                 <th>Insurance Expiry Date</th>
-                <td>{{ $client->restInfo->insurance_expiry_date }}</td>
+                <td>{{ Carbon\Carbon::parse($client->restInfo->insurance_expiry_date)->format('d-m-Y') }}</td>
             </tr>
              
             <tr>

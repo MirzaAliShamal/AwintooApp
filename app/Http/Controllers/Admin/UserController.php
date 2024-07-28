@@ -53,7 +53,7 @@ class UserController extends Controller
                 ]);
             }
 
-            $data = $request->only(['name', 'email', 'phone_number', 'password', 'role']);
+            $data = $request->only(['name', 'agency_name', 'email', 'phone_number', 'password', 'role']);
             if ($request->role == 1) {
                 User::create($data);
                 $roleName = 'Admin';
@@ -86,10 +86,12 @@ class UserController extends Controller
         }
         if ($user->role == 1) {
             $pageTitle = 'Edit Admin';
-            return view('admin.user.edit', compact('user', 'pageTitle'));
+            $type = '';
+            return view('admin.user.edit', compact('user', 'pageTitle', 'type'));
         } elseif ($user->role == 2) {
             $pageTitle = 'Edit Agent';
-            return view('admin.user.edit', compact('user', 'pageTitle'));
+            $type = 'Agnet';
+            return view('admin.user.edit', compact('user', 'pageTitle', 'type'));
         }
     }
 
@@ -124,7 +126,7 @@ class UserController extends Controller
                 'message' => 'Email already exists.'
             ]);
         }
-        $updateData = $request->only(['name', 'email', 'phone_number', 'role']);
+        $updateData = $request->only(['name', 'agency_name', 'email', 'phone_number', 'role']);
         if ($request->filled('password')) {
             $updateData['password'] = Hash::make($request->password);
         }
