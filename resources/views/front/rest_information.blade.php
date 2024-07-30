@@ -17,7 +17,7 @@
             <tr>
                 <th>Body Size</th>
                 <td>{{ $client->restInfo->body_size }}</td>
-                <th>Name with Vietnam Characters</th>
+                <th>Name in Mother Language</th>
                 <td>{{ $client->restInfo->name_with_vietnam_characters }}</td>
             </tr>
             <tr>
@@ -65,12 +65,30 @@
                 <td colspan="2">{{ $client->restInfo->system_email }}</td>
             </tr>
             <tr>
+                <th colspan="4">Nationality</th>
+            </tr>
+            <tr>
+                <th>Place of Birth</th>
+                <td>{{ $client->restInfo->place_of_birth }}</td>
+                <th>Nationality</th>
+                <td>{{ $client->restInfo->nationality }}</td>
+            </tr>
+            <tr>
+                <th colspan="4">Marital Info</th>
+            </tr>
+            <tr>
+                <th>Marital Status</th>
+                <td>{{ $client->restInfo->marital_status }}</td>
+                <th>Spouse Name</th>
+                <td>{{ $client->restInfo->spouse_name }}</td>
+            </tr>
+            <tr>
                 <th colspan="4">Living Address</th>
             </tr>
             <tr>
                 <th>English Characters Living Address</th>
                 <td>{{ $client->restInfo->english_characters_living_address }}</td>
-                <th>Vietnam Living Address</th>
+                <th>Currently Living Address</th>
                 <td>{{ $client->restInfo->vietnam_living_address }}</td>
             </tr>           
             <tr>

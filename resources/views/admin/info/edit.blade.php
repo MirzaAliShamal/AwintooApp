@@ -43,7 +43,7 @@
 
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label for="name_with_vietnam_characters">Name with Vietnam Characters</label>
+                                        <label for="name_with_vietnam_characters">Name in Mother Language</label>
                                         <input type="text" name="name_with_vietnam_characters" id="name_with_vietnam_characters" value="{{ $restInfo->name_with_vietnam_characters }}" class="form-control" placeholder="Name with Vietnam Characters">
                                         <p></p>
                                     </div>
@@ -67,6 +67,36 @@
 
                                 <div class="col-md-4">
                                     <div class="mb-3">
+                                        <label for="place_of_birth">Place of Birth</label>
+                                        <input type="text" name="place_of_birth" value="{{ $restInfo->place_of_birth }}" id="place_of_birth" class="form-control" placeholder="Place of Birth">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="nationality">Nationality</label>
+                                        <input type="text" name="nationality" id="nationality" value="{{ $restInfo->nationality }}" class="form-control" placeholder="Nationality">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="marital_status">Marital Status</label>
+                                        <input type="text" name="marital_status" id="marital_status" value="{{ $restInfo->marital_status }}" class="form-control" placeholder="Marital Status">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="spouse_name">Spouse Name</label>
+                                        <input type="text" name="spouse_name" id="spouse_name" value="{{ $restInfo->spouse_name }}" class="form-control" placeholder="Spouse Name">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-3">
                                         <label for="english_characters_living_address">English Characters Living Address</label>
                                         <input type="text" name="english_characters_living_address" id="english_characters_living_address" value="{{ $restInfo->english_characters_living_address }}" class="form-control" placeholder="English Characters Living Address">
                                         <p></p>
@@ -75,7 +105,7 @@
 
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label for="vietnam_living_address">Vietnam Living Address</label>
+                                        <label for="vietnam_living_address">Currently Living Address</label>
                                         <input type="text" name="vietnam_living_address" id="vietnam_living_address" value="{{ $restInfo->vietnam_living_address }}" class="form-control" placeholder="Vietnam Living Address">
                                         <p></p>
                                     </div>

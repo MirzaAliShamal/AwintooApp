@@ -13,6 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/migrations', function () {
+    // Call the Artisan migrate command
+    $exitCode = Artisan::call('migrate');
+
+    // Check the exit code
+    if ($exitCode === 0) {
+        // Migration ran successfully
+        return 'Migration ran successfully!';
+    } else {
+        // Migration failed
+        return 'Migration failed. Exit code: ' . $exitCode;
+    }
+});
 
 Route::namespace('Front\Auth')->group(function () {
     Route::controller('LoginController')->group(function () {

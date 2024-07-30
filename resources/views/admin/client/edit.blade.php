@@ -367,10 +367,11 @@
 @push('script')
 <script>
     $(document).ready(function() {
-        $('#job_id').on('change', function() {
+        $(document).ready(function() {
+           $('#job_id').on('change', function() {
             var selectedOption = $(this).find('option:selected');
-            var jobName = selectedOption.text();
-            if (jobName == 'Driver') {
+            var jobName = selectedOption.text().toLowerCase();
+            if (jobName.includes('driver')) { 
                 $('#driver-fields').show();
             } else {
                 $('#driver-fields').hide();

@@ -323,15 +323,15 @@
 @push('script')
 <script>
 $(document).ready(function() {
-    $('#job_id').on('change', function() {
-        var selectedOption = $(this).find('option:selected');
-        var jobName = selectedOption.text();
-        if (jobName == 'Driver') {
-            $('#driver-fields').show();
-        } else {
-            $('#driver-fields').hide();
-        }
-    });
+   $('#job_id').on('change', function() {
+    var selectedOption = $(this).find('option:selected');
+    var jobName = selectedOption.text().toLowerCase(); // Convert to lowercase
+    if (jobName.includes('driver')) { // Check if the string contains 'driver'
+        $('#driver-fields').show();
+    } else {
+        $('#driver-fields').hide();
+    }
+});
 
     function handleFilePreview(input, previewId) {
         $(input).on('change', function(event) {
