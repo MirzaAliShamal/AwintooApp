@@ -84,7 +84,7 @@ class ClientController extends Controller
 
     public function store(Request $request) 
     {
-       $validator = Validator::make($request->all(), [
+        $rules = [
             'full_name' => 'required|string|max:255',
             'father_name' => 'required|string|max:255',
             'mother_name' => 'required|string|max:255',
@@ -94,60 +94,106 @@ class ClientController extends Controller
             'issue_date' => 'required|date',
             'expiry_date' => 'required|date',
             'id_expiry_date' => 'required|date',
-            'id_number' => 'required|integer|unique:clients',
+            'id_number' => 'required|string|unique:clients',
             'phone_number' => 'required|string|max:15',
             'email' => 'required|string|email|max:255|unique:clients',
-            'password' => 'required|string',
             'school_level' => 'required|string|max:255',
             'job_id' => 'required|exists:jobs,id',
             'police_certificate_issue_date' => 'nullable|date',
             'user_id' => 'required|exists:users,id',
-            'photo' => 'required|mimes:jpeg,jpg,pdf|max:2048',
-            'id_front' => 'required|mimes:jpeg,jpg,pdf|max:2048',
-            'id_back' => 'required|mimes:jpeg,jpg,pdf|max:2048',
+            'photo' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'id_front' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'id_back' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
             'license_front' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
             'license_back' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
-            'job_application_sign' => 'required|mimes:jpeg,jpg,pdf|max:2048',
-            'passport_copy' => 'required|mimes:jpeg,jpg,pdf|max:2048',
-            'police_certificate' => 'required|mimes:jpeg,jpg,pdf|max:2048',
-            'school_certificate' => 'required|mimes:jpeg,jpg,pdf|max:2048',
-            'bank_certificate' => 'required|mimes:jpeg,jpg,pdf|max:2048',
-            'application_date' => 'required|date',
-        ]);
+            'job_application_sign' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'passport_copy' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'police_certificate' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'school_certificate' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'bank_certificate' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'application_date' => 'nullable|date',
+        ];
+        $authenticatedUser = auth()->user();
 
+        if ($authenticatedUser->role == 1) { 
+            $rules['password'] = 'required|string';
+        } elseif ($authenticatedUser->role == 2) {
+            $rules['password'] = 'nullable|string';
+        }
+        $validator = Validator::make($request->all(), $rules);
         if ($validator->passes()) {
-            $authenticatedUser = auth()->user();
-
             if ($authenticatedUser->id == $request->user_id) {
                 $clientData = $request->all();
                 $clientData['user_id'] = $authenticatedUser->id;
                 $clientData['password'] = Hash::make($request->password);
+                if(!empty($request->photo)) {
+                    $clientData['photo'] = fileUploader($request->photo, getFilePath('clientPhoto'), getFileSize('clientPhoto'));
+                }
+                if(!empty($request->id_front)) {
+                    $clientData['id_front'] = fileUploader($request->id_front, getFilePath('id_front'), getFileSize('id_front'));
+                }
+                if(!empty($request->id_back)) {
+                    $clientData['id_back'] = fileUploader($request->id_back, getFilePath('id_back'), getFileSize('id_back'));
+                }
+                if(!empty($request->license_front)) {
+                    $clientData['license_front'] = fileUploader($request->license_front, getFilePath('license_front'), getFileSize('license_front'));
+                }
+                if(!empty($request->license_back)) {
+                    $clientData['license_back'] = fileUploader($request->license_back, getFilePath('license_back'), getFileSize('license_back'));
+                }
+                if(!empty($request->job_application_sign)) {
+                    $clientData['job_application_sign'] = fileUploader($request->job_application_sign, getFilePath('job_application_sign'));
+                }
+                if(!empty($request->passport_copy)) {
+                    $clientData['passport_copy'] = fileUploader($request->passport_copy, getFilePath('passport_copy'), getFileSize('passport_copy'));
+                }
+                if(!empty($request->police_certificate)) {
+                    $clientData['police_certificate'] = fileUploader($request->police_certificate, getFilePath('police_certificate'), getFileSize('police_certificate'));
+                }
 
-                $clientData['photo'] = fileUploader($request->photo, getFilePath('clientPhoto'), getFileSize('clientPhoto'));
-                $clientData['id_front'] = fileUploader($request->id_front, getFilePath('id_front'), getFileSize('id_front'));
-                $clientData['id_back'] = fileUploader($request->id_back, getFilePath('id_back'), getFileSize('id_back'));
-                $clientData['license_front'] = fileUploader($request->license_front, getFilePath('license_front'), getFileSize('license_front'));
-                $clientData['job_application_sign'] = fileUploader($request->job_application_sign, getFilePath('job_application_sign'));
-                $clientData['passport_copy'] = fileUploader($request->passport_copy, getFilePath('passport_copy'), getFileSize('passport_copy'));
-                $clientData['police_certificate'] = fileUploader($request->police_certificate, getFilePath('police_certificate'), getFileSize('police_certificate'));
-                $clientData['school_certificate'] = fileUploader($request->school_certificate, getFilePath('school_certificate'), getFileSize('school_certificate'));
-                $clientData['bank_certificate'] = fileUploader($request->bank_certificate, getFilePath('bank_certificate'), getFileSize('bank_certificate'));
+                if(!empty($request->school_certificate)) {
+                    $clientData['school_certificate'] = fileUploader($request->school_certificate, getFilePath('school_certificate'), getFileSize('school_certificate'));
+                }
+                if(!empty($request->bank_certificate)) {
+                    $clientData['bank_certificate'] = fileUploader($request->bank_certificate, getFilePath('bank_certificate'), getFileSize('bank_certificate'));
+                }
 
                 Client::create($clientData);
             } else if ($authenticatedUser->role == 1) {
                 $clientData = $request->all();
                 $clientData['password'] = Hash::make($request->password);
 
-                $clientData['photo'] = fileUploader($request->photo, getFilePath('clientPhoto'), getFileSize('clientPhoto'));
-                $clientData['id_front'] = fileUploader($request->id_front, getFilePath('id_front'), getFileSize('id_front'));
-                $clientData['id_back'] = fileUploader($request->id_back, getFilePath('id_back'), getFileSize('id_back'));
-                $clientData['license_front'] = fileUploader($request->license_front, getFilePath('license_front'), getFileSize('license_front'));
-                $clientData['license_back'] = fileUploader($request->license_back, getFilePath('license_back'), getFileSize('license_back'));
-                $clientData['job_application_sign'] = fileUploader($request->job_application_sign, getFilePath('job_application_sign'));
-                $clientData['passport_copy'] = fileUploader($request->passport_copy, getFilePath('passport_copy'), getFileSize('passport_copy'));
-                $clientData['police_certificate'] = fileUploader($request->police_certificate, getFilePath('police_certificate'), getFileSize('police_certificate'));
-                $clientData['school_certificate'] = fileUploader($request->school_certificate, getFilePath('school_certificate'), getFileSize('school_certificate'));
-                $clientData['bank_certificate'] = fileUploader($request->bank_certificate, getFilePath('bank_certificate'), getFileSize('bank_certificate'));
+                if(!empty($request->photo)) {
+                    $clientData['photo'] = fileUploader($request->photo, getFilePath('clientPhoto'), getFileSize('clientPhoto'));
+                }
+                if(!empty($request->id_front)) {
+                    $clientData['id_front'] = fileUploader($request->id_front, getFilePath('id_front'), getFileSize('id_front'));
+                }
+                if(!empty($request->id_back)) {
+                    $clientData['id_back'] = fileUploader($request->id_back, getFilePath('id_back'), getFileSize('id_back'));
+                }
+                if(!empty($request->license_front)) {
+                    $clientData['license_front'] = fileUploader($request->license_front, getFilePath('license_front'), getFileSize('license_front'));
+                }
+                if(!empty($request->license_back)) {
+                    $clientData['license_back'] = fileUploader($request->license_back, getFilePath('license_back'), getFileSize('license_back'));
+                }
+                if(!empty($request->job_application_sign)) {
+                    $clientData['job_application_sign'] = fileUploader($request->job_application_sign, getFilePath('job_application_sign'));
+                }
+                if(!empty($request->passport_copy)) {
+                    $clientData['passport_copy'] = fileUploader($request->passport_copy, getFilePath('passport_copy'), getFileSize('passport_copy'));
+                }
+                if(!empty($request->police_certificate)) {
+                    $clientData['police_certificate'] = fileUploader($request->police_certificate, getFilePath('police_certificate'), getFileSize('police_certificate'));
+                }
+
+                if(!empty($request->school_certificate)) {
+                    $clientData['school_certificate'] = fileUploader($request->school_certificate, getFilePath('school_certificate'), getFileSize('school_certificate'));
+                }
+                if(!empty($request->bank_certificate)) {
+                    $clientData['bank_certificate'] = fileUploader($request->bank_certificate, getFilePath('bank_certificate'), getFileSize('bank_certificate'));
+                }
 
                 $client = Client::create($clientData);
             } else {
@@ -219,7 +265,7 @@ class ClientController extends Controller
             'issue_date' => 'required|date',
             'expiry_date' => 'required|date',
             'id_expiry_date' => 'required|date',
-            'id_number' => 'required|integer|unique:clients,id_number,' . $client->id,
+            'id_number' => 'required|string|unique:clients,id_number,' . $client->id,
             'phone_number' => 'required|string|max:15',
             'email' => 'required|string|email|max:255|unique:clients,email,' . $client->id,
             'password' => 'nullable|string',

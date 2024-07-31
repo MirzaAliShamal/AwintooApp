@@ -61,7 +61,7 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="passport_number">Passport Number</label>
-                                        <input type="number" name="passport_number" value="{{ $client->passport_number }}" id="passport_number" class="form-control" placeholder="Passport Number">
+                                        <input type="text" name="passport_number" value="{{ $client->passport_number }}" id="passport_number" class="form-control" placeholder="Passport Number">
                                         <p></p>
                                     </div>
                                 </div>

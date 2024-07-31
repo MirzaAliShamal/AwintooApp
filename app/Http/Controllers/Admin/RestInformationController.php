@@ -97,10 +97,10 @@ class RestInformationController extends Controller
             'working_place' => 'nullable|string|max:255',
             'address_abroad' => 'nullable|string',
             'phone_abroad' => 'nullable|string',
-            'five_minutes_work_video' => 'required|mimes:zip|max:20480',
-            'legalized_police_certificate' => 'required|mimes:jpeg,jpg,pdf|max:2048',
-            'legalized_school_certificate' => 'required|mimes:jpeg,jpg,pdf|max:2048',
-            'legalized_driver_license' => 'required|mimes:jpeg,jpg,pdf|max:2048',
+            'five_minutes_work_video' => 'nullable|mimes:zip|max:20480',
+            'legalized_police_certificate' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'legalized_school_certificate' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'legalized_driver_license' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -124,11 +124,18 @@ class RestInformationController extends Controller
             ]);
         }
         $restInfoData = $request->all();
-        $restInfoData['five_minutes_work_video'] = fileUploader($request->five_minutes_work_video, getFilePath('five_minutes_work_video'));
-        $restInfoData['legalized_police_certificate'] = fileUploader($request->legalized_police_certificate, getFilePath('legalized_police_certificate'), getFileSize('legalized_police_certificate'));
-        $restInfoData['legalized_school_certificate'] = fileUploader($request->legalized_school_certificate, getFilePath('legalized_school_certificate'), getFileSize('legalized_school_certificate'));
-        $restInfoData['legalized_driver_license'] = fileUploader($request->legalized_driver_license, getFilePath('legalized_driver_license'), getFileSize('legalized_driver_license'));
-        
+        if(!empty($request->five_minutes_work_video)) {
+            $restInfoData['five_minutes_work_video'] = fileUploader($request->five_minutes_work_video, getFilePath('five_minutes_work_video'));
+        }
+        if(!empty($request->legalized_police_certificate)) {
+            $restInfoData['legalized_police_certificate'] = fileUploader($request->legalized_police_certificate, getFilePath('legalized_police_certificate'), getFileSize('legalized_police_certificate'));
+        }
+        if(!empty($request->legalized_school_certificate)) {
+            $restInfoData['legalized_school_certificate'] = fileUploader($request->legalized_school_certificate, getFilePath('legalized_school_certificate'), getFileSize('legalized_school_certificate'));
+        }
+        if(!empty($request->legalized_driver_license)) {
+            $restInfoData['legalized_driver_license'] = fileUploader($request->legalized_driver_license, getFilePath('legalized_driver_license'), getFileSize('legalized_driver_license'));
+        }
         $restInfo = RestInformation::create($restInfoData);
         return response()->json([
             'status' => true,
