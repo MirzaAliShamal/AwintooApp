@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Hash;
+use Hash, Mail;
 use App\Models\Job;
 use App\Models\User;
 use App\Models\Client;
+use App\Mail\ClientCredsMail;
 use Illuminate\Http\Request;
 use App\Imports\ClientsImport;
 use App\Http\Controllers\Controller;
@@ -30,9 +31,9 @@ class ClientController extends Controller
     {
         $query = $request->input('search');
         if ($query) {
-            $clients = Client::with('job')->where('full_name', 'like', "%$query%")->get();
+            $clients = Client::with('job', 'agent')->where('full_name', 'like', "%$query%")->get();
         } else {
-            $clients = Client::with('job')->get();
+            $clients = Client::with('job', 'agent')->get();
         }
         return response()->json([
             'status' => true,
@@ -158,7 +159,8 @@ class ClientController extends Controller
                     $clientData['bank_certificate'] = fileUploader($request->bank_certificate, getFilePath('bank_certificate'), getFileSize('bank_certificate'));
                 }
 
-                Client::create($clientData);
+                $client = Client::create($clientData);
+                Mail::to($client->email)->send(new ClientCredsMail($client, $request->password));
             } else if ($authenticatedUser->role == 1) {
                 $clientData = $request->all();
                 $clientData['password'] = Hash::make($request->password);
@@ -196,6 +198,7 @@ class ClientController extends Controller
                 }
 
                 $client = Client::create($clientData);
+                Mail::to($client->email)->send(new ClientCredsMail($client, $request->password));
             } else {
                 return response()->json([
                     'status' => false,
@@ -222,29 +225,58 @@ class ClientController extends Controller
         $jobs = Job::get();
         $agents = User::where('role', 2)->get();
         $user = auth()->user();
-        if($user->role == 1) {
-            $client = Client::find($id);
-        } else {
-            return redirect()->route('admin.client.index');
-        }
+        $client = Client::find($id);
+       
         if (empty($client)) {
             return redirect()->route('admin.client.index');
         }
-        $fileTypes = [
-            'photo' => $client->photo ? strtolower(pathinfo($client->photo, PATHINFO_EXTENSION)) : null,
-            'id_front' => $client->id_front ? strtolower(pathinfo($client->id_front, PATHINFO_EXTENSION)) : null,
-            'id_back' => $client->id_back ? strtolower(pathinfo($client->id_back, PATHINFO_EXTENSION)) : null,
-            'license_front' => $client->license_front ? strtolower(pathinfo($client->license_front, PATHINFO_EXTENSION)) : null,
-            'license_back' => $client->license_back ? strtolower(pathinfo($client->license_back, PATHINFO_EXTENSION)) : null,
-            'job_application_sign' => $client->job_application_sign ? strtolower(pathinfo($client->job_application_sign, PATHINFO_EXTENSION)) : null,
-            'passport_copy' => $client->passport_copy ? strtolower(pathinfo($client->passport_copy, PATHINFO_EXTENSION)) : null,
-            'police_certificate' => $client->police_certificate ? strtolower(pathinfo($client->police_certificate, PATHINFO_EXTENSION)) : null,
-            'school_certificate' => $client->school_certificate ? strtolower(pathinfo($client->school_certificate, PATHINFO_EXTENSION)) : null,
-            'bank_certificate' => $client->bank_certificate ? strtolower(pathinfo($client->bank_certificate, PATHINFO_EXTENSION)) : null,
-        ];
-        return view('admin.client.edit', compact('pageTitle', 'client', 'jobs', 'agents', 'fileTypes'));
+        
+        if ($user->role == 2 && $client->user_id != $user->id) {
+            return redirect()->route('admin.client.index')->with('error', 'Unauthorized to edit this client.');
+        }
+        if($user->role == 2) {
+            $jobNameContainsDriver = preg_match('/\bdriver\b/i', $client->job->job_name);
+            
+            if (empty($client->photo) || empty($client->id_front) || empty($client->id_back) || 
+                empty($client->job_application_sign) || empty($client->passport_copy) || 
+                empty($client->police_certificate) || empty($client->school_certificate) || 
+                empty($client->bank_certificate) || 
+                ($jobNameContainsDriver && (empty($client->license_front) || empty($client->license_back)))) {
+            
+                $fileTypes = [
+                    'photo' => $client->photo ? strtolower(pathinfo($client->photo, PATHINFO_EXTENSION)) : null,
+                    'id_front' => $client->id_front ? strtolower(pathinfo($client->id_front, PATHINFO_EXTENSION)) : null,
+                    'id_back' => $client->id_back ? strtolower(pathinfo($client->id_back, PATHINFO_EXTENSION)) : null,
+                    'license_front' => $client->license_front ? strtolower(pathinfo($client->license_front, PATHINFO_EXTENSION)) : null,
+                    'license_back' => $client->license_back ? strtolower(pathinfo($client->license_back, PATHINFO_EXTENSION)) : null,
+                    'job_application_sign' => $client->job_application_sign ? strtolower(pathinfo($client->job_application_sign, PATHINFO_EXTENSION)) : null,
+                    'passport_copy' => $client->passport_copy ? strtolower(pathinfo($client->passport_copy, PATHINFO_EXTENSION)) : null,
+                    'police_certificate' => $client->police_certificate ? strtolower(pathinfo($client->police_certificate, PATHINFO_EXTENSION)) : null,
+                    'school_certificate' => $client->school_certificate ? strtolower(pathinfo($client->school_certificate, PATHINFO_EXTENSION)) : null,
+                    'bank_certificate' => $client->bank_certificate ? strtolower(pathinfo($client->bank_certificate, PATHINFO_EXTENSION)) : null,
+                ];
+            
+                return view('admin.client.edit', compact('pageTitle', 'client', 'jobs', 'agents', 'fileTypes'));
+            } else {
+                return redirect()->route('admin.client.index')->with('error', 'Client documents are incomplete.');
+            }
+        } else {
+            $fileTypes = [
+                'photo' => $client->photo ? strtolower(pathinfo($client->photo, PATHINFO_EXTENSION)) : null,
+                'id_front' => $client->id_front ? strtolower(pathinfo($client->id_front, PATHINFO_EXTENSION)) : null,
+                'id_back' => $client->id_back ? strtolower(pathinfo($client->id_back, PATHINFO_EXTENSION)) : null,
+                'license_front' => $client->license_front ? strtolower(pathinfo($client->license_front, PATHINFO_EXTENSION)) : null,
+                'license_back' => $client->license_back ? strtolower(pathinfo($client->license_back, PATHINFO_EXTENSION)) : null,
+                'job_application_sign' => $client->job_application_sign ? strtolower(pathinfo($client->job_application_sign, PATHINFO_EXTENSION)) : null,
+                'passport_copy' => $client->passport_copy ? strtolower(pathinfo($client->passport_copy, PATHINFO_EXTENSION)) : null,
+                'police_certificate' => $client->police_certificate ? strtolower(pathinfo($client->police_certificate, PATHINFO_EXTENSION)) : null,
+                'school_certificate' => $client->school_certificate ? strtolower(pathinfo($client->school_certificate, PATHINFO_EXTENSION)) : null,
+                'bank_certificate' => $client->bank_certificate ? strtolower(pathinfo($client->bank_certificate, PATHINFO_EXTENSION)) : null,
+            ];
+        
+            return view('admin.client.edit', compact('pageTitle', 'client', 'jobs', 'agents', 'fileTypes'));
+        }
     }
-
 
     public function update(Request $request, $id) 
     {
@@ -414,48 +446,97 @@ class ClientController extends Controller
                 'message' => 'Client not found.'
             ]);
         }
-        if($user->role == 2) {
+        if ($user->role == 2 && $client->user_id != $user->id) {
             return response()->json([
                 'status' => false,
                 'message' => 'Unauthorized.'
             ]);
         }
-        $paths = [
-            'photo' => 'clientPhoto',
-            'id_front' => 'idFront',
-            'id_back' => 'idBack',
-            'license_front' => 'licenseFront',
-            'license_back' => 'licenseBack',
-            'job_application_sign' => 'job_application_sign',
-            'passport_copy' => 'passport_copy',
-            'police_certificate' => 'police_certificate',
-            'school_certificate' => 'school_certificate',
-            'bank_certificate' => 'bank_certificate',
-        ];
+        if($user->role == 2) {
+            $jobNameContainsDriver = preg_match('/\bdriver\b/i', $client->job->job_name);
+            
+            if (empty($client->photo) || empty($client->id_front) || empty($client->id_back) || 
+                empty($client->job_application_sign) || empty($client->passport_copy) || 
+                empty($client->police_certificate) || empty($client->school_certificate) || 
+                empty($client->bank_certificate) || 
+                ($jobNameContainsDriver && (empty($client->license_front) || empty($client->license_back)))) {
 
-        foreach ($paths as $attribute => $folder) {
-            if ($client->{$attribute}) {
-                $photoPath = public_path("assets/admin/clientDocs/images/{$folder}/" . $client->{$attribute});
-                if (file_exists($photoPath)) {
-                    unlink($photoPath);
+            $paths = [
+                'photo' => 'clientPhoto',
+                'id_front' => 'idFront',
+                'id_back' => 'idBack',
+                'license_front' => 'licenseFront',
+                'license_back' => 'licenseBack',
+                'job_application_sign' => 'job_application_sign',
+                'passport_copy' => 'passport_copy',
+                'police_certificate' => 'police_certificate',
+                'school_certificate' => 'school_certificate',
+                'bank_certificate' => 'bank_certificate',
+            ];
+
+            foreach ($paths as $attribute => $folder) {
+                if ($client->{$attribute}) {
+                    $photoPath = public_path("assets/admin/clientDocs/images/{$folder}/" . $client->{$attribute});
+                    if (file_exists($photoPath)) {
+                        unlink($photoPath);
+                    }
                 }
             }
-        }
-        foreach ($paths as $attribute => $folder) {
-            if ($client->{$attribute}) {
-                $photoPath = public_path("assets/admin/clientDocs/{$folder}/" . $client->{$attribute});
-                if (file_exists($photoPath)) {
-                    unlink($photoPath);
+            foreach ($paths as $attribute => $folder) {
+                if ($client->{$attribute}) {
+                    $photoPath = public_path("assets/admin/clientDocs/{$folder}/" . $client->{$attribute});
+                    if (file_exists($photoPath)) {
+                        unlink($photoPath);
+                    }
                 }
             }
+            $client->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'Client deleted successfully.'
+            ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Unauthorized.'
+                ]);
+            }
+        } else {
+            $paths = [
+                'photo' => 'clientPhoto',
+                'id_front' => 'idFront',
+                'id_back' => 'idBack',
+                'license_front' => 'licenseFront',
+                'license_back' => 'licenseBack',
+                'job_application_sign' => 'job_application_sign',
+                'passport_copy' => 'passport_copy',
+                'police_certificate' => 'police_certificate',
+                'school_certificate' => 'school_certificate',
+                'bank_certificate' => 'bank_certificate',
+            ];
+
+            foreach ($paths as $attribute => $folder) {
+                if ($client->{$attribute}) {
+                    $photoPath = public_path("assets/admin/clientDocs/images/{$folder}/" . $client->{$attribute});
+                    if (file_exists($photoPath)) {
+                        unlink($photoPath);
+                    }
+                }
+            }
+            foreach ($paths as $attribute => $folder) {
+                if ($client->{$attribute}) {
+                    $photoPath = public_path("assets/admin/clientDocs/{$folder}/" . $client->{$attribute});
+                    if (file_exists($photoPath)) {
+                        unlink($photoPath);
+                    }
+                }
+            }
+            $client->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'Client deleted successfully.'
+            ]);
         }
-
-        $client->delete();
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Client deleted successfully.'
-        ]);
     }
 
 }

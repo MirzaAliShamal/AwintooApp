@@ -66,7 +66,7 @@
             <div class="small-box bg-dark">
               <div class="inner">
                 <h3>{{ $totalPayments }}</h3>
-                <p>Payemnt</p>
+                <p>Payment</p>
               </div>
               <div class="icon">
                <i class="text-muted fas fa-dollar-sign"></i>

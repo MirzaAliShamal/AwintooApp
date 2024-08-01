@@ -85,8 +85,8 @@ class RestInformationController extends Controller
             'spouse_name' => 'required|string',
             'english_characters_living_address' => 'required|string',
             'vietnam_living_address' => 'required|string',
-            'driver_licence_issue_date' => 'required|date',
-            'driver_license_expiry_date' => 'required|date',
+            'driver_licence_issue_date' => 'nullable|date',
+            'driver_license_expiry_date' => 'nullable|date',
             'police_certificate_expiry_date' => 'required|date',
             'visa_application_number' => 'nullable|numeric',
             'interview_date' => 'nullable|date',
@@ -148,22 +148,49 @@ class RestInformationController extends Controller
     {
         $restInfo = RestInformation::find($id);
         $user = Auth::user();
+        
         if (empty($restInfo)) {
             return redirect()->route('admin.info.index')->with('error', 'Rest Info not found.');
         }
+        
         $client = Client::find($restInfo->client_id);
-        if ($user->role == 2) {
+       
+        if ($user->role == 2 && $client->user_id != $user->id) {
             return redirect()->route('admin.info.index')->with('error', 'Unauthorized to edit this rest information.');
         }
-        $fileTypes = [
-                'legalized_police_certificate' => $restInfo->legalized_police_certificate ? strtolower(pathinfo($restInfo->legalized_police_certificate, PATHINFO_EXTENSION)) : null,
-                'legalized_school_certificate' => $restInfo->legalized_school_certificate ? strtolower(pathinfo($restInfo->legalized_school_certificate, PATHINFO_EXTENSION)) : null,
-                'legalized_driver_license' => $restInfo->legalized_driver_license ? strtolower(pathinfo($restInfo->legalized_driver_license, PATHINFO_EXTENSION)) : null,
-            ];
-        $clients = Client::get();
-        $pageTitle = "Edit Rest Information";
-        return view('admin.info.edit', compact('restInfo', 'pageTitle', 'clients', 'fileTypes'));
+        if($user->role == 2) {
+            if (empty($restInfo->five_minutes_work_video) || 
+                empty($restInfo->legalized_police_certificate) || 
+                empty($restInfo->legalized_school_certificate) || 
+                empty($restInfo->legalized_driver_license)) {
+                
+                $fileTypes = [
+                    'legalized_police_certificate' => $restInfo->legalized_police_certificate ? strtolower(pathinfo($restInfo->legalized_police_certificate, PATHINFO_EXTENSION)) : null,
+                    'legalized_school_certificate' => $restInfo->legalized_school_certificate ? strtolower(pathinfo($restInfo->legalized_school_certificate, PATHINFO_EXTENSION)) : null,
+                    'legalized_driver_license' => $restInfo->legalized_driver_license ? strtolower(pathinfo($restInfo->legalized_driver_license, PATHINFO_EXTENSION)) : null,
+                ];
+                
+                $clients = Client::get();
+                $pageTitle = "Edit Rest Information";
+                
+                return view('admin.info.edit', compact('restInfo', 'pageTitle', 'clients', 'fileTypes'));
+            } else {
+                return redirect()->route('admin.info.index')->with('error', 'No editable fields are available.');
+            }
+        } else {
+            $fileTypes = [
+                    'legalized_police_certificate' => $restInfo->legalized_police_certificate ? strtolower(pathinfo($restInfo->legalized_police_certificate, PATHINFO_EXTENSION)) : null,
+                    'legalized_school_certificate' => $restInfo->legalized_school_certificate ? strtolower(pathinfo($restInfo->legalized_school_certificate, PATHINFO_EXTENSION)) : null,
+                    'legalized_driver_license' => $restInfo->legalized_driver_license ? strtolower(pathinfo($restInfo->legalized_driver_license, PATHINFO_EXTENSION)) : null,
+                ];
+                
+                $clients = Client::get();
+                $pageTitle = "Edit Rest Information";
+                
+                return view('admin.info.edit', compact('restInfo', 'pageTitle', 'clients', 'fileTypes'));
+        }
     }
+
 
     public function update(Request $request, $id) 
     {
@@ -176,12 +203,12 @@ class RestInformationController extends Controller
             ]);
         }
         $client = Client::findOrFail($request->client_id);
-        if ($user->role == 2 && $client->user_id != $user->id) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Unauthorized to update this rest information.'
-            ]);
-        }
+        // if ($user->role == 2 && $client->user_id != $user->id) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Unauthorized to update this rest information.'
+        //     ]);
+        // }
         $validator = Validator::make($request->all(), [
             'client_id' => 'required|exists:clients,id',
             'body_size' => 'required|string|max:255',
@@ -194,8 +221,8 @@ class RestInformationController extends Controller
             'spouse_name' => 'required|string',
             'english_characters_living_address' => 'required|string',
             'vietnam_living_address' => 'required|string',
-            'driver_licence_issue_date' => 'required|date',
-            'driver_license_expiry_date' => 'required|date',
+            'driver_licence_issue_date' => 'nullable|date',
+            'driver_license_expiry_date' => 'nullable|date',
             'police_certificate_expiry_date' => 'required|date',
             'visa_application_number' => 'nullable|numeric',
             'interview_date' => 'nullable|date',
@@ -261,30 +288,63 @@ class RestInformationController extends Controller
         }
         $client = Client::find($restInfo->client_id);
         $user = Auth::user();
-        if ($user->role == 2) {
+
+        if ($user->role == 2 && $client->user_id != $user->id) {
             return response()->json([
                 'status' => false,
                 'message' => 'Unauthorized to delete this rest information.'
             ]);
         }
-        $paths = [
-            'five_minutes_work_video' => 'five_minutes_work_video',
-            'legalized_police_certificate' => 'legalized_police_certificate',
-            'legalized_school_certificate' => 'legalized_school_certificate',
-            'legalized_driver_license' => 'legalized_driver_license',
-        ];
-        foreach ($paths as $attribute => $folder) {
-            if ($restInfo->{$attribute}) {
-                $photoPath = public_path("assets/admin/clientDocs/clientRestInfo/{$folder}/" . $restInfo->{$attribute});
-                if (file_exists($photoPath)) {
-                    unlink($photoPath);
+        if($user->role == 2) {
+            if (empty($restInfo->five_minutes_work_video) || 
+                empty($restInfo->legalized_police_certificate) || 
+                empty($restInfo->legalized_school_certificate) || 
+                empty($restInfo->legalized_driver_license)) {
+                $paths = [
+                    'five_minutes_work_video' => 'five_minutes_work_video',
+                    'legalized_police_certificate' => 'legalized_police_certificate',
+                    'legalized_school_certificate' => 'legalized_school_certificate',
+                    'legalized_driver_license' => 'legalized_driver_license',
+                ];
+                foreach ($paths as $attribute => $folder) {
+                    if ($restInfo->{$attribute}) {
+                        $photoPath = public_path("assets/admin/clientDocs/clientRestInfo/{$folder}/" . $restInfo->{$attribute});
+                        if (file_exists($photoPath)) {
+                            unlink($photoPath);
+                        }
+                    }
                 }
+                $restInfo->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Rest Information deleted successfully.'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Unauthorized to delete this rest information.'
+                ]);
             }
+        } else {
+            $paths = [
+                    'five_minutes_work_video' => 'five_minutes_work_video',
+                    'legalized_police_certificate' => 'legalized_police_certificate',
+                    'legalized_school_certificate' => 'legalized_school_certificate',
+                    'legalized_driver_license' => 'legalized_driver_license',
+                ];
+                foreach ($paths as $attribute => $folder) {
+                    if ($restInfo->{$attribute}) {
+                        $photoPath = public_path("assets/admin/clientDocs/clientRestInfo/{$folder}/" . $restInfo->{$attribute});
+                        if (file_exists($photoPath)) {
+                            unlink($photoPath);
+                        }
+                    }
+                }
+                $restInfo->delete();
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Rest Information deleted successfully.'
+                ]);
         }
-        $restInfo->delete();
-        return response()->json([
-            'status' => true,
-            'message' => 'Rest Information deleted successfully.'
-        ]);
     }
 }

@@ -21,13 +21,13 @@
     <div class="container-fluid">
     <div class="message"></div>
         <div class="card">
-            <div class="card-header">
+            {{-- <div class="card-header">
                 <div class="card-tools">
                     <div class="input-group input-group" style="width: 250px;">
                         <input type="text" name="keyword" id="keyword" class="form-control float-right" placeholder="Search">
                     </div>
                 </div>
-            </div>
+            </div> --}}
         <div class="card-body table-responsive">                                 
             <table id="datatable" class="table table-hover text-nowrap text-center">
                 <thead>
@@ -39,8 +39,8 @@
                         <th>Job</th>
                         @if(auth()->user()->role == 1)
                             <th>Agent</th>
-                        <th width="100">Action</th>
                         @endif
+                        <th width="100">Action</th>
                     </tr>
                 </thead>
                  <tbody id="client-data">
@@ -53,14 +53,30 @@
                         <td>{{ $row->job->job_name }}</td>
                         @if(auth()->user()->role == 1)
                             <td>{{ $row->agent->name }}</td>
-                        <td>
-                            <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.client.edit', $row->id) }}">
-                                <i class="fa fa-pen"></i>
-                            </a>
-                            <a href="#" data-destroy="{{ route('admin.client.destroy', $row->id) }}" class="btn btn-sm btn-outline-danger deleteAction mr-1">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </td>
+                        @endif
+                        @if((auth()->user()->role == 2))
+                        @php
+                            $jobNameContainsDriver = preg_match('/\bdriver\b/i', $row->job->job_name);
+                        @endphp
+                        @if(empty($row->photo) || empty($row->id_front) || empty($row->id_back) || empty($row->job_application_sign) || empty($row->passport_copy) || empty($row->police_certificate) || empty($row->school_certificate) || empty($row->bank_certificate) || ($jobNameContainsDriver && (empty($row->license_front) || empty($row->license_back))))
+                            <td>
+                                <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.client.edit', $row->id) }}">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                                <a href="#" data-destroy="{{ route('admin.client.destroy', $row->id) }}" class="btn btn-sm btn-outline-danger deleteAction mr-1">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        @endif
+                        @else
+                            <td>
+                                <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.client.edit', $row->id) }}">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                                <a href="#" data-destroy="{{ route('admin.client.destroy', $row->id) }}" class="btn btn-sm btn-outline-danger deleteAction mr-1">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
                         @endif
                     </tr>
                     @empty
@@ -92,6 +108,7 @@
                 success: function(response) {
                     var rows = '';
                     if (response.status) {
+
                         $.each(response.data, function(index, row) {
                             rows += '<tr>';
                             rows += '<td>' + row.id + '</td>';
@@ -99,6 +116,9 @@
                             rows += '<td>' + row.phone_number + '</td>';
                             rows += '<td>' + row.email + '</td>';
                             rows += '<td>' + row.job.job_name + '</td>';
+                            if (row.agent.role !== 2) {
+                                rows += '<td>' + row.agent.name + '</td>';
+                            }
                             rows += '<td>';
                             rows += '<a class="btn btn-sm btn-outline-primary" href="' + '{{ route('admin.client.edit', ':id') }}'.replace(':id', row.id) + '"><i class="fa fa-pen"></i></a>';
                             rows += '<a href="#" data-destroy="' + '{{ route('admin.client.destroy', ':id') }}'.replace(':id', row.id) + '" class="btn btn-sm btn-outline-danger deleteAction ml-1"><i class="fa fa-trash"></i></a>';

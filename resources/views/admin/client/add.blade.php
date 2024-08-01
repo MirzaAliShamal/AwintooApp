@@ -325,8 +325,8 @@
 $(document).ready(function() {
    $('#job_id').on('change', function() {
     var selectedOption = $(this).find('option:selected');
-    var jobName = selectedOption.text().toLowerCase(); // Convert to lowercase
-    if (jobName.includes('driver')) { // Check if the string contains 'driver'
+    var jobName = selectedOption.text().toLowerCase(); 
+    if (jobName.includes('driver')) { 
         $('#driver-fields').show();
     } else {
         $('#driver-fields').hide();

@@ -232,7 +232,7 @@
                                     </div>
                                 </div>
                                 <div id="driver-fields" class="row" style="display: none;">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="mb-3 row">
                                             <div class="col-md-6">
                                                 <label for="license_front">Driver License Front</label>
@@ -248,7 +248,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="mb-3 row">
                                             <div class="col-md-6">
                                                 <label for="license_back">Driver License Back</label>
@@ -367,8 +367,7 @@
 @push('script')
 <script>
     $(document).ready(function() {
-        $(document).ready(function() {
-           $('#job_id').on('change', function() {
+        $('#job_id').on('change', function() {
             var selectedOption = $(this).find('option:selected');
             var jobName = selectedOption.text().toLowerCase();
             if (jobName.includes('driver')) { 

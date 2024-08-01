@@ -27,9 +27,7 @@
                     <tr>
                         <th>Client Name</th>
                         <th>Body Size</th>
-                        @if(auth()->user()->role == 1)
-                            <th width="100">Action</th>
-                        @endif
+                        <th width="100">Action</th>
                     </tr>
                 </thead>
                  <tbody>
@@ -37,15 +35,26 @@
                     <tr>
                         <td>{{ $row->client->full_name }}</td>
                         <td>{{ $row->body_size }}</td>
-                        @if(auth()->user()->role == 1)
-                        <td>
-                            <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.info.edit', $row->id) }}">
-                                <i class="fa fa-pen"></i>
-                            </a>
-                            <a href="#" data-destroy="{{ route('admin.info.destroy', $row->id) }}" class="btn btn-sm btn-outline-danger deleteAction mr-1">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </td>
+                        @if((auth()->user()->role == 2))
+                        @if(empty($row->five_minutes_work_video) || empty($row->legalized_police_certificate) || empty($row->legalized_school_certificate) || empty($row->legalized_driver_license))
+                            <td>
+                                <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.info.edit', $row->id) }}">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                                <a href="#" data-destroy="{{ route('admin.info.destroy', $row->id) }}" class="btn btn-sm btn-outline-danger deleteAction mr-1">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        @endif
+                        @else
+                            <td>
+                                <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.info.edit', $row->id) }}">
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                                <a href="#" data-destroy="{{ route('admin.info.destroy', $row->id) }}" class="btn btn-sm btn-outline-danger deleteAction mr-1">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
                         @endif
                     </tr>
                     @empty

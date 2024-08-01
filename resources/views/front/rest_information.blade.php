@@ -37,9 +37,9 @@
             </tr>
             <tr>
                 <th>Driver Licence Issue Date</th>
-                <td>{{ Carbon\Carbon::parse($client->restInfo->driver_licence_issue_date)->format('d-m-Y') }}</td>
+                <td>{{ $client->restInfo->driver_licence_issue_date ? Carbon\Carbon::parse($client->restInfo->driver_licence_issue_date)->format('d-m-Y') : '' }}</td>
                 <th>Driver License Expiry Date</th>
-                <td>{{ Carbon\Carbon::parse($client->restInfo->driver_license_expiry_date)->format('d-m-Y') }}</td>
+                <td>{{ $client->restInfo->driver_license_expiry_date ? Carbon\Carbon::parse($client->restInfo->driver_license_expiry_date)->format('d-m-Y') : '' }}</td>
             </tr>
             <tr>
                 <th colspan="4">Police Certificate & Visa Application</th>
