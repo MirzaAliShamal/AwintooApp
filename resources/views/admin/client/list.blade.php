@@ -8,11 +8,11 @@
             </div>
             <div class="col-sm-6 d-flex align-items-center justify-content-end">
                 <a href="{{ route('admin.client.create') }}" class="btn btn-outline-dark">Add Client</a>
-               {{--  <form class="saveForm ml-2" data-storeURL="{{ route('admin.info.import') }}" enctype="multipart/form-data">
+               <form class="saveForm ml-2" data-storeURL="{{ route('admin.client.import') }}" enctype="multipart/form-data">
                     <input type="file" name="file" class="form-control" />
                     <p></p>
                     <button type="submit" class="btn btn-outline-dark">Import</button>
-                </form> --}}
+                </form>
             </div>
         </div>
     </div>
@@ -46,7 +46,7 @@
                  <tbody id="client-data">
                     @forelse($data as $row)
                     <tr>
-                        <td>{{ $row->id }}</td>
+                        <td>{{ $row->client_id_number }}</td>
                         <td>{{ $row->full_name }}</td>
                         <td>{{ $row->phone_number }}</td>
                         <td>{{ $row->email }}</td>
@@ -81,7 +81,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5">Record not found.</td>
+                        <td colspan="7">Record not found.</td>
                     </tr>
                     @endforelse
                 </tbody>

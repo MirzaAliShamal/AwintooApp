@@ -212,63 +212,153 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <div class="mb-3">
-                                            <label for="five_minutes_work_video">Video at least 5 minutes on working (Zip File Compressed)</label>
+                                    <div class="mb-3 row">
+                                        <!-- For Admins -->
+                                        <label for="five_minutes_work_video">Video at least 5 minutes on working (Zip File Compressed)</label>
+                                        @if (auth()->user()->role == 1)
+                                        <div class="col-md-6">
+                                           
                                             <input type="file" name="five_minutes_work_video" id="five_minutes_work_video" class="form-control">
                                             <p></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            @if (isset($restInfo->five_minutes_work_video) && !empty($restInfo->five_minutes_work_video))
+                                            <p>File: {{ $restInfo->five_minutes_work_video }}</p>
+                                            @else
+                                            <p>No file uploaded</p>
+                                            @endif
+                                        </div>
+                                        @else
+                                        <!-- For Users -->
+                                        <div class="col-md-6">
+                                            @if (isset($restInfo->five_minutes_work_video) && !empty($restInfo->five_minutes_work_video))
+                                            <p>File: {{ $restInfo->five_minutes_work_video }}</p>
+                                            @else
+                                            
+                                            <input type="file" name="five_minutes_work_video" id="five_minutes_work_video" class="form-control">
+                                            @endif
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
 
                                 <div class="col-md-12">
                                     <div class="mb-3 row">
+                                        <!-- For Admins -->
+                                           <label for="legalized_police_certificate">Foreign Ministry Legalized Police Certificate</label>
+                                        @if (auth()->user()->role == 1)
                                         <div class="col-md-6">
-                                            <label for="legalized_police_certificate">Foreign Ministry Legalized Police Certificate</label>
+                                           
                                             <input type="file" name="legalized_police_certificate" id="legalized_police_certificate" class="form-control">
                                             <p></p>
                                         </div>
                                         <div class="col-md-6">
-                                            @if (isset($restInfo->legalized_police_certificate) && !empty($restInfo->legalized_police_certificate) && $fileTypes['legalized_police_certificate'] != 'pdf')
-                                            <img id="police_certificate_photo" src="{{ getImage(getFilePath('legalized_police_certificate') . '/' . $restInfo->legalized_police_certificate) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            @if (isset($restInfo->legalized_police_certificate) && !empty($restInfo->legalized_police_certificate))
+                                            @if ($fileTypes['legalized_police_certificate'] == 'pdf')
+                                            <p>File: {{ $restInfo->legalized_police_certificate }}</p>
                                             @else
-                                            <img id="police_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                            <img id="legalized_police_certificate_photo" src="{{ getImage(getFilePath('legalized_police_certificate') . '/' . $restInfo->legalized_police_certificate) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            @endif
+                                            @else
+                                            <img id="legalized_police_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
                                             @endif
                                         </div>
+                                        @else
+                                        <!-- For Users -->
+                                        <div class="col-md-6">
+                                            @if (isset($restInfo->legalized_police_certificate) && !empty($restInfo->legalized_police_certificate))
+                                            @if ($fileTypes['legalized_police_certificate'] == 'pdf')
+                                            <p>File: {{ $restInfo->legalized_police_certificate }}</p>
+                                            @else
+                                            <img id="legalized_police_certificate_photo" src="{{ getImage(getFilePath('legalized_police_certificate') . '/' . $restInfo->legalized_police_certificate) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            @endif
+                                            @else
+                                         
+                                            <input type="file" name="legalized_police_certificate" id="legalized_police_certificate" class="form-control">
+                                            @endif
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
 
+
                                 <div class="col-md-12">
                                     <div class="mb-3 row">
+                                        <!-- For Admins -->
+                                         <label for="legalized_school_certificate">Foreign Ministry Legalized School Certificate</label>
+                                        @if (auth()->user()->role == 1)
                                         <div class="col-md-6">
-                                            <label for="legalized_school_certificate">Foreign Ministry Legalized School Certificate</label>
+                                            
                                             <input type="file" name="legalized_school_certificate" id="legalized_school_certificate" class="form-control">
                                             <p></p>
                                         </div>
                                         <div class="col-md-6">
-                                            @if (isset($restInfo->legalized_school_certificate) && !empty($restInfo->legalized_school_certificate) && $fileTypes['legalized_school_certificate'] != 'pdf')
-                                            <img id="school_certificate_photo" src="{{ getImage(getFilePath('legalized_school_certificate') . '/' . $restInfo->legalized_school_certificate) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            @if (isset($restInfo->legalized_school_certificate) && !empty($restInfo->legalized_school_certificate))
+                                            @if ($fileTypes['legalized_school_certificate'] == 'pdf')
+                                            <p>File: {{ $restInfo->legalized_school_certificate }}</p>
                                             @else
-                                            <img id="school_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                            <img id="legalized_school_certificate_photo" src="{{ getImage(getFilePath('legalized_school_certificate') . '/' . $restInfo->legalized_school_certificate) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            @endif
+                                            @else
+                                            <img id="legalized_school_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
                                             @endif
                                         </div>
+                                        @else
+                                        <!-- For Users -->
+                                        <div class="col-md-6">
+                                            @if (isset($restInfo->legalized_school_certificate) && !empty($restInfo->legalized_school_certificate))
+                                            @if ($fileTypes['legalized_school_certificate'] == 'pdf')
+                                            <p>File: {{ $restInfo->legalized_school_certificate }}</p>
+                                            @else
+                                            <img id="legalized_school_certificate_photo" src="{{ getImage(getFilePath('legalized_school_certificate') . '/' . $restInfo->legalized_school_certificate) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            @endif
+                                            @else
+                                           
+                                            <input type="file" name="legalized_school_certificate" id="legalized_school_certificate" class="form-control">
+                                            @endif
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
-
                                 <div class="col-md-12">
                                     <div class="mb-3 row">
+                                        <!-- For Admins -->
+                                         <label for="legalized_driver_license">Foreign Ministry Legalized Driver Certificate</label>
+                                        @if (auth()->user()->role == 1)
                                         <div class="col-md-6">
-                                            <label for="legalized_driver_license">Foreign Ministry Legalized Driver Certificate</label>
+                                            
                                             <input type="file" name="legalized_driver_license" id="legalized_driver_license" class="form-control">
                                             <p></p>
                                         </div>
                                         <div class="col-md-6">
-                                            @if (isset($restInfo->legalized_driver_license) && !empty($restInfo->legalized_driver_license) && $fileTypes['legalized_driver_license'] != 'pdf')
-                                            <img id="driver_license_photo" src="{{ getImage(getFilePath('legalized_driver_license') . '/' . $restInfo->legalized_driver_license) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            @if (isset($restInfo->legalized_driver_license) && !empty($restInfo->legalized_driver_license))
+                                            @if ($fileTypes['legalized_driver_license'] == 'pdf')
+                                            <p>File: {{ $restInfo->legalized_driver_license }}</p>
                                             @else
-                                            <img id="driver_license_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                            <img id="legalized_driver_license_photo" src="{{ getImage(getFilePath('legalized_driver_license') . '/' . $restInfo->legalized_driver_license) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            @endif
+                                            @else
+                                            <img id="legalized_driver_license_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
                                             @endif
                                         </div>
+                                        @else
+                                        <!-- For Users -->
+                                        <div class="col-md-6">
+                                            @if (isset($restInfo->legalized_driver_license) && !empty($restInfo->legalized_driver_license))
+                                            @if ($fileTypes['legalized_driver_license'] == 'pdf')
+                                            <p>File: {{ $restInfo->legalized_driver_license }}</p>
+                                            @else
+                                            <img id="legalized_driver_license_photo" src="{{ getImage(getFilePath('legalized_driver_license') . '/' . $restInfo->legalized_driver_license) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            @endif
+                                            @else
+                                           
+                                            <input type="file" name="legalized_driver_license" id="legalized_driver_license" class="form-control">
+                                            @endif
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
+
                             </div>
                         </div>                                                                        
                     </div>
@@ -305,9 +395,9 @@
                 }
             });
         }
-    handleFilePreview('#legalized_police_certificate', '#police_certificate_photo');
-    handleFilePreview('#legalized_school_certificate', '#school_certificate_photo');
-    handleFilePreview('#legalized_driver_license', '#driver_license_photo');
-});
+        handleFilePreview('#legalized_police_certificate', '#police_certificate_photo');
+        handleFilePreview('#legalized_school_certificate', '#school_certificate_photo');
+        handleFilePreview('#legalized_driver_license', '#driver_license_photo');
+    });
 </script>
 @endpush

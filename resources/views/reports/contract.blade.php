@@ -90,7 +90,7 @@
                         @if (!$isPdf)
                             <form action="{{ route('admin.report.contract.print') }}" method="POST" style="display: none;" id="printForm">
                                 @csrf
-                                <input type="hidden" name="client_id" value="{{ $client->id }}">
+                                <input type="hidden" name="client_id" value="{{ $client->client_id_number }}">
                             </form>
                             <a href="#" class="btn" onclick="document.getElementById('printForm').submit();">Print</a>
                         @endif
@@ -102,7 +102,7 @@
             <p style="text-align: center;">
                 <strong>CONTRACT de formare profesională</strong>
             </p>
-            <p> Nr. M {{ $client->id }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Date: <b>{{ \Carbon\Carbon::now()->format('d-M-y') }}</b>
+            <p> Nr. M {{ $client->client_id_number }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Date: <b>{{ \Carbon\Carbon::now()->format('d-M-y') }}</b>
             </p>
             <div class="contract-section" style="margin-top: 40px;">
                 <h4>1. Părțile contractante:</h4>

@@ -42,7 +42,7 @@ class ClientsImport implements ToCollection, WithHeadingRow, WithValidation
                     'school_level' => $row['school_level'],
                     'job_id' => $row['job_id'],
                     'police_certificate_issue_date' => $policeCertIssueDate,
-                    'agent_name' => $row['agent_name'],
+                    'user_id' => $row['user_id'],
                     'application_date' => $applicationDate,
                 ]
             );
@@ -77,7 +77,7 @@ class ClientsImport implements ToCollection, WithHeadingRow, WithValidation
             'school_level' => 'string',
             'job_id' => 'exists:jobs,id',
             'police_certificate_issue_date' => 'nullable',
-            'agent_name' => 'string',
+            'user_id' => 'integer',
             'application_date' => 'nullable',
         ];
     }

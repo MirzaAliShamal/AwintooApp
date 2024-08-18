@@ -15,6 +15,20 @@ use Illuminate\Support\Facades\Validator;
 
 class ClientController extends Controller
 {
+
+    public function generateMissingClientIds()
+    {
+        $clients = Client::where('client_id_number', '')->get();
+
+        foreach ($clients as $client) {
+            $client->save();
+        }
+
+        return response()->json([
+            'message' => 'Client IDs generated successfully!',
+            'generated_count' => $clients->count(),
+        ]);
+    }
     public function index() 
     {
         $pageTitle = 'Clients';
@@ -158,7 +172,6 @@ class ClientController extends Controller
                 if(!empty($request->bank_certificate)) {
                     $clientData['bank_certificate'] = fileUploader($request->bank_certificate, getFilePath('bank_certificate'), getFileSize('bank_certificate'));
                 }
-
                 $client = Client::create($clientData);
                 Mail::to($client->email)->send(new ClientCredsMail($client, $request->password));
             } else if ($authenticatedUser->role == 1) {
@@ -196,8 +209,8 @@ class ClientController extends Controller
                 if(!empty($request->bank_certificate)) {
                     $clientData['bank_certificate'] = fileUploader($request->bank_certificate, getFilePath('bank_certificate'), getFileSize('bank_certificate'));
                 }
-
                 $client = Client::create($clientData);
+                
                 Mail::to($client->email)->send(new ClientCredsMail($client, $request->password));
             } else {
                 return response()->json([
