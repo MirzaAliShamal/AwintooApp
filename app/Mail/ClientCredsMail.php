@@ -46,14 +46,4 @@ class ClientCredsMail extends Mailable
             with: ['client' => $this->client, 'pass' => $this->password]
         );
     }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
-    }
 }

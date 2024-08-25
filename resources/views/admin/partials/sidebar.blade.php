@@ -24,7 +24,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('admin.client.index') }}" class="nav-link {{ menuActive('admin.client.index') }}">
+            <a href="{{ route('admin.client.index') }}" class="nav-link {{ menuActive('admin.client.*') }}">
               <i class="nav-icon fas fa-user-tie"></i>
               <p>
                 Client
@@ -33,7 +33,7 @@
           </li>
           @if(auth()->user()->role == 1)
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ route('admin.eavaluation.index') }}" class="nav-link {{ menuActive('admin.eavaluation.*') }}">
               <i class="nav-icon fas fa-user-check"></i> 
               <p>
                 Client Evaluation
@@ -42,7 +42,7 @@
           </li>
           @endif
           <li class="nav-item">
-            <a href="{{ route('admin.info.index') }}" class="nav-link {{ menuActive('admin.info.index') }}">
+            <a href="{{ route('admin.info.index') }}" class="nav-link {{ menuActive('admin.info.*') }}">
               <i class="nav-icon fas fa-info-circle"></i>
               <p>
                 Rest Information
@@ -50,7 +50,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('admin.payment.index') }}" class="nav-link {{ menuActive('admin.payment.index') }}">
+            <a href="{{ route('admin.payment.index') }}" class="nav-link {{ menuActive('admin.payment.*') }}">
               <i class="nav-icon fas fa-dollar-sign"></i>
               <p>
                 Payment
@@ -59,7 +59,7 @@
           </li>
           @if(auth()->user()->role == 1)
           <li class="nav-item">
-            <a href="{{ route('admin.user.index') }}" class="nav-link {{ menuActive('admin.user.index') }} {{ menuActive('admin.user.indexAdmin') }}">
+            <a href="{{ route('admin.user.index') }}" class="nav-link {{ menuActive('admin.user.*') }}">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Admin / Agent
@@ -67,7 +67,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('admin.job.index') }}" class="nav-link {{ menuActive('admin.job.index') }}">
+            <a href="{{ route('admin.job.index') }}" class="nav-link {{ menuActive('admin.job.*') }}">
               <i class="nav-icon fas fa-briefcase"></i>
               <p>
                 Job
@@ -75,14 +75,30 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('admin.report.index') }}" class="nav-link {{ menuActive('admin.report.index') }}">
+            <a href="{{ route('admin.appointment.index') }}" class="nav-link {{ menuActive('admin.appointment.*') }}">
+              <i class="nav-icon fas fa-calendar-day"></i>
+              <p>
+                Appointment
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.agency.index') }}" class="nav-link {{ menuActive('admin.agency.*') }}">
+              <i class="nav-icon fas fa-building"></i>
+              <p>
+                Agency
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.report.index') }}" class="nav-link {{ menuActive('admin.report.*') }}">
               <i class="nav-icon fas fa-file"></i>
               <p>
                 Forms
               </p>
             </a>
           </li>
-          <li class="nav-item {{ menuActive(['admin.setting.index', 'admin.setting.logo.icon'], 1) }}">
+          <li class="nav-item {{ menuActive(['admin.setting.index'], 1) }}">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cog"></i>
                 <p>Setting

@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Auth;
+use Auth, Mail;
 use App\Models\Job;
+use App\Models\User;
 use App\Models\Client;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\PDF;
 use App\Http\Controllers\Controller;
+use App\Mail\PaymentConfirmInvoiceEmail;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\PaymentRequestConfirmationMail;
 
 class PaymentController extends Controller
 {
@@ -17,12 +20,12 @@ class PaymentController extends Controller
     {
         $pageTitle = 'Payment';
         $user = Auth::user();
-        $data = Payment::all();
+        $data = Payment::orderBy('created_at', 'desc')->paginate(7);
 
         if ($user->role == 2) {
             $data = Payment::whereHas('client', function($query) use ($user) {
                 $query->where('user_id', $user->id);
-            })->get();
+            })->orderBy('created_at', 'desc')->paginate(7);
         } 
         return view('admin.payment.list', compact('pageTitle', 'data'));
     }
@@ -78,8 +81,6 @@ class PaymentController extends Controller
             'client_name' => 'required|string|max:255',
             'passport_number' => 'required|string|max:255',
             'payment' => 'required|numeric',
-            'job_id' => 'required|exists:jobs,id',
-            'price' => 'required|numeric',
             'proof_of_payment' => 'required|mimes:jpeg,jpg,pdf|max:2048',
             'after_deduction' => 'required|numeric',
         ]);
@@ -94,6 +95,8 @@ class PaymentController extends Controller
             }
             if ($authenticatedUser->role == 1) {
                 $paymentData = $request->all();
+                $paymentData['job_id'] = $client->job_id;
+                $paymentData['price'] = $client->job->price;
                 $paymentData['proof_of_payment'] = fileUploader($request->proof_of_payment, getFilePath('proof_of_payment'));
                 Payment::create($paymentData);
                 return response()->json([
@@ -104,12 +107,15 @@ class PaymentController extends Controller
             } else if ($authenticatedUser->role == 2) {
                 if ($client->user_id == $authenticatedUser->id) {
                     $paymentData = $request->all();
+                    $paymentData['job_id'] = $client->job_id;
+                    $paymentData['price'] = $client->job->price;
                     $paymentData['proof_of_payment'] = fileUploader($request->proof_of_payment, getFilePath('proof_of_payment'));
                     Payment::create($paymentData);
+                    // Mail::to(gs()->email_from)->send(new PaymentRequestConfirmationMail($client));
                     return response()->json([
                         'status' => true,
                         'redirect' => route('admin.payment.index'),
-                        'message' => 'Payment created successfully.'
+                        'message' => 'Payment created successfully and email sent successfully to admin.'
                     ]);
                 } else {
                     return response()->json([
@@ -170,8 +176,6 @@ class PaymentController extends Controller
             'client_name' => 'required|string|max:255',
             'passport_number' => 'required|string|max:255',
             'payment' => 'required|numeric',
-            'job_id' => 'required|exists:jobs,id',
-            'price' => 'required|numeric',
             'proof_of_payment' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
             'after_deduction' => 'required|numeric',
         ]);
@@ -196,6 +200,8 @@ class PaymentController extends Controller
                 $old = $payment->proof_of_payment;
                 $paymentData['proof_of_payment'] = fileUploader($request->proof_of_payment, getFilePath('proof_of_payment'), null, $old);
             }
+            $paymentData['job_id'] = $client->job_id;
+            $paymentData['price'] = $client->job->price;
             $payment->update($paymentData);
             return response()->json([
                 'status' => true,
@@ -205,6 +211,8 @@ class PaymentController extends Controller
         } else if ($user->role == 2) {
             if ($client && $client->user_id == $user->id) {
                 $paymentData = $request->all();
+                $paymentData['job_id'] = $client->job_id;
+                $paymentData['price'] = $client->job->price;
                 if(!empty($request->proof_of_payment)) {
                     $old = $payment->proof_of_payment;
                     $paymentData['proof_of_payment'] = fileUploader($request->proof_of_payment, getFilePath('proof_of_payment'), null, $old);
@@ -228,8 +236,7 @@ class PaymentController extends Controller
             ]);
         }
     }
-
-
+    
     public function destroy($id) 
     {
         $payment = Payment::find($id);
@@ -240,26 +247,43 @@ class PaymentController extends Controller
             ]);
         }
         $authenticatedUser = Auth::user();
-        if ($authenticatedUser->role == 1) {
+
+        if ($authenticatedUser->role == 1 || ($authenticatedUser->role == 2 && $payment->client && $payment->client->user_id == $authenticatedUser->id)) {
+            if ($payment->proof_of_payment) { 
+                $filePath = public_path('assets/admin/proof_of_payment/' . $payment->proof_of_payment);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
             $payment->delete();
             return response()->json([
                 'status' => true,
                 'message' => 'Payment deleted successfully.'
             ]);
-        } else if ($authenticatedUser->role == 2) {
-            $client = $payment->client;
-            if ($client && $client->user_id == $authenticatedUser->id) {
-                $payment->delete();
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Payment deleted successfully.'
-                ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Unauthorized to delete this payment.'
-                ]);
-            }
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized to delete this payment.'
+            ]);
         }
+    }
+
+    public function updateStatus($id, $status)
+    {
+        $payment = Payment::find($id);
+        if ($payment) {
+            $payment->status = $status;
+            $payment->save();
+        }
+        if($status == 'Confirmed') {
+            $agentId = $payment->client;
+            $agent = User::where('id', $agentId->user_id)->first();
+            // Mail::to($agent->email)->send(new PaymentConfirmInvoiceEmail($agent, $payment->client));
+        }
+        return response()->json([
+            'status' => true,
+            'message' => 'Status updated successfully.'
+        ]);
+        
     }
 }

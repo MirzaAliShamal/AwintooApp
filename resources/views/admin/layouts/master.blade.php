@@ -17,7 +17,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('assets/admin/css/adminlte.min.css') }}">
   <!-- Custom style -->
-  <link rel="stylesheet" href="{{ asset('assets/admin/css/custom.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/admin/css/custom.css?v=0.1') }}">
   @stack('style')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -31,7 +31,7 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('assets/admin/js/adminlte.min.js') }}"></script>
 <!-- Custom JS -->
-<script src="{{ asset('assets/admin/js/action.js') }}"></script>
+<script src="{{ asset('assets/admin/js/action.js?v=0.1') }}"></script>
 @stack('script')
 </body>
 </html>

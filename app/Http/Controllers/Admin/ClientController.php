@@ -11,32 +11,32 @@ use Illuminate\Http\Request;
 use App\Imports\ClientsImport;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Mail\ClientStatusUpdateMail;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\ClientAdditionalInformationMail;
 
 class ClientController extends Controller
 {
-
     public function generateMissingClientIds()
     {
-        $clients = Client::where('client_id_number', '')->get();
-
+        $clients = Client::where('unique_id_number', '')->get();
         foreach ($clients as $client) {
             $client->save();
         }
-
         return response()->json([
             'message' => 'Client IDs generated successfully!',
             'generated_count' => $clients->count(),
         ]);
     }
+    
     public function index() 
     {
         $pageTitle = 'Clients';
         $user = auth()->user();
         if($user->role == 1) {
-            $data = Client::with('agent')->paginate(7);
+            $data = Client::orderBy('created_at', 'desc')->with('agent')->paginate(7);
         } else {
-            $data = Client::with('agent')->where('user_id', $user->id)->paginate(7);
+            $data = Client::orderBy('created_at', 'desc')->with('agent')->where('user_id', $user->id)->paginate(7);
         }
         return view('admin.client.list', compact('pageTitle', 'data'));
     }
@@ -65,9 +65,7 @@ class ClientController extends Controller
             $file = $request->file('file');
             $fileName = time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('uploads'), $fileName);
-
             $path = public_path('uploads/'.$fileName);
-
             try {
                 Excel::import(new ClientsImport, $path);
                 return response()->json([
@@ -83,9 +81,9 @@ class ClientController extends Controller
             }
         } else {
             return response()->json([
-                    'status' => false,
-                    'errors' => $validator->errors(),
-                ]);
+                'status' => false,
+                'errors' => $validator->errors(),
+            ]);
         }
     }
 
@@ -99,7 +97,7 @@ class ClientController extends Controller
 
     public function store(Request $request) 
     {
-        $rules = [
+        $validator = Validator::make($request->all(), [
             'full_name' => 'required|string|max:255',
             'father_name' => 'required|string|max:255',
             'mother_name' => 'required|string|max:255',
@@ -127,109 +125,66 @@ class ClientController extends Controller
             'school_certificate' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
             'bank_certificate' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
             'application_date' => 'nullable|date',
-        ];
-        $authenticatedUser = auth()->user();
-
-        if ($authenticatedUser->role == 1) { 
-            $rules['password'] = 'required|string';
-        } elseif ($authenticatedUser->role == 2) {
-            $rules['password'] = 'nullable|string';
-        }
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->passes()) {
-            if ($authenticatedUser->id == $request->user_id) {
-                $clientData = $request->all();
-                $clientData['user_id'] = $authenticatedUser->id;
-                $clientData['password'] = Hash::make($request->password);
-                if(!empty($request->photo)) {
-                    $clientData['photo'] = fileUploader($request->photo, getFilePath('clientPhoto'), getFileSize('clientPhoto'));
-                }
-                if(!empty($request->id_front)) {
-                    $clientData['id_front'] = fileUploader($request->id_front, getFilePath('id_front'), getFileSize('id_front'));
-                }
-                if(!empty($request->id_back)) {
-                    $clientData['id_back'] = fileUploader($request->id_back, getFilePath('id_back'), getFileSize('id_back'));
-                }
-                if(!empty($request->license_front)) {
-                    $clientData['license_front'] = fileUploader($request->license_front, getFilePath('license_front'), getFileSize('license_front'));
-                }
-                if(!empty($request->license_back)) {
-                    $clientData['license_back'] = fileUploader($request->license_back, getFilePath('license_back'), getFileSize('license_back'));
-                }
-                if(!empty($request->job_application_sign)) {
-                    $clientData['job_application_sign'] = fileUploader($request->job_application_sign, getFilePath('job_application_sign'));
-                }
-                if(!empty($request->passport_copy)) {
-                    $clientData['passport_copy'] = fileUploader($request->passport_copy, getFilePath('passport_copy'), getFileSize('passport_copy'));
-                }
-                if(!empty($request->police_certificate)) {
-                    $clientData['police_certificate'] = fileUploader($request->police_certificate, getFilePath('police_certificate'), getFileSize('police_certificate'));
-                }
-
-                if(!empty($request->school_certificate)) {
-                    $clientData['school_certificate'] = fileUploader($request->school_certificate, getFilePath('school_certificate'), getFileSize('school_certificate'));
-                }
-                if(!empty($request->bank_certificate)) {
-                    $clientData['bank_certificate'] = fileUploader($request->bank_certificate, getFilePath('bank_certificate'), getFileSize('bank_certificate'));
-                }
-                $client = Client::create($clientData);
-                Mail::to($client->email)->send(new ClientCredsMail($client, $request->password));
-            } else if ($authenticatedUser->role == 1) {
-                $clientData = $request->all();
-                $clientData['password'] = Hash::make($request->password);
-
-                if(!empty($request->photo)) {
-                    $clientData['photo'] = fileUploader($request->photo, getFilePath('clientPhoto'), getFileSize('clientPhoto'));
-                }
-                if(!empty($request->id_front)) {
-                    $clientData['id_front'] = fileUploader($request->id_front, getFilePath('id_front'), getFileSize('id_front'));
-                }
-                if(!empty($request->id_back)) {
-                    $clientData['id_back'] = fileUploader($request->id_back, getFilePath('id_back'), getFileSize('id_back'));
-                }
-                if(!empty($request->license_front)) {
-                    $clientData['license_front'] = fileUploader($request->license_front, getFilePath('license_front'), getFileSize('license_front'));
-                }
-                if(!empty($request->license_back)) {
-                    $clientData['license_back'] = fileUploader($request->license_back, getFilePath('license_back'), getFileSize('license_back'));
-                }
-                if(!empty($request->job_application_sign)) {
-                    $clientData['job_application_sign'] = fileUploader($request->job_application_sign, getFilePath('job_application_sign'));
-                }
-                if(!empty($request->passport_copy)) {
-                    $clientData['passport_copy'] = fileUploader($request->passport_copy, getFilePath('passport_copy'), getFileSize('passport_copy'));
-                }
-                if(!empty($request->police_certificate)) {
-                    $clientData['police_certificate'] = fileUploader($request->police_certificate, getFilePath('police_certificate'), getFileSize('police_certificate'));
-                }
-
-                if(!empty($request->school_certificate)) {
-                    $clientData['school_certificate'] = fileUploader($request->school_certificate, getFilePath('school_certificate'), getFileSize('school_certificate'));
-                }
-                if(!empty($request->bank_certificate)) {
-                    $clientData['bank_certificate'] = fileUploader($request->bank_certificate, getFilePath('bank_certificate'), getFileSize('bank_certificate'));
-                }
-                $client = Client::create($clientData);
-                
-                Mail::to($client->email)->send(new ClientCredsMail($client, $request->password));
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Unauthorized to create this record',
-                ]);
-            }
-            return response()->json([
-                'status' => true,
-                'redirect' => route('admin.client.index'),
-                'message' =>  'Client created successfully.'
-            ]);
-        } else {
+        ]);
+        if ($validator->fails()) {
             return response()->json([
                 'status' => false,
                 'message' => 'Please fill the required input field',
                 'errors' => $validator->errors()
             ]);
         }
+        $authenticatedUser = auth()->user();
+        if ($authenticatedUser->id != $request->user_id && $authenticatedUser->role != 1) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized to create this record',
+            ]);
+        }
+        $clientData = $request->all();
+
+        $clientData['user_id'] = $request->user_id;
+        if ($authenticatedUser->role == 2) {
+            $clientData['user_id'] = $authenticatedUser->id;
+        }
+        $clientData['password'] = Hash::make($request->password);
+        if (!empty($request->photo)) {
+            $clientData['photo'] = fileUploader($request->photo, getFilePath('photo'), getFileSize('photo'));
+        }
+        if (!empty($request->id_front)) {
+            $clientData['id_front'] = fileUploader($request->id_front, getFilePath('id_front'), getFileSize('id_front'));
+        }
+        if (!empty($request->id_back)) {
+            $clientData['id_back'] = fileUploader($request->id_back, getFilePath('id_back'), getFileSize('id_back'));
+        }
+        if (!empty($request->license_front)) {
+            $clientData['license_front'] = fileUploader($request->license_front, getFilePath('license_front'), getFileSize('license_front'));
+        }
+        if (!empty($request->license_back)) {
+            $clientData['license_back'] = fileUploader($request->license_back, getFilePath('license_back'), getFileSize('license_back'));
+        }
+        if (!empty($request->job_application_sign)) {
+            $clientData['job_application_sign'] = fileUploader($request->job_application_sign, getFilePath('job_application_sign'));
+        }
+        if (!empty($request->passport_copy)) {
+            $clientData['passport_copy'] = fileUploader($request->passport_copy, getFilePath('passport_copy'), getFileSize('passport_copy'));
+        }
+        if (!empty($request->police_certificate)) {
+            $clientData['police_certificate'] = fileUploader($request->police_certificate, getFilePath('police_certificate'), getFileSize('police_certificate'));
+        }
+        if (!empty($request->school_certificate)) {
+            $clientData['school_certificate'] = fileUploader($request->school_certificate, getFilePath('school_certificate'), getFileSize('school_certificate'));
+        }
+        if (!empty($request->bank_certificate)) {
+            $clientData['bank_certificate'] = fileUploader($request->bank_certificate, getFilePath('bank_certificate'), getFileSize('bank_certificate'));
+        }
+        $client = Client::create($clientData);
+        // Mail::to($client->email)->send(new ClientCredsMail($client, $request->password));
+        $this->checkAndSendEmail($client, $request);
+        return response()->json([
+            'status' => true,
+            'redirect' => route('admin.client.index'),
+            'message' => 'Client created successfully.'
+        ]);
     }
 
     public function edit($id) 
@@ -239,7 +194,7 @@ class ClientController extends Controller
         $agents = User::where('role', 2)->get();
         $user = auth()->user();
         $client = Client::find($id);
-       
+
         if (empty($client)) {
             return redirect()->route('admin.client.index');
         }
@@ -255,7 +210,7 @@ class ClientController extends Controller
                 empty($client->police_certificate) || empty($client->school_certificate) || 
                 empty($client->bank_certificate) || 
                 ($jobNameContainsDriver && (empty($client->license_front) || empty($client->license_back)))) {
-            
+
                 $fileTypes = [
                     'photo' => $client->photo ? strtolower(pathinfo($client->photo, PATHINFO_EXTENSION)) : null,
                     'id_front' => $client->id_front ? strtolower(pathinfo($client->id_front, PATHINFO_EXTENSION)) : null,
@@ -268,7 +223,7 @@ class ClientController extends Controller
                     'school_certificate' => $client->school_certificate ? strtolower(pathinfo($client->school_certificate, PATHINFO_EXTENSION)) : null,
                     'bank_certificate' => $client->bank_certificate ? strtolower(pathinfo($client->bank_certificate, PATHINFO_EXTENSION)) : null,
                 ];
-            
+
                 return view('admin.client.edit', compact('pageTitle', 'client', 'jobs', 'agents', 'fileTypes'));
             } else {
                 return redirect()->route('admin.client.index')->with('error', 'Client documents are incomplete.');
@@ -286,7 +241,6 @@ class ClientController extends Controller
                 'school_certificate' => $client->school_certificate ? strtolower(pathinfo($client->school_certificate, PATHINFO_EXTENSION)) : null,
                 'bank_certificate' => $client->bank_certificate ? strtolower(pathinfo($client->bank_certificate, PATHINFO_EXTENSION)) : null,
             ];
-        
             return view('admin.client.edit', compact('pageTitle', 'client', 'jobs', 'agents', 'fileTypes'));
         }
     }
@@ -340,111 +294,44 @@ class ClientController extends Controller
             ]);
         }
         $authenticatedUser = auth()->user();
-        if ($authenticatedUser->id == $request->user_id) {
-            $clientData = $request->all();
-            $clientData['user_id'] = $authenticatedUser->id;
+        if ($authenticatedUser->id == $request->user_id || $authenticatedUser->role == 1) {
             $clientData = $request->except(['password']);
-            if(!empty($request->password)) {
+            if (!empty($request->password)) {
                 $clientData['password'] = Hash::make($request->password);
             }
-            if(!empty($request->photo)) {
-                $old = $client->photo;
-                $clientData['photo'] = fileUploader($request->photo, getFilePath('clientPhoto'), getFileSize('clientPhoto'), $old);
-            }
-            if(!empty($request->id_front)) {
-                $old = $client->id_front;
-                $clientData['id_front'] = fileUploader($request->id_front, getFilePath('id_front'), getFileSize('id_front'), $old);
-            }
-            if(!empty($request->id_back)) {
-                $old = $client->id_back;
-                $clientData['id_back'] = fileUploader($request->id_back, getFilePath('id_back'), getFileSize('id_back'), $old);
-            }
-            if(!empty($request->license_front)) {
-                $old = $client->license_front;
-                $clientData['license_front'] = fileUploader($request->license_front, getFilePath('license_front'), getFileSize('license_front'), $old);
-            }
-            if(!empty($request->license_back)) {
-                $old = $client->license_back;
-                $clientData['license_back'] = fileUploader($request->license_back, getFilePath('license_back'), getFileSize('license_back'), $old);
-            }
-            if(!empty($request->job_application_sign)) {
-                $old = $client->job_application_sign;
-                $clientData['job_application_sign'] = fileUploader($request->job_application_sign, getFilePath('job_application_sign'), null, $old);
-            }
-            if(!empty($request->passport_copy)) {
-                $old = $client->passport_copy;
-                $clientData['passport_copy'] = fileUploader($request->passport_copy, getFilePath('passport_copy'), getFileSize('passport_copy'), $old);
-            }
-            if(!empty($request->police_certificate)) {
-                $old = $client->police_certificate;
-                $clientData['police_certificate'] = fileUploader($request->police_certificate, getFilePath('police_certificate'), getFileSize('police_certificate'), $old);
-            }
-            if(!empty($request->school_certificate)) {
-                $old = $client->school_certificate;
-                $clientData['school_certificate'] = fileUploader($request->school_certificate, getFilePath('school_certificate'), getFileSize('school_certificate'), $old);
-            }
-            if(!empty($request->bank_certificate)) {
-                $old = $client->bank_certificate;
-                $clientData['bank_certificate'] = fileUploader($request->bank_certificate, getFilePath('bank_certificate'), getFileSize('bank_certificate'), $old);
+            $fieldsToUpload = [
+                'photo' => 'photo',
+                'id_front' => 'id_front',
+                'id_back' => 'id_back',
+                'license_front' => 'license_front',
+                'license_back' => 'license_back',
+                'job_application_sign' => 'job_application_sign',
+                'passport_copy' => 'passport_copy',
+                'police_certificate' => 'police_certificate',
+                'school_certificate' => 'school_certificate',
+                'bank_certificate' => 'bank_certificate',
+            ];
+            foreach ($fieldsToUpload as $field => $pathKey) {
+                if ($request->hasFile($field)) {
+                    $oldFile = $client->$field ?? null;
+                    if ($field === 'job_application_sign') {
+                        $clientData[$field] = fileUploader($request->file($field), getFilePath($pathKey), null, $oldFile);
+                    } else {
+                        $clientData[$field] = fileUploader($request->file($field), getFilePath($pathKey), getFileSize($pathKey), $oldFile);
+                    }
+                }
             }
             $client->update($clientData);
-        } else if ($authenticatedUser->role == 1) {
-            $clientData = $request->all();
-            $clientData = $request->except(['password']);
-            if(!empty($request->password)) {
-                $clientData['password'] = Hash::make($request->password);
-            }
-            if(!empty($request->photo)) {
-                $old = $client->photo;
-                $clientData['photo'] = fileUploader($request->photo, getFilePath('clientPhoto'), getFileSize('clientPhoto'), $old);
-            }
-            if(!empty($request->id_front)) {
-                $old = $client->id_front;
-                $clientData['id_front'] = fileUploader($request->id_front, getFilePath('id_front'), getFileSize('id_front'), $old);
-            }
-            if(!empty($request->id_back)) {
-                $old = $client->id_back;
-                $clientData['id_back'] = fileUploader($request->id_back, getFilePath('id_back'), getFileSize('id_back'), $old);
-            }
-            if(!empty($request->license_front)) {
-                $old = $client->license_front;
-                $clientData['license_front'] = fileUploader($request->license_front, getFilePath('license_front'), getFileSize('license_front'), $old);
-            }
-            if(!empty($request->license_back)) {
-                $old = $client->license_back;
-                $clientData['license_back'] = fileUploader($request->license_back, getFilePath('license_back'), getFileSize('license_back'), $old);
-            }
-            if(!empty($request->job_application_sign)) {
-                $old = $client->job_application_sign;
-                $clientData['job_application_sign'] = fileUploader($request->job_application_sign, getFilePath('job_application_sign'), null, $old);
-            }
-            if(!empty($request->passport_copy)) {
-                $old = $client->passport_copy;
-                $clientData['passport_copy'] = fileUploader($request->passport_copy, getFilePath('passport_copy'), getFileSize('passport_copy'), $old);
-            }
-            if(!empty($request->police_certificate)) {
-                $old = $client->police_certificate;
-                $clientData['police_certificate'] = fileUploader($request->police_certificate, getFilePath('police_certificate'), getFileSize('police_certificate'), $old);
-            }
-            if(!empty($request->school_certificate)) {
-                $old = $client->school_certificate;
-                $clientData['school_certificate'] = fileUploader($request->school_certificate, getFilePath('school_certificate'), getFileSize('school_certificate'), $old);
-            }
-            if(!empty($request->bank_certificate)) {
-                $old = $client->bank_certificate;
-                $clientData['bank_certificate'] = fileUploader($request->bank_certificate, getFilePath('bank_certificate'), getFileSize('bank_certificate'), $old);
-            }
-            $client->update($clientData);
-        } else {
+            $this->checkAndSendEmail($client, $request);
             return response()->json([
-                'status' => false,
-                'message' => 'Unauthorized to update this record',
+                'status' => true,
+                'message' => 'Client updated successfully.',
+                'redirect' => route('admin.client.index'),
             ]);
         }
         return response()->json([
-            'status' => true,
-            'message' => 'Client updated successfully.',
-            'redirect' => route('admin.client.index'),
+            'status' => false,
+            'message' => 'Unauthorized to update this record',
         ]);
     }
 
@@ -465,91 +352,90 @@ class ClientController extends Controller
                 'message' => 'Unauthorized.'
             ]);
         }
-        if($user->role == 2) {
-            $jobNameContainsDriver = preg_match('/\bdriver\b/i', $client->job->job_name);
-            
-            if (empty($client->photo) || empty($client->id_front) || empty($client->id_back) || 
-                empty($client->job_application_sign) || empty($client->passport_copy) || 
-                empty($client->police_certificate) || empty($client->school_certificate) || 
-                empty($client->bank_certificate) || 
-                ($jobNameContainsDriver && (empty($client->license_front) || empty($client->license_back)))) {
+        $clientPaths = [
+            'photo' => 'photo',
+            'id_front' => 'idFront',
+            'id_back' => 'idBack',
+            'license_front' => 'licenseFront',
+            'license_back' => 'licenseBack',
+            'job_application_sign' => 'job_application_sign',
+            'passport_copy' => 'passport_copy',
+            'police_certificate' => 'police_certificate',
+            'school_certificate' => 'school_certificate',
+            'bank_certificate' => 'bank_certificate',
+        ];
+        foreach ($clientPaths as $attribute => $folder) {
+            if ($client->{$attribute}) {
+                $photoPath = public_path("assets/admin/clientDocs/images/{$folder}/" . $client->{$attribute});
+                if (file_exists($photoPath)) {
+                    unlink($photoPath);
+                }
 
-            $paths = [
-                'photo' => 'clientPhoto',
-                'id_front' => 'idFront',
-                'id_back' => 'idBack',
-                'license_front' => 'licenseFront',
-                'license_back' => 'licenseBack',
-                'job_application_sign' => 'job_application_sign',
-                'passport_copy' => 'passport_copy',
-                'police_certificate' => 'police_certificate',
-                'school_certificate' => 'school_certificate',
-                'bank_certificate' => 'bank_certificate',
+                $photoPath = public_path("assets/admin/clientDocs/{$folder}/" . $client->{$attribute});
+                if (file_exists($photoPath)) {
+                    unlink($photoPath);
+                }
+            }
+        }
+        $restInfo = $client->restInfo;
+        if ($restInfo) {
+            $restInfoPaths = [
+                'five_minutes_work_video' => 'five_minutes_work_video',
+                'legalized_police_certificate' => 'legalized_police_certificate',
+                'legalized_school_certificate' => 'legalized_school_certificate',
+                'legalized_driver_license' => 'legalized_driver_license',
+                'resident_card_front' => 'resident_card_front',
+                'resident_card_back' => 'resident_card_back',
             ];
+            foreach ($restInfoPaths as $attribute => $folder) {
+                if ($restInfo->{$attribute}) {
+                    $photoPath = public_path("assets/admin/clientDocs/clientRestInfo/{$folder}/" . $restInfo->{$attribute});
+                    if (file_exists($photoPath)) {
+                        unlink($photoPath);
+                    }
+                }
+            }
+        }
+        $client->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'Client and associated rest information deleted successfully.'
+        ]);
+    }
 
-            foreach ($paths as $attribute => $folder) {
-                if ($client->{$attribute}) {
-                    $photoPath = public_path("assets/admin/clientDocs/images/{$folder}/" . $client->{$attribute});
-                    if (file_exists($photoPath)) {
-                        unlink($photoPath);
-                    }
-                }
-            }
-            foreach ($paths as $attribute => $folder) {
-                if ($client->{$attribute}) {
-                    $photoPath = public_path("assets/admin/clientDocs/{$folder}/" . $client->{$attribute});
-                    if (file_exists($photoPath)) {
-                        unlink($photoPath);
-                    }
-                }
-            }
-            $client->delete();
-            return response()->json([
-                'status' => true,
-                'message' => 'Client deleted successfully.'
-            ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Unauthorized.'
-                ]);
-            }
-        } else {
-            $paths = [
-                'photo' => 'clientPhoto',
-                'id_front' => 'idFront',
-                'id_back' => 'idBack',
-                'license_front' => 'licenseFront',
-                'license_back' => 'licenseBack',
-                'job_application_sign' => 'job_application_sign',
-                'passport_copy' => 'passport_copy',
-                'police_certificate' => 'police_certificate',
-                'school_certificate' => 'school_certificate',
-                'bank_certificate' => 'bank_certificate',
-            ];
+    private function checkAndSendEmail($client, $request)
+    {
+        $fileColumns = [
+            'photo', 'id_front', 'id_back', 'job_application_sign', 
+            'passport_copy', 'police_certificate', 'school_certificate', 'bank_certificate'
+        ];
+        $jobNameContainsDriver = preg_match('/\bdriver\b/i', $client->job->job_name);
 
-            foreach ($paths as $attribute => $folder) {
-                if ($client->{$attribute}) {
-                    $photoPath = public_path("assets/admin/clientDocs/images/{$folder}/" . $client->{$attribute});
-                    if (file_exists($photoPath)) {
-                        unlink($photoPath);
-                    }
-                }
-            }
-            foreach ($paths as $attribute => $folder) {
-                if ($client->{$attribute}) {
-                    $photoPath = public_path("assets/admin/clientDocs/{$folder}/" . $client->{$attribute});
-                    if (file_exists($photoPath)) {
-                        unlink($photoPath);
-                    }
-                }
-            }
-            $client->delete();
-            return response()->json([
-                'status' => true,
-                'message' => 'Client deleted successfully.'
-            ]);
+        if ($jobNameContainsDriver) {
+            $fileColumns = array_merge($fileColumns, ['license_front', 'license_back']);
+        }
+        $allFilesUploaded = collect($fileColumns)->every(function ($column) use ($client) {
+            return !empty($client->$column);
+        });  
+        if ($allFilesUploaded) {
+            $client->status = 'Documents Processing';
+            $client->save();
+            // Mail::to(gs()->email_from)->send(new ClientAdditionalInformationMail($client));
         }
     }
 
+    public function updateStatus($id, $status)
+    {
+        $client = Client::find($id);
+        if ($client) {
+            $client->status = $status;
+            $client->save();
+            $agent = User::where('id', $client->user_id)->first();
+            // Mail::to($agent->email)->send(new ClientStatusUpdateMail($client, $agent));
+            return response()->json([
+                'status' => true,
+                'message' => 'Status updated successfully.'
+            ]);
+        }
+    }
 }

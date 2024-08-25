@@ -6,12 +6,14 @@
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
+          @if(auth()->user()->role == 1)
           <a class="nav-link" data-toggle="dropdown" href="#">
               <i class="far fa-bell"></i>
               @if($unreadNotificationsCount > 0)
                 <span class="badge badge-warning navbar-badge">{{ $unreadNotificationsCount }}</span>
               @endif
           </a>
+          @endif
           <div class="dropdown-menu notification-dropdown dropdown-menu-lg dropdown-menu-right">
               <span class="dropdown-item dropdown-header">{{ $unreadNotificationsCount }} Notifications</span>
               @foreach($notifications as $notification)
@@ -33,10 +35,10 @@
               <div class="mb-3">{{ auth()->user()->email }}</div>
               <div class="dropdown-divider"></div>
               <div class="dropdown-divider"></div>
-              <a href="{{ route('admin.user.profile') }}" class="dropdown-item {{ menuActive(['admin.profile']) }}">
+              <a href="{{ route('admin.profile') }}" class="dropdown-item {{ menuActive(['admin.profile']) }}">
                   <i class="fas fa-cog mr-2"></i> Profile Setting
               </a>
-              <a href="{{ route('admin.user.password') }}" class="dropdown-item {{ menuActive(['admin.password']) }}">
+              <a href="{{ route('admin.password') }}" class="dropdown-item {{ menuActive(['admin.password']) }}">
                   <i class="fas fa-lock mr-2"></i> Change Password
               </a>
               <div class="dropdown-divider"></div>

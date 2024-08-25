@@ -6,6 +6,9 @@
             <div class="col-sm-6">
                 <h1>{{ $pageTitle }}</h1>
             </div>
+            <div class="col-sm-6 text-right">
+                <a href="{{ route('admin.job.index') }}" class="btn btn-outline-dark">Back</a>
+            </div>
         </div>
     </div>
 </section>

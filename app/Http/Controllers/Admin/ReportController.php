@@ -23,7 +23,7 @@ class ReportController extends Controller
     public function confirmReport(Request $request)
     {
         $clientId = $request->client_id;
-        $client = Client::where('client_id_number' ,$clientId)->first();
+        $client = Client::where('unique_id_number' ,$clientId)->first();
         if($client) {
             return view('reports.confirm', compact('client'));
         } else {
@@ -34,7 +34,7 @@ class ReportController extends Controller
     public function confirmReportPrint(Request $request)
     {
         $clientId = $request->client_id;
-        $client = Client::where('client_id_number' ,$clientId)->first(); 
+        $client = Client::where('unique_id_number' ,$clientId)->first(); 
         if ($client) {
             $pdf = PDF::loadView('reports.confirm', ['client' => $client, 'isPdf' => true]);
             return $pdf->download('confirmation-letter.pdf');
@@ -46,7 +46,7 @@ class ReportController extends Controller
     public function contractReport(Request $request)
     {
         $clientId = $request->client_id;
-        $client = Client::where('client_id_number', $clientId)->first(); 
+        $client = Client::where('unique_id_number', $clientId)->first(); 
         if($client) {
             return view('reports.contract', compact('client'));
         } else {
@@ -57,7 +57,7 @@ class ReportController extends Controller
     public function contractReportPrint(Request $request)
     {
         $clientId = $request->client_id;
-        $client = Client::where('client_id_number' ,$clientId)->first(); 
+        $client = Client::where('unique_id_number' ,$clientId)->first(); 
         if ($client) {
             $pdf = PDF::loadView('reports.contract', ['client' => $client, 'isPdf' => true]);
             return $pdf->download('training-contract.pdf');
@@ -69,7 +69,7 @@ class ReportController extends Controller
     public function loiReport(Request $request)
     {
         $clientId = $request->client_id;
-        $client = Client::where('client_id_number' ,$clientId)->first(); 
+        $client = Client::where('unique_id_number' ,$clientId)->first(); 
         if($client) {
             return view('reports.loi', compact('client'));
         } else {
@@ -80,7 +80,7 @@ class ReportController extends Controller
     public function loiReportPrint(Request $request)
     {
         $clientId = $request->client_id;
-        $client = Client::where('client_id_number' ,$clientId)->first(); 
+        $client = Client::where('unique_id_number' ,$clientId)->first(); 
         if ($client) {
             $pdf = PDF::loadView('reports.loi',  ['client' => $client, 'isPdf' => true]);
             return $pdf->download('loi-report.pdf');
@@ -92,7 +92,7 @@ class ReportController extends Controller
     public function rptApplication(Request $request)
     {
         $clientId = $request->client_id;
-        $client = Client::where('client_id_number' ,$clientId)->first(); 
+        $client = Client::where('unique_id_number' ,$clientId)->first(); 
         if($client) {
             return view('reports.rpt', compact('client'));
         } else {
@@ -103,7 +103,7 @@ class ReportController extends Controller
     public function rptAppPrint(Request $request)
     {
         $clientId = $request->client_id;
-        $client = Client::where('client_id_number' ,$clientId)->first(); 
+        $client = Client::where('unique_id_number' ,$clientId)->first(); 
         if ($client) {
             $pdf = PDF::loadView('reports.rpt', ['client' => $client, 'isPdf' => true])
                     ->setPaper('a4', 'portrait')

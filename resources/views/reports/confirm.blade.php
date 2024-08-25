@@ -97,7 +97,7 @@
                         @if (!$isPdf)
                             <form action="{{ route('admin.report.confirm.print') }}" method="POST" style="display: none;" id="printForm">
                                 @csrf
-                                <input type="hidden" name="client_id" value="{{ $client->client_id_number }}">
+                                <input type="hidden" name="client_id" value="{{ $client->unique_id_number }}">
                             </form>
                             <a href="#" class="btn" onclick="document.getElementById('printForm').submit();">Print</a>
                         @endif

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Front\Auth;
 
-use Hash;
+use Hash, Mail;
 use App\Models\Job;
 use App\Models\User;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use App\Mail\NewClientRegisterMail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,12 +18,14 @@ class LoginController extends Controller
         $this->middleware('client.guest')->except('logout');
     }
 
-    public function showLoginForm() {
+    public function showLoginForm() 
+    {
         $pageTitle = "Login";
         return view('front.auth.login', compact('pageTitle'));
     }  
 
-    public function showRegisterForm() {
+    public function showRegisterForm() 
+    {
         $pageTitle = "Register";
         $jobs = Job::get();
         $agents = User::where('role', 2)->get();
@@ -50,6 +53,7 @@ class LoginController extends Controller
             $client->save();
 
             session()->flash('success','You have been successfully registered');
+            // Mail::to(gs()->email_from)->send(new NewClientRegisterMail($client));
 
             return response()->json([
                 'status' => true,
@@ -107,7 +111,8 @@ class LoginController extends Controller
         return  to_route('login');
     }
 
-    private function validator($data){
+    private function validator($data)
+    {
         $rules = [
             'email' => 'required',
             'password' =>'required'

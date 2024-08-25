@@ -45,7 +45,7 @@
                                     <div class="mb-3">
                                         <label for="password">Password</label>
                                         <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-                                        <small>Leave empty if not want to change password</small>
+                                        <small>Leave empty if you do not want to change the password.</small>
                                         <p></p>
                                     </div>
                                 </div>

@@ -21,16 +21,8 @@
                 <td>{{ $client->restInfo->name_with_vietnam_characters }}</td>
             </tr>
             <tr>
-                <th>
-                    <span class="text-danger">Interview Date</span><br>
-                    <span class="text-danger">Interview Time</span>
-                </th>
-                <td>
-                    {{ Carbon\Carbon::parse($client->restInfo->interview_date)->format('d-m-Y') }}<br>
-                    {{ Carbon\Carbon::parse($client->restInfo->interview_date)->format('h:i A') }}
-                </td>
-                <th>Training Program</th>
-                <td>{{ $client->restInfo->training_program }}</td>
+                <th colspan="2">Training Program</th>
+                <td colspan="2">{{ $client->restInfo->training_program }}</td>
             </tr>
             <tr>
                 <th colspan="4">Driver License</th>

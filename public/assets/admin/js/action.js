@@ -124,7 +124,7 @@ $(document).ready(function(){
                     if (response.status) {
                         $('#client_name').val(response.client.full_name);
                         $('#passport_number').val(response.client.passport_number);
-                        $('#job_id').val(response.client.job_id);
+                        $('#job_name').val(response.client.job.job_name);
                         $('#price').val(response.client.job.price);
                     } else {
                         alert(response.message);
@@ -137,5 +137,26 @@ $(document).ready(function(){
         } else {
             $('#full_name').val('');
         }
+    });
+
+    $('.update-status').click(function(e) {
+        e.preventDefault();
+        var updateRoute = $(this).data('status');
+        $('#loading-screen').fadeIn();
+        $.ajax({
+            url: updateRoute,
+            type: 'GET',
+            success: function(response) {
+                if (response['status'] == true) {
+                    $('#loading-screen').fadeOut();
+                    window.location.reload();
+                    messageShow("<div class='alert alert-success'>" + response['message'] + "</div>");
+                }
+            },
+            error: function(xhr) {
+                $('#loading-screen').fadeOut();
+                alert('An error occurred while updating the status.');
+            }
+        });
     });
 });

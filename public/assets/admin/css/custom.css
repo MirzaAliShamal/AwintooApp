@@ -15,6 +15,12 @@
     opacity: 0;
 }
 
+.dropdown-menu-scrollable {
+    max-height: 150px; 
+    overflow-y: auto; 
+    overflow-x: hidden;
+}
+
 .image-upload .thumb .profilePicPreview.logoPicPrev {
     background-size: contain !important;
     background-position: center center;

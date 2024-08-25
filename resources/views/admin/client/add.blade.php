@@ -6,6 +6,9 @@
             <div class="col-sm-6">
                 <h1>{{ $pageTitle }}</h1>
             </div>
+            <div class="col-sm-6 text-right">
+                <a href="{{ route('admin.client.index') }}" class="btn btn-outline-dark">Back</a>
+            </div>
         </div>
     </div>
 </section>
@@ -160,7 +163,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="user_id">Agent Name</label>
-                                         <select class="form-control" name="user_id" id="user_id">
+                                        <select class="form-control" name="user_id" id="user_id">
                                             <option value="">Select Agent</option>
                                             @forelse($agents as $agent)
                                             <option value="{{ $agent->id }}">{{ $agent->name }}</option>
@@ -173,137 +176,118 @@
                                 </div>
                                 @endif
                                 @if(auth()->user()->role == 2)
-                                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                                 @endif
 
                                 <div class="mt-2">
                                     <h3>Documents</h3>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="mb-3 row">
-                                        <div class="col-md-6">
+                                <div class="mb-3 row">
+                                    <div class="col-md-6">
                                         <label for="photo">Photo 3x4 cm with white background</label>
                                         <input type="file" name="photo" id="photo" class="form-control">
                                         <p></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <img id="photo_preview" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
-                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img id="photo_preview" src="#" class="img-fluid img-thumbnail" alt="Image preview" style="display:none; max-width: 50%; height: auto;">
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3 row">
-                                        <div class="col-md-6">
+                                <div class="mb-3 row">
+                                    <div class="col-md-6">
                                         <label for="id_front">ID Card Front</label>
                                         <input type="file" name="id_front" id="id_front" class="form-control">
                                         <p></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <img id="id_front_photo" src="#" alt="Image preview" style="display:none; max-width: 60%; height: auto;">
-                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img id="id_front_photo" src="#" class="img-fluid img-thumbnail" alt="Image preview" style="display:none; max-width: 50%; height: auto;">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3 row">
-                                        <div class="col-md-6">
+                                <div class="mb-3 row">
+                                    <div class="col-md-6">
                                         <label for="id_back">ID Card Back</label>
                                         <input type="file" name="id_back" id="id_back" class="form-control">
                                         <p></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <img id="id_back_photo" src="#" alt="Image preview" style="display:none; max-width: 60%; height: auto;">
-                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img id="id_back_photo" src="#" class="img-fluid img-thumbnail" alt="Image preview" style="display:none; max-width: 50%; height: auto;">
                                     </div>
                                 </div>
+
                                 <div id="driver-fields" class="row" style="display: none;">
-                                    <div class="col-md-6">
-                                        <div class="mb-3 row">
-                                            <div class="col-md-6">
+                                    <div class="mb-3 row">
+                                        <div class="col-md-6">
                                             <label for="license_front">Driver License Front</label>
                                             <input type="file" name="license_front" id="license_front" class="form-control">
                                             <p></p>
                                         </div>
-                                        <div class="col-md-6">
-                                            <img id="license_front_photo" src="#" alt="Image preview" style="display:none; max-width: 60%; height: auto;">
-                                        </div>
+                                        <div class="col-md-6 text-center">
+                                            <img id="license_front_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 50%; height: auto;">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 row">
-                                            <div class="col-md-6">
+                                    <div class="mb-3 row">
+                                        <div class="col-md-6">
                                             <label for="license_back">Driver License Back</label>
                                             <input type="file" name="license_back" id="license_back" class="form-control">
                                             <p></p>
                                         </div>
-                                        <div class="col-md-6">
-                                            <img id="license_back_photo" src="#" alt="Image preview" style="display:none; max-width: 60%; height: auto;">
-                                        </div>
+                                        <div class="col-md-6 text-center">
+                                            <img id="license_back_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 50%; height: auto;">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="mb-3 row">
-                                        <div class="col-md-6">
+                                <div class="mb-3 row">
+                                    <div class="col-md-6">
                                         <label for="job_application_sign">Job Application Form Signed</label>
                                         <input type="file" name="job_application_sign" id="job_application_sign" class="form-control">
                                         <p></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <img id="job_application_sign_photo" src="#" alt="Image preview" style="display:none; max-width: 60%; height: auto;">
-                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img id="job_application_sign_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 50%; height: auto;">
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="mb-3 row">
-                                        <div class="col-md-6">
+                                <div class="mb-3 row">
+                                    <div class="col-md-6">
                                         <label for="passport_copy">Passport Copy</label>
                                         <input type="file" name="passport_copy" id="passport_copy" class="form-control">
                                         <p></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <img id="passport_copy_photo" src="#" alt="Image preview" style="display:none; max-width: 60%; height: auto;">
-                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img id="passport_copy_photo" src="#" class="img-fluid img-thumbnail" alt="Image preview" style="display:none; max-width: 50%; height: auto;">
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3 row">
-                                        <div class="col-md-6">
+                               
+                                <div class="mb-3 row">
+                                    <div class="col-md-6">
                                         <label for="police_certificate">Police Certificate</label>
                                         <input type="file" name="police_certificate" id="police_certificate" class="form-control">
                                         <p></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <img id="police_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 60%; height: auto;">
-                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img id="police_certificate_photo" src="#" class="img-fluid img-thumbnail" alt="Image preview" style="display:none; max-width: 50%; height: auto;">
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="mb-3 row">
-                                        <div class="col-md-6">
+                                <div class="mb-3 row">
+                                    <div class="col-md-6">
                                         <label for="school_certificate">School Certificate</label>
                                         <input type="file" name="school_certificate" id="school_certificate" class="form-control">
                                         <p></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <img id="school_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 60%; height: auto;">
-                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img id="school_certificate_photo" src="#" class="img-fluid img-thumbnail" alt="Image preview" style="display:none; max-width: 50%; height: auto;">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3 row">
-                                        <div class="col-md-6">
+                                
+                                <div class="mb-3 row">
+                                    <div class="col-md-6">
                                         <label for="bank_certificate">Bank Certificate</label>
                                         <input type="file" name="bank_certificate" id="bank_certificate" class="form-control">
                                         <p></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <img id="bank_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 60%; height: auto;">
-                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img id="bank_certificate_photo" src="#" class="img-fluid img-thumbnail" alt="Image preview" style="display:none; max-width: 50%; height: auto;">
                                     </div>
                                 </div>
 
@@ -322,18 +306,18 @@
 
 @push('script')
 <script>
-$(document).ready(function() {
-   $('#job_id').on('change', function() {
-    var selectedOption = $(this).find('option:selected');
-    var jobName = selectedOption.text().toLowerCase(); 
-    if (jobName.includes('driver')) { 
-        $('#driver-fields').show();
-    } else {
-        $('#driver-fields').hide();
-    }
-});
+    $(document).ready(function() {
+     $('#job_id').on('change', function() {
+        var selectedOption = $(this).find('option:selected');
+        var jobName = selectedOption.text().toLowerCase(); 
+        if (jobName.includes('driver')) { 
+            $('#driver-fields').show();
+        } else {
+            $('#driver-fields').hide();
+        }
+    });
 
-    function handleFilePreview(input, previewId) {
+     function handleFilePreview(input, previewId) {
         $(input).on('change', function(event) {
             var file = event.target.files[0];
             var previewElement = $(previewId);

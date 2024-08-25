@@ -67,7 +67,7 @@
                     <td><label>Issue To:</label> {{ $payment->client_name }}</td>
                 </tr>
                 <tr>
-                    <td><label>Client ID:</label> {{ $payment->client_id_number }}</td>
+                    <td><label>Client ID:</label> {{ $payment->client->unique_id_number }}</td>
                     <td align="right">
                        <small> <b>{{ \Carbon\Carbon::now()->format('l, d F Y') }}<br>
                         {{ \Carbon\Carbon::now()->format('h:i:s A') }}</b></small>

@@ -26,8 +26,8 @@ class FileInfo
             'path'      => 'assets/admin/proof_of_payment',
         ];
         // Client
-        $data['clientPhoto'] = [
-            'path'      => 'assets/admin/clientDocs/images/clientPhoto',
+        $data['photo'] = [
+            'path'      => 'assets/admin/clientDocs/images/photo',
             'size'      => '354x472',
         ];
         $data['id_front'] = [
@@ -82,10 +82,24 @@ class FileInfo
             'path'      => 'assets/admin/clientDocs/clientRestInfo/legalized_driver_license',
             'size'      => '1011 x 638'
         ];
+        $data['resident_card_front'] = [
+            'path'      => 'assets/admin/clientDocs/clientRestInfo/resident_card_front',
+            'size'      => '1011 x 638'
+        ];
+        $data['resident_card_back'] = [
+            'path'      => 'assets/admin/clientDocs/clientRestInfo/resident_card_back',
+            'size'      => '1011 x 638'
+        ];
 
         // Admin Profile Pic 
         $data['adminProfilePic'] = [
             'path'      =>'assets/admin/images/profile',
+            'size'      =>'400x400',
+        ];
+
+        // Agency Logo Pic 
+        $data['agencyLogo'] = [
+            'path'      =>'assets/admin/agency_logo',
             'size'      =>'400x400',
         ];
         return $data;

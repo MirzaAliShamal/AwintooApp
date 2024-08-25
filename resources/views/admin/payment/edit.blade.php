@@ -6,6 +6,9 @@
             <div class="col-sm-6">
                 <h1>{{ $pageTitle }}</h1>
             </div>
+            <div class="col-sm-6 text-right">
+                <a href="{{ route('admin.payment.index') }}" class="btn btn-outline-dark">Back</a>
+            </div>
         </div>
     </div>
 </section>
@@ -25,7 +28,7 @@
                                         <select class="form-control" name="client_id" id="client_id">
                                             <option value="">Select Client</option>
                                             @forelse($clients as $client)
-                                            <option value="{{ $client->id }}" {{ ($payment->client_id == $client->id) ? 'selected' : '' }}>{{ $client->id }} - {{ $client->full_name }}</option>
+                                            <option value="{{ $client->id }}" {{ ($payment->client_id == $client->id) ? 'selected' : '' }}>{{ $client->unique_id_number }} - {{ $client->full_name }}</option>
                                             @empty
                                             <option>No Record Found</option>
                                             @endforelse
@@ -57,22 +60,13 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="job_id">Job</label>
-                                        <select class="form-control" name="job_id" id="job_id">
-                                            <option value="">Select Job</option>
-                                            @forelse($jobs as $job)
-                                            <option value="{{ $job->id }}" {{ ($payment->job_id == $job->id) ? 'selected' : '' }}>{{ $job->job_name }}</option>
-                                            @empty
-                                            <option>No Record Found</option>
-                                            @endforelse
-                                        </select>
-                                        <p></p>
+                                         <input type="text" id="job_name" value="{{ $payment->job->job_name }}"  disabled class="form-control" placeholder="Job">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="price">Price</label>
-                                        <input type="number" name="price" id="price" value="{{ $payment->price }}" class="form-control" placeholder="Price">
-                                        <p></p>
+                                        <input type="number" id="price" value="{{ $payment->price }}" disabled class="form-control" placeholder="Price">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -89,11 +83,11 @@
                                             <input type="file" name="proof_of_payment" id="proof_of_payment" class="form-control">
                                             <p></p>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($payment->proof_of_payment) && !empty($payment->proof_of_payment) && $fileTypes['proof_of_payment'] != 'pdf')
-                                                <img id="proof_of_payment" src="{{ getImage(getFilePath('proof_of_payment') . '/' . $payment->proof_of_payment) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                                <img id="proof_of_payment" src="{{ getImage(getFilePath('proof_of_payment') . '/' . $payment->proof_of_payment) }}" class="img-fluid img-thumbnail" alt="Image preview" style="max-width: 50%; height: auto;">
                                             @else
-                                                <img id="proof_of_payment_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                                <img id="proof_of_payment_photo" src="#" class="img-fluid img-thumbnail" alt="Image preview" style="display:none; max-width: 50%; height: auto;">
                                             @endif
                                         </div>
                                     </div>

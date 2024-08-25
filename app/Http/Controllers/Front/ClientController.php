@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Client;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Models\Notification;
 use App\Http\Controllers\Controller;
@@ -12,7 +13,9 @@ class ClientController extends Controller
 {
     public function dashboard()
     {
-        return view('front.dashboard');
+        $totalAppointment = Appointment::where('client_id', auth('client')->id())
+                ->where('appointment_date', '>=', \Carbon\Carbon::now()->startOfDay())->count();
+        return view('front.dashboard', compact('totalAppointment'));
     }
 
     public function restInfo() 
@@ -20,6 +23,13 @@ class ClientController extends Controller
         $active = auth('client')->user();
         $client = Client::with('restInfo')->where('id', $active->id)->first();
         return view('front.rest_information', compact('client'));
+    }
+
+    public function appointment() 
+    {
+        $active = auth('client')->user();
+        $appointments = Appointment::where('client_id', $active->id)->where('appointment_date', '>=', now()->startOfDay())->orderBy('appointment_date', 'asc')->get();
+        return view('front.appointment', compact('appointments'));
     }
 
     public function notify() 

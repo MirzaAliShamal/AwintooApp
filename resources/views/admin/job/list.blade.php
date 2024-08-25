@@ -45,7 +45,10 @@
                     </tr>
                     @endforelse
                 </tbody>
-            </table>                                
+            </table>  
+            <div class="mt-2">
+                {{ $jobs->links() }}
+            </div>                              
         </div>
     </div>
 </div>

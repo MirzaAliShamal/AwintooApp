@@ -20,8 +20,8 @@ class Client extends Authenticatable
     {
         parent::boot();
         static::saving(function ($client) {
-            if (empty($client->client_id_number)) {
-                $client->client_id_number = self::generateUniqueClientId($client->job->job_name, $client->full_name);
+            if (empty($client->unique_id_number)) {
+                $client->unique_id_number = self::generateUniqueClientId($client->job->job_name, $client->full_name);
             }
         });
     }
@@ -32,13 +32,9 @@ class Client extends Authenticatable
             $namePart = Str::upper(substr($clientName, 0, 2));
             $timestamp = microtime(true) * 10000;
             $randomNumber = substr($timestamp, -6);
-            $suffix = Str::upper(substr($jobTitle, 0, 2));
-            
-            // Combine them to form the client ID
+            $suffix = Str::upper(substr($jobTitle, 0, 2));        
             $clientId = $namePart . $randomNumber . $suffix;
-
-            // Check if the client ID already exists in the database
-            $exists = self::where('client_id_number', $clientId)->exists();
+            $exists = self::where('unique_id_number', $clientId)->exists();
         } while ($exists);
 
         return $clientId;
@@ -57,6 +53,11 @@ class Client extends Authenticatable
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
     }
 
     public function agent()

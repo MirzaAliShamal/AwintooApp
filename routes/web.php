@@ -40,7 +40,8 @@ Route::namespace('Front\Auth')->group(function () {
 Route::namespace('Front')->middleware('client')->name('front.')->group(function () {
     Route::controller('ClientController')->group(function () {
         Route::get('dashboard', 'dashboard')->name('dashboard');
-        Route::get('rest-information', 'restInfo')->name('restInfo');
+        Route::get('information', 'restInfo')->name('restInfo');
+        Route::get('appointment', 'appointment')->name('appointment');
         Route::get('notification', 'notify')->name('notify');
         Route::get('notification/{id}/read', 'readNotify')->name('read.notify');
     });

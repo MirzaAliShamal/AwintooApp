@@ -2,9 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-
-
-
 Route::namespace('Auth')->group(function () {
     Route::controller('LoginController')->group(function () {
         Route::get('/', 'showLoginForm')->name('login');
@@ -14,8 +11,13 @@ Route::namespace('Auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // Admin Dashboard
     Route::controller('AdminController')->group(function () {
         Route::get('dashboard', 'dashboard')->name('dashboard');
+        Route::get('profile', 'profile')->name('profile');
+        Route::put('profile', 'profileUpdate')->name('profile.update');
+        Route::get('password', 'password')->name('password');
+        Route::post('password', 'passwordUpdate')->name('password.update');
     });
 
     // Notification
@@ -24,20 +26,20 @@ Route::middleware('auth')->group(function () {
         Route::delete('delete/{id}/notify', 'destroy')->name('destroy');
     });
 
-    Route::get('/command', function () {
-    Artisan::call('notify:expiring-passports');
-    Artisan::call('notify:expiring-id');
-    Artisan::call('notify:expiring-insurance');
-    Artisan::call('notify:expiring-driver');
-    Artisan::call('notify:expiring-police');
+    // Route::get('/command', function () {
+    //     Artisan::call('notify:expiring-passports');
+    //     Artisan::call('notify:expiring-id');
+    //     Artisan::call('notify:expiring-insurance');
+    //     Artisan::call('notify:expiring-driver');
+    //     Artisan::call('notify:expiring-police');
 
-    return response()->json([
-        'status' => 'success',
-        'message' => 'Command executed successfully!',
-    ]);
-});
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Command executed successfully!',
+    //     ]);
+    // });
 
-    // User
+    // Admin / Agent
     Route::controller('UserController')->name('user.')->group(function () {
         Route::get('users', 'index')->name('index');
         Route::get('admins', 'indexAdmin')->name('indexAdmin');
@@ -46,10 +48,6 @@ Route::middleware('auth')->group(function () {
         Route::get('edit/{id}/user', 'edit')->name('edit');
         Route::put('update/{id}/user', 'update')->name('update');
         Route::delete('delete/{id}/user', 'destroy')->name('destroy');
-        Route::get('profile', 'profile')->name('profile');
-        Route::put('profile', 'profileUpdate')->name('profile.update');
-        Route::get('password', 'password')->name('password');
-        Route::post('password', 'passwordUpdate')->name('password.update');
     });
     
     // Job
@@ -60,6 +58,27 @@ Route::middleware('auth')->group(function () {
         Route::get('edit/{id}/job', 'edit')->name('edit');
         Route::put('update/{id}/job', 'update')->name('update');
         Route::delete('delete/{id}/job', 'destroy')->name('destroy');
+    });
+
+    // Appointment
+    Route::controller('AppointmentController')->name('appointment.')->group(function () {
+        Route::get('appointment', 'index')->name('index');
+        Route::get('add/appointment', 'create')->name('create');
+        Route::post('add/appointment', 'store')->name('store');
+        Route::get('edit/{id}/appointment', 'edit')->name('edit');
+        Route::put('update/{id}/appointment', 'update')->name('update');
+        Route::delete('delete/{id}/appointment', 'destroy')->name('destroy');
+        Route::get('delete/expire/appointment', 'deleteExpireAppointment')->name('deleteExpireAppointment');
+    });
+
+    // Agency
+    Route::controller('AgencyController')->name('agency.')->group(function () {
+        Route::get('agency', 'index')->name('index');
+        Route::get('add/agency', 'create')->name('create');
+        Route::post('add/agency', 'store')->name('store');
+        Route::get('edit/{id}/agency', 'edit')->name('edit');
+        Route::put('update/{id}/agency', 'update')->name('update');
+        Route::delete('delete/{id}/agency', 'destroy')->name('destroy');
     });
 
     // Rest Information 
@@ -83,6 +102,19 @@ Route::middleware('auth')->group(function () {
         Route::get('edit/{id}/client', 'edit')->name('edit');
         Route::put('update/{id}/client', 'update')->name('update');
         Route::delete('delete/{id}/client', 'destroy')->name('destroy');
+        Route::get('client/update-status/{id}/{status}',  'updateStatus')->name('updateStatus');
+    });
+
+    // Client Evaluation
+    Route::controller('ClientEvaluationController')->name('eavaluation.')->group(function () {
+        Route::get('client-evaluation', 'index')->name('index');
+        Route::get('client/{id}/documents', 'show')->name('showDocs');
+        Route::get('client/{id}/data', 'showData')->name('showData');
+        Route::get('search/client-evaluation', 'search')->name('search');
+        Route::post('client-validation/mail', 'clientValidationMail')->name('clientValidationMail');
+        Route::post('client-docs/mail', 'clientDocsRequiredMail')->name('clientDocsRequiredMail');
+        Route::post('client-reject/mail', 'clientRejectMail')->name('clientRejectMail');
+        Route::post('client-application/mail', 'clientApplicationCompleteMail')->name('clientApplicationCompleteMail');
     });
 
     // Payment 
@@ -96,6 +128,7 @@ Route::middleware('auth')->group(function () {
         Route::put('update/{id}/payment', 'update')->name('update');
         Route::delete('delete/{id}/payment', 'destroy')->name('destroy');
         Route::get('/client-info/{id}', 'getClientInfo')->name('info');
+        Route::get('payment/update-status/{id}/{status}',  'updateStatus')->name('updateStatus');
     });
 
     // Report

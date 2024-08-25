@@ -63,7 +63,10 @@
                     </tr>
                     @endforelse
                 </tbody>
-            </table>                                
+            </table>    
+            <div class="mt-2">
+                {{ $data->links() }}
+            </div>                              
         </div>
     </div>
 </div>

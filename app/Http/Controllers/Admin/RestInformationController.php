@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Auth;
+use Auth, Mail;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -12,6 +12,7 @@ use App\Imports\RestInfoImport;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\ClientAdditionalInformationMail;
 
 class RestInformationController extends Controller
 {
@@ -19,11 +20,11 @@ class RestInformationController extends Controller
     {
         $pageTitle = 'Rest Information';
         $user = Auth::user();
-        $data = RestInformation::get();
+        $data = RestInformation::orderBy('created_at', 'desc')->paginate(7);
         if ($user->role == 2) {
             $data = RestInformation::whereHas('client', function($query) use ($user) {
                 $query->where('user_id', $user->id);
-            })->get();
+            })->orderBy('created_at', 'desc')->paginate(7);
         } 
         return view('admin.info.list', compact('pageTitle', 'data'));
     }
@@ -56,13 +57,14 @@ class RestInformationController extends Controller
             }
         } else {
             return response()->json([
-                    'status' => false,
-                    'errors' => $validator->errors(),
-                ]);
+                'status' => false,
+                'errors' => $validator->errors(),
+            ]);
         }
     }
 
-    public function create() {
+    public function create() 
+    {
         $pageTitle = 'Add';
         $clients = Client::get();
         $user = Auth::user();
@@ -72,7 +74,8 @@ class RestInformationController extends Controller
         return view('admin.info.add', compact('pageTitle', 'clients'));
     }
 
-    public function store(Request $request) {
+    public function store(Request $request) 
+    {
         $validator = Validator::make($request->all(), [
             'client_id' => 'required|exists:clients,id',
             'body_size' => 'required|string|max:255',
@@ -89,7 +92,6 @@ class RestInformationController extends Controller
             'driver_license_expiry_date' => 'nullable|date',
             'police_certificate_expiry_date' => 'required|date',
             'visa_application_number' => 'nullable|numeric',
-            'interview_date' => 'nullable|date',
             'insurance_type' => 'nullable|string|max:255',
             'insurance_expiry_date' => 'nullable|date',
             'amount_paid' => 'nullable|numeric|min:0',
@@ -97,10 +99,21 @@ class RestInformationController extends Controller
             'working_place' => 'nullable|string|max:255',
             'address_abroad' => 'nullable|string',
             'phone_abroad' => 'nullable|string',
-            'five_minutes_work_video' => 'nullable|mimes:zip|max:20480',
+            'five_minutes_work_video' => 'nullable|mimes:zip|max:5120',
             'legalized_police_certificate' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
             'legalized_school_certificate' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
             'legalized_driver_license' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'legalized_driver_license' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'visa_number' => 'nullable|string|max:255',
+            'visa_issue_date' => 'nullable|date',
+            'visa_expiry_date' => 'nullable|date|after_or_equal:visa_issue_date',
+            'residence_permit_number' => 'nullable|string|max:255',
+            'residence_permit_issue_date' => 'nullable|date',
+            'residence_permit_expiry_date' => 'nullable|date|after_or_equal:residence_permit_issue_date',
+            'bank_account_in_eu' => 'nullable|string|max:255',
+            'bank_name' => 'nullable|string|max:255',
+            'resident_card_front' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'resident_card_back' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -136,6 +149,12 @@ class RestInformationController extends Controller
         if(!empty($request->legalized_driver_license)) {
             $restInfoData['legalized_driver_license'] = fileUploader($request->legalized_driver_license, getFilePath('legalized_driver_license'), getFileSize('legalized_driver_license'));
         }
+        if(!empty($request->resident_card_front)) {
+            $restInfoData['resident_card_front'] = fileUploader($request->resident_card_front, getFilePath('resident_card_front'), getFileSize('resident_card_front'));
+        }
+        if(!empty($request->resident_card_back)) {
+            $restInfoData['resident_card_back'] = fileUploader($request->resident_card_back, getFilePath('resident_card_back'), getFileSize('resident_card_back'));
+        }
         $restInfo = RestInformation::create($restInfoData);
         return response()->json([
             'status' => true,
@@ -154,7 +173,7 @@ class RestInformationController extends Controller
         }
         
         $client = Client::find($restInfo->client_id);
-       
+
         if ($user->role == 2 && $client->user_id != $user->id) {
             return redirect()->route('admin.info.index')->with('error', 'Unauthorized to edit this rest information.');
         }
@@ -162,8 +181,10 @@ class RestInformationController extends Controller
             if (empty($restInfo->five_minutes_work_video) || 
                 empty($restInfo->legalized_police_certificate) || 
                 empty($restInfo->legalized_school_certificate) || 
-                empty($restInfo->legalized_driver_license)) {
-                
+                empty($restInfo->legalized_driver_license) ||
+                empty($restInfo->resident_card_front) ||
+                empty($restInfo->resident_card_back)) {
+
                 $fileTypes = [
                     'legalized_police_certificate' => $restInfo->legalized_police_certificate ? strtolower(pathinfo($restInfo->legalized_police_certificate, PATHINFO_EXTENSION)) : null,
                     'legalized_school_certificate' => $restInfo->legalized_school_certificate ? strtolower(pathinfo($restInfo->legalized_school_certificate, PATHINFO_EXTENSION)) : null,
@@ -179,18 +200,19 @@ class RestInformationController extends Controller
             }
         } else {
             $fileTypes = [
-                    'legalized_police_certificate' => $restInfo->legalized_police_certificate ? strtolower(pathinfo($restInfo->legalized_police_certificate, PATHINFO_EXTENSION)) : null,
-                    'legalized_school_certificate' => $restInfo->legalized_school_certificate ? strtolower(pathinfo($restInfo->legalized_school_certificate, PATHINFO_EXTENSION)) : null,
-                    'legalized_driver_license' => $restInfo->legalized_driver_license ? strtolower(pathinfo($restInfo->legalized_driver_license, PATHINFO_EXTENSION)) : null,
-                ];
-                
-                $clients = Client::get();
-                $pageTitle = "Edit Rest Information";
-                
-                return view('admin.info.edit', compact('restInfo', 'pageTitle', 'clients', 'fileTypes'));
+                'legalized_police_certificate' => $restInfo->legalized_police_certificate ? strtolower(pathinfo($restInfo->legalized_police_certificate, PATHINFO_EXTENSION)) : null,
+                'legalized_school_certificate' => $restInfo->legalized_school_certificate ? strtolower(pathinfo($restInfo->legalized_school_certificate, PATHINFO_EXTENSION)) : null,
+                'legalized_driver_license' => $restInfo->legalized_driver_license ? strtolower(pathinfo($restInfo->legalized_driver_license, PATHINFO_EXTENSION)) : null,
+                'resident_card_front' => $restInfo->resident_card_front ? strtolower(pathinfo($restInfo->resident_card_front, PATHINFO_EXTENSION)) : null,
+                'resident_card_back' => $restInfo->resident_card_back ? strtolower(pathinfo($restInfo->resident_card_back, PATHINFO_EXTENSION)) : null,
+            ];
+
+            $clients = Client::get();
+            $pageTitle = "Edit Rest Information";
+
+            return view('admin.info.edit', compact('restInfo', 'pageTitle', 'clients', 'fileTypes'));
         }
     }
-
 
     public function update(Request $request, $id) 
     {
@@ -225,7 +247,6 @@ class RestInformationController extends Controller
             'driver_license_expiry_date' => 'nullable|date',
             'police_certificate_expiry_date' => 'required|date',
             'visa_application_number' => 'nullable|numeric',
-            'interview_date' => 'nullable|date',
             'insurance_type' => 'nullable|string|max:255',
             'insurance_expiry_date' => 'nullable|date',
             'amount_paid' => 'nullable|numeric|min:0',
@@ -233,10 +254,20 @@ class RestInformationController extends Controller
             'working_place' => 'nullable|string|max:255',
             'address_abroad' => 'nullable|string',
             'phone_abroad' => 'nullable|string',
-            'five_minutes_work_video' => 'nullable|mimes:zip|max:20480',
+            'five_minutes_work_video' => 'nullable|mimes:zip|max:5120',
             'legalized_police_certificate' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
             'legalized_school_certificate' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
             'legalized_driver_license' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'visa_number' => 'nullable|string|max:255',
+            'visa_issue_date' => 'nullable|date',
+            'visa_expiry_date' => 'nullable|date|after_or_equal:visa_issue_date',
+            'residence_permit_number' => 'nullable|string|max:255',
+            'residence_permit_issue_date' => 'nullable|date',
+            'residence_permit_expiry_date' => 'nullable|date|after_or_equal:residence_permit_issue_date',
+            'bank_account_in_eu' => 'nullable|string|max:255',
+            'bank_name' => 'nullable|string|max:255',
+            'resident_card_front' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
+            'resident_card_back' => 'nullable|mimes:jpeg,jpg,pdf|max:2048',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -269,7 +300,16 @@ class RestInformationController extends Controller
             $old = $restInfo->legalized_driver_license;
             $restInfoData['legalized_driver_license'] = fileUploader($request->legalized_driver_license, getFilePath('legalized_driver_license'), getFileSize('legalized_driver_license'), $old);
         }
+        if(!empty($request->resident_card_front)) {
+            $old = $restInfo->resident_card_front;
+            $restInfoData['resident_card_front'] = fileUploader($request->resident_card_front, getFilePath('resident_card_front'), getFileSize('resident_card_front'), $old);
+        }
+        if(!empty($request->resident_card_back)) {
+            $old = $restInfo->resident_card_back;
+            $restInfoData['resident_card_back'] = fileUploader($request->resident_card_back, getFilePath('resident_card_back'), getFileSize('resident_card_back'), $old);
+        }
         $restInfo->update($restInfoData);
+        $this->checkAndSendEmail($restInfo, $request);
         return response()->json([
             'status' => true,
             'message' => 'Rest Information updated successfully.',
@@ -305,6 +345,8 @@ class RestInformationController extends Controller
                     'legalized_police_certificate' => 'legalized_police_certificate',
                     'legalized_school_certificate' => 'legalized_school_certificate',
                     'legalized_driver_license' => 'legalized_driver_license',
+                    'resident_card_front' => 'resident_card_front',
+                    'resident_card_back' => 'resident_card_back',
                 ];
                 foreach ($paths as $attribute => $folder) {
                     if ($restInfo->{$attribute}) {
@@ -327,24 +369,40 @@ class RestInformationController extends Controller
             }
         } else {
             $paths = [
-                    'five_minutes_work_video' => 'five_minutes_work_video',
-                    'legalized_police_certificate' => 'legalized_police_certificate',
-                    'legalized_school_certificate' => 'legalized_school_certificate',
-                    'legalized_driver_license' => 'legalized_driver_license',
-                ];
-                foreach ($paths as $attribute => $folder) {
-                    if ($restInfo->{$attribute}) {
-                        $photoPath = public_path("assets/admin/clientDocs/clientRestInfo/{$folder}/" . $restInfo->{$attribute});
-                        if (file_exists($photoPath)) {
-                            unlink($photoPath);
-                        }
+                'five_minutes_work_video' => 'five_minutes_work_video',
+                'legalized_police_certificate' => 'legalized_police_certificate',
+                'legalized_school_certificate' => 'legalized_school_certificate',
+                'legalized_driver_license' => 'legalized_driver_license',
+                'resident_card_front' => 'resident_card_front',
+                'resident_card_back' => 'resident_card_back',
+            ];
+            foreach ($paths as $attribute => $folder) {
+                if ($restInfo->{$attribute}) {
+                    $photoPath = public_path("assets/admin/clientDocs/clientRestInfo/{$folder}/" . $restInfo->{$attribute});
+                    if (file_exists($photoPath)) {
+                        unlink($photoPath);
                     }
                 }
-                $restInfo->delete();
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Rest Information deleted successfully.'
-                ]);
+            }
+            $restInfo->delete();
+            return response()->json([
+                'status' => true,
+                'message' => 'Rest Information deleted successfully.'
+            ]);
+        }
+    }
+
+    private function checkAndSendEmail($restInfo, $request)
+    {
+        $fileColumns = [
+            'five_minutes_work_video', 'legalized_police_certificate', 'legalized_school_certificate', 'legalized_driver_license', 
+            'resident_card_front', 'resident_card_back'
+        ];
+        $allFilesUploaded = collect($fileColumns)->every(function ($column) use ($restInfo) {
+            return !empty($restInfo->$column);
+        });  
+        if ($allFilesUploaded) {
+            // Mail::to(gs()->email_from)->send(new ClientAdditionalInformationMail($restInfo->client));
         }
     }
 }

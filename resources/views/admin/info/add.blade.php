@@ -6,6 +6,9 @@
             <div class="col-sm-6">
                 <h1>{{ $pageTitle }}</h1>
             </div>
+            <div class="col-sm-6 text-right">
+                <a href="{{ route('admin.info.index') }}" class="btn btn-outline-dark">Back</a>
+            </div>
         </div>
     </div>
 </section>
@@ -21,10 +24,10 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="client_id">Client ID</label>
-                                         <select class="form-control" name="client_id" id="client_id">
+                                        <select class="form-control" name="client_id" id="client_id">
                                             <option value="">Select Client</option>
                                             @forelse($clients as $client)
-                                            <option value="{{ $client->id }}">{{ $client->id }} - {{ $client->full_name }}</option>
+                                            <option value="{{ $client->id }}">{{ $client->unique_id_number }} - {{ $client->full_name }}</option>
                                             @empty
                                             <option>No Record Found</option>
                                             @endforelse
@@ -144,14 +147,6 @@
 
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label for="interview_date">Interview Date - Time</label>
-                                        <input type="datetime-local" name="interview_date" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="interview_date" class="form-control">
-                                        <p></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="mb-3">
                                         <label for="insurance_type">Insurance Type</label>
                                         <input type="text" name="insurance_type" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="insurance_type" class="form-control" placeholder="Insurance Type">
                                         <p></p>
@@ -198,13 +193,73 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="phone_abroad">Phone Abroad</label>
                                         <input type="text" name="phone_abroad" id="phone_abroad" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} class="form-control" placeholder="Phone Abroad">
                                         <p></p>
                                     </div>
                                 </div>
+                                <hr>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="visa_number">Visa Number</label>
+                                        <input type="text" name="visa_number" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="visa_number" class="form-control" placeholder="Visa Number">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="visa_issue_date">Visa Issue Date</label>
+                                        <input type="date" name="visa_issue_date" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="visa_issue_date" class="form-control">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="visa_expiry_date">Visa Expiry Date</label>
+                                        <input type="date" name="visa_expiry_date" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="visa_expiry_date" class="form-control">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="residence_permit_number">Residence Permit Number</label>
+                                        <input type="text" name="residence_permit_number" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="residence_permit_number" class="form-control" placeholder="Residence Permit Number">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="residence_permit_issue_date">Residence Permit Issue Date</label>
+                                        <input type="date" name="residence_permit_issue_date" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="residence_permit_issue_date" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="residence_permit_expiry_date">Residence Permit Expiry Date</label>
+                                        <input type="date" name="residence_permit_expiry_date" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="residence_permit_expiry_date" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="bank_account_in_eu">Bank Account in EU</label>
+                                        <input type="text" name="bank_account_in_eu" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="bank_account_in_eu" class="form-control" placeholder="Bank Account in EU">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="bank_name">Bank Name</label>
+                                        <input type="text" name="bank_name" {{ (auth()->user()->role == 2) ? 'disabled' : '' }} id="bank_name" class="form-control" placeholder="Bank Name">
+                                    </div>
+                                </div>
+
                                 <div class="mt-2">
                                     <h3>Documents To Upload</h3>
                                 </div>
@@ -216,44 +271,64 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
-                                    <div class="mb-3 row">
-                                        <div class="col-md-6">
+                                
+                                <div class="mb-3 row">
+                                    <div class="col-md-6">
                                         <label for="legalized_police_certificate">Foreign Ministry Legalized Police Certificate</label>
                                         <input type="file" name="legalized_police_certificate" id="legalized_police_certificate" class="form-control">
                                         <p></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <img id="police_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
-                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img id="police_certificate_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
                                     </div>
                                 </div>
-
-                                <div class="col-md-12">
-                                    <div class="mb-3 row">
-                                        <div class="col-md-6">
+                                
+                                <div class="mb-3 row">
+                                    <div class="col-md-6">
                                         <label for="legalized_school_certificate">Foreign Ministry Legalized School Certificate</label>
                                         <input type="file" name="legalized_school_certificate" id="legalized_school_certificate" class="form-control">
                                         <p></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <img id="school_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
-                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img id="school_certificate_photo" src="#" class="img-fluid img-thumbnail" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
                                     </div>
                                 </div>
-
-                                <div class="col-md-12">
-                                    <div class="mb-3 row">
-                                        <div class="col-md-6">
+                                
+                                <div class="mb-3 row">
+                                    <div class="col-md-6">
                                         <label for="legalized_driver_license">Foreign Ministry Legalized Driver Certificate</label>
                                         <input type="file" name="legalized_driver_license" id="legalized_driver_license" class="form-control">
                                         <p></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <img id="driver_license_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
-                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img id="driver_license_photo" src="#" class="img-fluid img-thumbnail" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
                                     </div>
                                 </div>
+                                
+                                @if (auth()->user()->role == 1)
+                                
+                                <div class="mb-3 row">
+                                    <div class="col-md-6">
+                                        <label for="resident_card_front">Resident Card Front</label>
+                                        <input type="file" name="resident_card_front" id="resident_card_front" class="form-control">
+                                        <p></p>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img id="resident_card_front_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3 row">
+                                    <div class="col-md-6">
+                                        <label for="resident_card_back">Resident Card Back</label>
+                                        <input type="file" name="resident_card_back" id="resident_card_back" class="form-control">
+                                        <p></p>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img id="resident_card_back_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
+                                    </div>
+                                </div>
+                                @endif
                             </div>
                         </div>                                                                        
                     </div>
@@ -269,30 +344,32 @@
 
 @push('script')
 <script>
-$(document).ready(function() {
-    function handleFilePreview(input, previewId) {
-        $(input).on('change', function(event) {
-            var file = event.target.files[0];
-            var previewElement = $(previewId);
-            if (file) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    var fileType = file.type;
-                    if (fileType.startsWith('image/')) {
-                        previewElement.attr('src', e.target.result).show();
-                    } else {
-                        previewElement.hide();
-                    }
-                };
-                reader.readAsDataURL(file);
-            } else {
-                previewElement.hide();
-            }
-        });
-    }
-    handleFilePreview('#legalized_police_certificate', '#police_certificate_photo');
-    handleFilePreview('#legalized_school_certificate', '#school_certificate_photo');
-    handleFilePreview('#legalized_driver_license', '#driver_license_photo');
-});
+    $(document).ready(function() {
+        function handleFilePreview(input, previewId) {
+            $(input).on('change', function(event) {
+                var file = event.target.files[0];
+                var previewElement = $(previewId);
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        var fileType = file.type;
+                        if (fileType.startsWith('image/')) {
+                            previewElement.attr('src', e.target.result).show();
+                        } else {
+                            previewElement.hide();
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewElement.hide();
+                }
+            });
+        }
+        handleFilePreview('#legalized_police_certificate', '#police_certificate_photo');
+        handleFilePreview('#legalized_school_certificate', '#school_certificate_photo');
+        handleFilePreview('#legalized_driver_license', '#driver_license_photo');
+        handleFilePreview('#resident_card_front', '#resident_card_front_photo');
+        handleFilePreview('#resident_card_back', '#resident_card_back_photo');
+    });
 </script>
 @endpush

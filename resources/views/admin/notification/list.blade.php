@@ -23,7 +23,7 @@
     <div class="message"></div>
         <div class="card">
         <div class="card-body table-responsive">                                 
-            <table id="datatable" class="table table-hover text-nowrap">
+            <table id="datatable" class="table table-hover text-nowrap text-center">
                 <thead>
                     <tr>
                         <th>Client ID</th>

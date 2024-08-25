@@ -7,7 +7,7 @@
                 <h1>{{ $pageTitle }}</h1>
             </div>
             <div class="col-sm-6 text-end">
-                <a href="{{ route('admin.user.profile') }}" class="btn btn-outline-dark">Profile Setting</a>
+                <a href="{{ route('admin.profile') }}" class="btn btn-outline-dark">Profile Setting</a>
             </div>
         </div>
     </div>
@@ -15,7 +15,7 @@
 <section class="content">
     <div class="message"></div>
     <div class="container-fluid">
-        <form class="saveForm" data-storeURL="{{ route('admin.user.password.update') }}">
+        <form class="saveForm" data-storeURL="{{ route('admin.password.update') }}">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card mb-3">

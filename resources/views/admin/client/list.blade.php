@@ -46,7 +46,7 @@
                  <tbody id="client-data">
                     @forelse($data as $row)
                     <tr>
-                        <td>{{ $row->client_id_number }}</td>
+                        <td>{{ $row->unique_id_number }}</td>
                         <td>{{ $row->full_name }}</td>
                         <td>{{ $row->phone_number }}</td>
                         <td>{{ $row->email }}</td>
@@ -73,9 +73,31 @@
                                 <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.client.edit', $row->id) }}">
                                     <i class="fa fa-pen"></i>
                                 </a>
-                                <a href="#" data-destroy="{{ route('admin.client.destroy', $row->id) }}" class="btn btn-sm btn-outline-danger deleteAction mr-1">
+                                <a href="#" data-destroy="{{ route('admin.client.destroy', $row->id) }}" class="btn btn-sm btn-outline-danger deleteAction">
                                     <i class="fa fa-trash"></i>
                                 </a>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ $row->status ?? 'Status' }}
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-scrollable">
+                                        @foreach([
+                                            'Document Collection',
+                                            'Documents Processing',
+                                            'Documents Complete',
+                                            'Waiting Visa Interview',
+                                            'Waiting Visa Announcement',
+                                            'Traveled',
+                                            'In Training Program',
+                                            'Graduate',
+                                            'Working'
+                                        ] as $status)
+                                            <a class="dropdown-item update-status" data-status="{{ route('admin.client.updateStatus', ['id' => $row->id, 'status' => $status]) }}" href="#">
+                                                {{ $status }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </td>
                         @endif
                     </tr>
@@ -86,9 +108,9 @@
                     @endforelse
                 </tbody>
             </table>                                
-                <div class="mt-2">
-                    {{ $data->links() }}
-                </div>
+            <div class="mt-2">
+                {{ $data->links() }}
+            </div>
         </div>
     </div>
 </div>

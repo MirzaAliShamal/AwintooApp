@@ -6,6 +6,9 @@
             <div class="col-sm-6">
                 <h1>{{ $pageTitle }}</h1>
             </div>
+            <div class="col-sm-6 text-right">
+                <a href="{{ route('admin.client.index') }}" class="btn btn-outline-dark">Back</a>
+            </div>
         </div>
     </div>
 </section>
@@ -187,32 +190,30 @@
                                          <label for="photo">Photo 3x4 cm with white background</label>
                                         @if (auth()->user()->role == 1)
                                         <div class="col-md-6">
-                                           
                                             <input type="file" name="photo" id="photo" class="form-control">
                                             <p></p>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->photo) && !empty($client->photo))
                                             @if ($fileTypes['photo'] == 'pdf')
                                             <p>File: {{ $client->photo }}</p>
                                             @else
-                                            <img id="photo_preview" src="{{ getImage(getFilePath('clientPhoto') . '/' . $client->photo) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="photo_preview" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('photo') . '/' . $client->photo) }}" alt="Image preview" style="max-width: 30%; height: auto;">
                                             @endif
                                             @else
-                                            <img id="photo_preview" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                            <img id="photo_preview" src="#" alt="Image preview" class="img-fluid img-thumbnail" style="display:none; max-width: 30%; height: auto;">
                                             @endif
                                         </div>
                                         @else
                                         <!-- For Users -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->photo) && !empty($client->photo))
                                             @if ($fileTypes['photo'] == 'pdf')
                                             <p>File: {{ $client->photo }}</p>
                                             @else
-                                            <img id="photo_preview" src="{{ getImage(getFilePath('clientPhoto') . '/' . $client->photo) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="photo_preview" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('photo') . '/' . $client->photo) }}" alt="Image preview" style="max-width: 30%; height: auto;">
                                             @endif
                                             @else
-                                           
                                             <input type="file" name="photo" id="photo" class="form-control">
                                             @endif
                                         </div>
@@ -226,29 +227,28 @@
                                          <label for="id_front">ID Card Front</label>
                                         @if (auth()->user()->role == 1)
                                         <div class="col-md-6">
-                                           
                                             <input type="file" name="id_front" id="id_front" class="form-control">
                                             <p></p>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->id_front) && !empty($client->id_front))
                                             @if ($fileTypes['id_front'] == 'pdf')
                                             <p>File: {{ $client->id_front }}</p>
                                             @else
-                                            <img id="id_front_photo" src="{{ getImage(getFilePath('id_front') . '/' . $client->id_front) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="id_front_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('id_front') . '/' . $client->id_front) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
-                                            <img id="id_front_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                            <img id="id_front_photo" src="#" class="img-fluid img-thumbnail" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
                                             @endif
                                         </div>
                                         @else
                                         <!-- For Users -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->id_front) && !empty($client->id_front))
                                             @if ($fileTypes['id_front'] == 'pdf')
                                             <p>File: {{ $client->id_front }}</p>
                                             @else
-                                            <img id="id_front_photo" src="{{ getImage(getFilePath('id_front') . '/' . $client->id_front) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="id_front_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('id_front') . '/' . $client->id_front) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
                                            
@@ -259,39 +259,36 @@
                                     </div>
                                 </div>
 
-
                                 <div class="col-md-12">
                                     <div class="mb-3 row">
                                         <!-- For Admins -->
                                         <label for="id_back">ID Card Back</label>
                                         @if (auth()->user()->role == 1)
                                         <div class="col-md-6">
-                                           
                                             <input type="file" name="id_back" id="id_back" class="form-control">
                                             <p></p>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->id_back) && !empty($client->id_back))
                                             @if ($fileTypes['id_back'] == 'pdf')
                                             <p>File: {{ $client->id_back }}</p>
                                             @else
-                                            <img id="id_back_photo" src="{{ getImage(getFilePath('id_back') . '/' . $client->id_back) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="id_back_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('id_back') . '/' . $client->id_back) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
-                                            <img id="id_back_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                            <img id="id_back_photo" src="#" class="img-fluid img-thumbnail" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
                                             @endif
                                         </div>
                                         @else
                                         <!-- For Users -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->id_back) && !empty($client->id_back))
                                             @if ($fileTypes['id_back'] == 'pdf')
                                             <p>File: {{ $client->id_back }}</p>
                                             @else
-                                            <img id="id_back_photo" src="{{ getImage(getFilePath('id_back') . '/' . $client->id_back) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="id_back_photo" src="{{ getImage(getFilePath('id_back') . '/' . $client->id_back) }}" alt="Image preview" class="img-fluid img-thumbnail" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
-                                            
                                             <input type="file" name="id_back" id="id_back" class="form-control">
                                             @endif
                                         </div>
@@ -306,32 +303,30 @@
                                              <label for="license_front">Driver License Front</label>
                                             @if (auth()->user()->role == 1)
                                             <div class="col-md-6">
-                                                
                                                 <input type="file" name="license_front" id="license_front" class="form-control">
                                                 <p></p>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 text-center">
                                                 @if (isset($client->license_front) && !empty($client->license_front))
                                                 @if ($fileTypes['license_front'] == 'pdf')
                                                 <p>File: {{ $client->license_front }}</p>
                                                 @else
-                                                <img id="license_front_photo" src="{{ getImage(getFilePath('license_front') . '/' . $client->license_front) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                                <img id="license_front_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('license_front') . '/' . $client->license_front) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                                 @endif
                                                 @else
-                                                <img id="license_front_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                                <img id="license_front_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
                                                 @endif
                                             </div>
                                             @else
                                             <!-- For Users -->
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 text-center">
                                                 @if (isset($client->license_front) && !empty($client->license_front))
                                                 @if ($fileTypes['license_front'] == 'pdf')
                                                 <p>File: {{ $client->license_front }}</p>
                                                 @else
-                                                <img id="license_front_photo" src="{{ getImage(getFilePath('license_front') . '/' . $client->license_front) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                                <img id="license_front_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('license_front') . '/' . $client->license_front) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                                 @endif
                                                 @else
-                                               
                                                 <input type="file" name="license_front" id="license_front" class="form-control">
                                                 @endif
                                             </div>
@@ -345,32 +340,30 @@
                                             <label for="license_back">Driver License Back</label>
                                             @if (auth()->user()->role == 1)
                                             <div class="col-md-6">
-                                                
                                                 <input type="file" name="license_back" id="license_back" class="form-control">
                                                 <p></p>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 text-center">
                                                 @if (isset($client->license_back) && !empty($client->license_back))
                                                 @if ($fileTypes['license_back'] == 'pdf')
                                                 <p>File: {{ $client->license_back }}</p>
                                                 @else
-                                                <img id="license_back_photo" src="{{ getImage(getFilePath('license_back') . '/' . $client->license_back) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                                <img id="license_back_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('license_back') . '/' . $client->license_back) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                                 @endif
                                                 @else
-                                                <img id="license_back_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                                <img id="license_back_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
                                                 @endif
                                             </div>
                                             @else
                                             <!-- For Users -->
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 text-center">
                                                 @if (isset($client->license_back) && !empty($client->license_back))
                                                 @if ($fileTypes['license_back'] == 'pdf')
                                                 <p>File: {{ $client->license_back }}</p>
                                                 @else
-                                                <img id="license_back_photo" src="{{ getImage(getFilePath('license_back') . '/' . $client->license_back) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                                <img id="license_back_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('license_back') . '/' . $client->license_back) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                                 @endif
                                                 @else
-                                                
                                                 <input type="file" name="license_back" id="license_back" class="form-control">
                                                 @endif
                                             </div>
@@ -385,39 +378,36 @@
                                          <label for="job_application_sign">Job Application Form Signed</label>
                                         @if (auth()->user()->role == 1)
                                         <div class="col-md-6">
-                                            
                                             <input type="file" name="job_application_sign" id="job_application_sign" class="form-control">
                                             <p></p>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->job_application_sign) && !empty($client->job_application_sign))
                                             @if ($fileTypes['job_application_sign'] == 'pdf')
                                             <p>File: {{ $client->job_application_sign }}</p>
                                             @else
-                                            <img id="job_application_sign_photo" src="{{ getImage(getFilePath('job_application_sign') . '/' . $client->job_application_sign) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="job_application_sign_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('job_application_sign') . '/' . $client->job_application_sign) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
-                                            <img id="job_application_sign_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                            <img id="job_application_sign_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
                                             @endif
                                         </div>
                                         @else
                                         <!-- For Users -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->job_application_sign) && !empty($client->job_application_sign))
                                             @if ($fileTypes['job_application_sign'] == 'pdf')
                                             <p>File: {{ $client->job_application_sign }}</p>
                                             @else
-                                            <img id="job_application_sign_photo" src="{{ getImage(getFilePath('job_application_sign') . '/' . $client->job_application_sign) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="job_application_sign_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('job_application_sign') . '/' . $client->job_application_sign) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
-                                           
                                             <input type="file" name="job_application_sign" id="job_application_sign" class="form-control">
                                             @endif
                                         </div>
                                         @endif
                                     </div>
                                 </div>
-
 
                                 <div class="col-md-12">
                                     <div class="mb-3 row">
@@ -425,39 +415,36 @@
                                         <label for="passport_copy">Passport Copy</label>
                                         @if (auth()->user()->role == 1)
                                         <div class="col-md-6">
-                                            
                                             <input type="file" name="passport_copy" id="passport_copy" class="form-control">
                                             <p></p>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->passport_copy) && !empty($client->passport_copy))
                                             @if ($fileTypes['passport_copy'] == 'pdf')
                                             <p>File: {{ $client->passport_copy }}</p>
                                             @else
-                                            <img id="passport_copy_photo" src="{{ getImage(getFilePath('passport_copy') . '/' . $client->passport_copy) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="passport_copy_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('passport_copy') . '/' . $client->passport_copy) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
-                                            <img id="passport_copy_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                            <img id="passport_copy_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
                                             @endif
                                         </div>
                                         @else
                                         <!-- For Users -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->passport_copy) && !empty($client->passport_copy))
                                             @if ($fileTypes['passport_copy'] == 'pdf')
                                             <p>File: {{ $client->passport_copy }}</p>
                                             @else
-                                            <img id="passport_copy_photo" src="{{ getImage(getFilePath('passport_copy') . '/' . $client->passport_copy) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="passport_copy_photo" src="{{ getImage(getFilePath('passport_copy') . '/' . $client->passport_copy) }}" class="img-fluid img-thumbnail" alt="Image preview" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
-                                            
                                             <input type="file" name="passport_copy" id="passport_copy" class="form-control">
                                             @endif
                                         </div>
                                         @endif
                                     </div>
                                 </div>
-
 
                                 <div class="col-md-12">
                                     <div class="mb-3 row">
@@ -465,29 +452,28 @@
                                         <label for="police_certificate">Police Certificate</label>
                                         @if (auth()->user()->role == 1)
                                         <div class="col-md-6">
-                                            
                                             <input type="file" name="police_certificate" id="police_certificate" class="form-control">
                                             <p></p>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->police_certificate) && !empty($client->police_certificate))
                                             @if ($fileTypes['police_certificate'] == 'pdf')
                                             <p>File: {{ $client->police_certificate }}</p>
                                             @else
-                                            <img id="police_certificate_photo" src="{{ getImage(getFilePath('police_certificate') . '/' . $client->police_certificate) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="police_certificate_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('police_certificate') . '/' . $client->police_certificate) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
-                                            <img id="police_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                            <img id="police_certificate_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
                                             @endif
                                         </div>
                                         @else
                                         <!-- For Users -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->police_certificate) && !empty($client->police_certificate))
                                             @if ($fileTypes['police_certificate'] == 'pdf')
                                             <p>File: {{ $client->police_certificate }}</p>
                                             @else
-                                            <img id="police_certificate_photo" src="{{ getImage(getFilePath('police_certificate') . '/' . $client->police_certificate) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="police_certificate_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('police_certificate') . '/' . $client->police_certificate) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
                                             <input type="file" name="police_certificate" id="police_certificate" class="form-control">
@@ -497,36 +483,34 @@
                                     </div>
                                 </div>
 
-
                                 <div class="col-md-12">
                                     <div class="mb-3 row">
                                         <!-- For Admins -->
                                         <label for="school_certificate">School Certificate</label>
                                         @if (auth()->user()->role == 1)
                                         <div class="col-md-6">
-                                            
                                             <input type="file" name="school_certificate" id="school_certificate" class="form-control">
                                             <p></p>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->school_certificate) && !empty($client->school_certificate))
                                             @if ($fileTypes['school_certificate'] == 'pdf')
                                             <p>File: {{ $client->school_certificate }}</p>
                                             @else
-                                            <img id="school_certificate_photo" src="{{ getImage(getFilePath('school_certificate') . '/' . $client->school_certificate) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="school_certificate_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('school_certificate') . '/' . $client->school_certificate) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
-                                            <img id="school_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                            <img id="school_certificate_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
                                             @endif
                                         </div>
                                         @else
                                         <!-- For Users -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->school_certificate) && !empty($client->school_certificate))
                                             @if ($fileTypes['school_certificate'] == 'pdf')
                                             <p>File: {{ $client->school_certificate }}</p>
                                             @else
-                                            <img id="school_certificate_photo" src="{{ getImage(getFilePath('school_certificate') . '/' . $client->school_certificate) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="school_certificate_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('school_certificate') . '/' . $client->school_certificate) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
                                             <input type="file" name="school_certificate" id="school_certificate" class="form-control">
@@ -541,29 +525,28 @@
                                         <label for="bank_certificate">Bank Certificate</label>
                                         @if (auth()->user()->role == 1)
                                         <div class="col-md-6">
-                                            
                                             <input type="file" name="bank_certificate" id="bank_certificate" class="form-control">
                                             <p></p>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->bank_certificate) && !empty($client->bank_certificate))
                                             @if ($fileTypes['bank_certificate'] == 'pdf')
                                             <p>File: {{ $client->bank_certificate }}</p>
                                             @else
-                                            <img id="bank_certificate_photo" src="{{ getImage(getFilePath('bank_certificate') . '/' . $client->bank_certificate) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="bank_certificate_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('bank_certificate') . '/' . $client->bank_certificate) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
-                                            <img id="bank_certificate_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                            <img id="bank_certificate_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 40%; height: auto;">
                                             @endif
                                         </div>
                                         @else
                                         <!-- For Users -->
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-center">
                                             @if (isset($client->bank_certificate) && !empty($client->bank_certificate))
                                             @if ($fileTypes['bank_certificate'] == 'pdf')
                                             <p>File: {{ $client->bank_certificate }}</p>
                                             @else
-                                            <img id="bank_certificate_photo" src="{{ getImage(getFilePath('bank_certificate') . '/' . $client->bank_certificate) }}" alt="Image preview" style="max-width: 30%; height: auto;">
+                                            <img id="bank_certificate_photo" class="img-fluid img-thumbnail" src="{{ getImage(getFilePath('bank_certificate') . '/' . $client->bank_certificate) }}" alt="Image preview" style="max-width: 40%; height: auto;">
                                             @endif
                                             @else
                                             <input type="file" name="bank_certificate" id="bank_certificate" class="form-control">
@@ -572,8 +555,6 @@
                                         @endif
                                     </div>
                                 </div>
-
-                                
                             </div>
                         </div>                                                                        
                     </div>
@@ -590,14 +571,18 @@
 @push('script')
 <script>
     $(document).ready(function() {
-        $('#job_id').on('change', function() {
-            var selectedOption = $(this).find('option:selected');
+        function checkJob() {
+            var selectedOption = $('#job_id').find('option:selected');
             var jobName = selectedOption.text().toLowerCase();
             if (jobName.includes('driver')) { 
                 $('#driver-fields').show();
             } else {
                 $('#driver-fields').hide();
             }
+        }
+        checkJob();
+        $('#job_id').on('change', function() {
+            checkJob();
         });
         function handleFilePreview(input, previewId) {
             $(input).on('change', function(event) {

@@ -74,6 +74,32 @@
               <a href="{{ route('admin.payment.create') }}" class="small-box-footer">Add Payment <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+          @if(auth()->user()->role == 1)
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-dark">
+              <div class="inner">
+                <h3>{{ $totalAppointment }}</h3>
+                <p>Appointment</p>
+              </div>
+              <div class="icon">
+                <i class="text-muted fas fa-calendar-day"></i>
+              </div>
+              <a href="{{ route('admin.appointment.create') }}" class="small-box-footer">Add Appointment <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-dark">
+              <div class="inner">
+                <h3>{{ $totalAgency }}</h3>
+                <p>Agency</p>
+              </div>
+              <div class="icon">
+                <i class="text-muted fas fa-building"></i>
+              </div>
+              <a href="{{ route('admin.agency.create') }}" class="small-box-footer">Add Agency <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          @endif
         </div>
       </div>
     </section>

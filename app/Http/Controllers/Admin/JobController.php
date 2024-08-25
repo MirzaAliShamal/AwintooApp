@@ -16,7 +16,7 @@ class JobController extends Controller
     
     public function index() {
         $pageTitle = 'Jobs';
-        $jobs = Job::get();
+        $jobs = Job::orderBy('created_at', 'desc')->paginate(7);
         return view('admin.job.list', compact('pageTitle', 'jobs'));
     }
 

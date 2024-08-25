@@ -6,8 +6,6 @@ use Carbon\Carbon;
 use App\Models\Notification;
 use Illuminate\Console\Command;
 use App\Models\RestInformation;
-use App\Mail\ExpiryMail;
-use Illuminate\Support\Facades\Mail;
 
 class NotifyExpiringDriver extends Command
 {
@@ -30,15 +28,20 @@ class NotifyExpiringDriver extends Command
      */
     public function handle()
     {
-        $today = Carbon::now();
+        $today = Carbon::now()->startOfDay();
         $thresholdDate = $today->copy()->addDays(30);
 
         $info = RestInformation::whereBetween('driver_license_expiry_date', [$today, $thresholdDate])->get();
 
         foreach ($info as $detail) {
-            $daysLeft = $today->diffInDays($detail->driver_license_expiry_date, false);
-            $notify = Notification::create([
-                'client_id' => $detail->id,
+            $expiryDate = Carbon::parse($detail->driver_license_expiry_date)->startOfDay();
+            if ($expiryDate->isTomorrow()) {
+                $daysLeft = 1;
+            } else {
+                $daysLeft = $today->diffInDays($expiryDate);
+            }
+            Notification::create([
+                'client_id' => $detail->client->id,
                 'type' => 'driver',
                 'full_name' => $detail->client->full_name,
                 'expiry_date' => $detail->driver_license_expiry_date,
@@ -46,16 +49,15 @@ class NotifyExpiringDriver extends Command
             ]);
             $client = [
                 'full_name' => $detail->client->full_name,
-                'expiry_date' => $detail->insurance_expiry_date,
-                'daysLeft' => $notify->days_left,
+                'expiry_date' => $detail->driver_license_expiry_date,
+                'daysLeft' => $daysLeft,
                 'email' => $detail->client->email,
             ];
-
-            // Mail::to($detail->client->email)->send(new ExpiryMail((object) $client, 'Driver Licence'));
         }
 
         $this->info('Notifications have been sent successfully.');
         
         return 0;
     }
+
 }

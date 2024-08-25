@@ -6,6 +6,9 @@
             <div class="col-sm-6">
                 <h1>{{ $pageTitle }}</h1>
             </div>
+            <div class="col-sm-6 text-right">
+                <a href="{{ route('admin.payment.index') }}" class="btn btn-outline-dark">Back</a>
+            </div>
         </div>
     </div>
 </section>
@@ -24,7 +27,7 @@
                                          <select class="form-control" name="client_id" id="client_id">
                                             <option value="">Select Client</option>
                                             @forelse($clients as $client)
-                                            <option value="{{ $client->id }}">{{ $client->id }} - {{ $client->full_name }}</option>
+                                            <option value="{{ $client->id }}">{{ $client->unique_id_number }} - {{ $client->full_name }}</option>
                                             @empty
                                             <option>No Record Found</option>
                                             @endforelse
@@ -55,23 +58,14 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="job_id">Job</label>
-                                        <select class="form-control" disabled name="job_id" id="job_id">
-                                            <option value="">Select Job</option>
-                                            @forelse($jobs as $job)
-                                            <option value="{{ $job->id }}">{{ $job->job_name }}</option>
-                                            @empty
-                                            <option>No Record Found</option>
-                                            @endforelse
-                                        </select>
-                                        <p></p>
+                                        <label for="job_name">Job</label>
+                                        <input type="text" id="job_name" disabled class="form-control" placeholder="Job">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="price">Price</label>
-                                        <input type="number" id="price" name="price" disabled class="form-control" placeholder="Price">
-                                        <p></p>
+                                        <input type="number" id="price" disabled class="form-control" placeholder="Price">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -88,8 +82,8 @@
                                         <input type="file" name="proof_of_payment" id="proof_of_payment" class="form-control">
                                         <p></p>
                                     </div>
-                                    <div class="col-md-6">
-                                        <img id="proof_of_payment_photo" src="#" alt="Image preview" style="display:none; max-width: 30%; height: auto;">
+                                    <div class="col-md-6 text-center">
+                                        <img id="proof_of_payment_photo" class="img-fluid img-thumbnail" src="#" alt="Image preview" style="display:none; max-width: 50%; height: auto;">
                                     </div>
                                     </div>
                                 </div>

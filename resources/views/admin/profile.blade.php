@@ -7,7 +7,7 @@
                 <h1>{{ $pageTitle }}</h1>
             </div>
             <div class="col-sm-6 text-end">
-                <a href="{{ route('admin.user.password') }}" class="btn btn-outline-dark">Change Password</a>
+                <a href="{{ route('admin.password') }}" class="btn btn-outline-dark">Change Password</a>
             </div>
         </div>
     </div>
@@ -37,7 +37,7 @@
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-body">
-                        <form class="saveForm" data-storeURL="{{ route('admin.user.profile.update', $admin->id) }}">
+                        <form class="saveForm" data-storeURL="{{ route('admin.profile.update', $admin->id) }}">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">

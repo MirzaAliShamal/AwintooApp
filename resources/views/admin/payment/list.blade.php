@@ -15,6 +15,12 @@
 <section class="content">
     <div class="container-fluid">
     <div class="message"></div>
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
         <div class="card">
         <div class="card-body table-responsive">                                 
             <table id="datatable" class="table table-hover text-nowrap text-center">
@@ -24,6 +30,9 @@
                         <th>Passport Number</th>
                         <th>Payment</th>
                         <th>Job</th>
+                        @if(auth()->user()->role == 2)
+                            <th>Status</th>
+                        @endif
                         <th width="100">Action</th>
                     </tr>
                 </thead>
@@ -34,16 +43,38 @@
                         <td>{{ $row->passport_number }}</td>
                         <td>{{ $row->payment }}</td>
                         <td>{{ $row->job->job_name }}</td>
+                        @if(auth()->user()->role == 2)
+                            <td>{{ $row->status }}</td>
+                        @endif
                         <td>
-                            <a class="btn btn-sm btn-outline-success" href="{{ route('admin.payment.invoice', $row->id) }}">
-                                <i class="fa fa-file"></i>
-                            </a>
-                            <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.payment.edit', $row->id) }}">
+                            @if($row->status == 'Confirmed')
+                                <a class="btn btn-sm btn-outline-success" href="{{ route('admin.payment.invoice', $row->id) }}">
+                                    <i class="fa fa-file"></i>
+                                </a>
+                            @endif
+                            {{-- <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.payment.edit', $row->id) }}">
                                 <i class="fa fa-pen"></i>
-                            </a>
+                            </a> --}}
                             <a href="#" data-destroy="{{ route('admin.payment.destroy', $row->id) }}" class="btn btn-sm btn-outline-danger deleteAction mr-1">
                                 <i class="fa fa-trash"></i>
                             </a>
+                            @if(auth()->user()->role == 1)
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ $row->status ?? 'Status' }}
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-scrollable">
+                                    @foreach([
+                                        'Pending',
+                                        'Confirmed',
+                                    ] as $status)
+                                        <a class="dropdown-item update-status" data-status="{{ route('admin.payment.updateStatus', ['id' => $row->id, 'status' => $status]) }}" href="#">
+                                            {{ $status }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endif
                         </td>
                     </tr>
                     @empty
@@ -52,7 +83,10 @@
                     </tr>
                     @endforelse
                 </tbody>
-            </table>                                
+            </table>  
+            <div class="mt-2">
+                {{ $data->links() }}
+            </div>                              
         </div>
     </div>
 </div>

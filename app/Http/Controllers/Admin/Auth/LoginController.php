@@ -13,7 +13,8 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function showLoginForm() {
+    public function showLoginForm() 
+    {
         $pageTitle = "Admin Login";
         return view('admin.auth.login', compact('pageTitle'));
     }  
@@ -65,7 +66,6 @@ class LoginController extends Controller
             'email.required' => 'Email must be required.',
             'password.required' => 'The Password field is required.',
         ];
-
         return Validator::make($data, $rules, $messages);
     }
 }

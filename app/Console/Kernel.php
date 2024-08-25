@@ -12,8 +12,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        // Client Table
         $schedule->command('notify:expiring-id')->daily();
         $schedule->command('notify:expiring-passports')->daily();
+        // Rest info
         $schedule->command('notify:expiring-insurance')->daily();
         $schedule->command('notify:expiring-driver')->daily();
         $schedule->command('notify:expiring-police')->daily();
