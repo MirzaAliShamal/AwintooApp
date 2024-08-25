@@ -14,10 +14,12 @@ class ApplicationStatusChangeMail extends Mailable
     use Queueable, SerializesModels;
 
     public $client;
+    public $restInfo;
 
-    public function __construct($client)
+    public function __construct($client, $restInfo)
     {
         $this->client = $client;
+        $this->restInfo = $restInfo;
     }
 
     public function envelope(): Envelope
@@ -31,7 +33,7 @@ class ApplicationStatusChangeMail extends Mailable
     {
         return new Content(
             view: 'email.application_status_change',
-            with: ['client' => $this->client]
+            with: ['client' => $this->client, 'restInfo' => $this->restInfo]
         );
     }
 }

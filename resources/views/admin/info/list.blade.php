@@ -54,6 +54,23 @@
                                 <a href="#" data-destroy="{{ route('admin.info.destroy', $row->id) }}" class="btn btn-sm btn-outline-danger deleteAction mr-1">
                                     <i class="fa fa-trash"></i>
                                 </a>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ $row->status ?? 'Status' }}
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-scrollable">
+                                        @foreach([
+                                            'Waiting',
+                                            'Visa Application Started',
+                                            'Accepted',
+                                            'Denied',
+                                        ] as $status)
+                                            <a class="dropdown-item update-status" data-status="{{ route('admin.info.updateStatus', ['id' => $row->id, 'status' => $status]) }}" href="#">
+                                                {{ $status }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </td>
                         @endif
                     </tr>

@@ -90,6 +90,7 @@ Route::middleware('auth')->group(function () {
         Route::get('edit/{id}/information', 'edit')->name('edit');
         Route::put('update/{id}/information', 'update')->name('update');
         Route::delete('delete/{id}/information', 'destroy')->name('destroy');
+        Route::get('info/update-status/{id}/{status}',  'updateStatus')->name('updateStatus');
     });
 
     // Client 

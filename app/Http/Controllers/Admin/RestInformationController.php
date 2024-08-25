@@ -5,14 +5,18 @@ namespace App\Http\Controllers\Admin;
 use Auth, Mail;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use App\Mail\VisaDeniedMail;
+use App\Mail\VisaAcceptedMail;
 use Illuminate\Validation\Rule;
 use App\Rules\FileTypeValidate;
 use App\Models\RestInformation;
 use App\Imports\RestInfoImport;
+use App\Mail\DocumentReceivedMail;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
-use App\Mail\ClientAdditionalInformationMail;
+use App\Mail\ApplicationStatusChangeMail;
+use App\Mail\VisaApplicationSubmittedMail;
 
 class RestInformationController extends Controller
 {
@@ -156,6 +160,13 @@ class RestInformationController extends Controller
             $restInfoData['resident_card_back'] = fileUploader($request->resident_card_back, getFilePath('resident_card_back'), getFileSize('resident_card_back'));
         }
         $restInfo = RestInformation::create($restInfoData);
+        if(!empty($request->visa_application_number)) {
+            // Mail::to($client->email)->send(new VisaApplicationSubmittedMail($client));
+        } else {
+            $restInfo->status = "Waiting";
+            $restInfo->save();
+        }
+
         return response()->json([
             'status' => true,
             'redirect' => route('admin.info.index'),
@@ -308,7 +319,15 @@ class RestInformationController extends Controller
             $old = $restInfo->resident_card_back;
             $restInfoData['resident_card_back'] = fileUploader($request->resident_card_back, getFilePath('resident_card_back'), getFileSize('resident_card_back'), $old);
         }
+        $currentVisaApplicationNumber = $restInfo->visa_application_number;
         $restInfo->update($restInfoData);
+        if ($request->visa_application_number !== $currentVisaApplicationNumber) {
+            if (!empty($request->visa_application_number)) {
+                $restInfo->status = 'Visa Application Started';
+                $restInfo->save();
+                // Mail::to($client->email)->send(new VisaApplicationSubmittedMail($client));
+            }
+        }
         $this->checkAndSendEmail($restInfo, $request);
         return response()->json([
             'status' => true,
@@ -402,7 +421,28 @@ class RestInformationController extends Controller
             return !empty($restInfo->$column);
         });  
         if ($allFilesUploaded) {
-            // Mail::to(gs()->email_from)->send(new ClientAdditionalInformationMail($restInfo->client));
+            // Mail::to($restInfo->client->email)->send(new DocumentReceivedMail($restInfo->client));
+        }
+    }
+
+    public function updateStatus($id, $status)
+    {
+        $restInfo = RestInformation::find($id);
+        $client = $restInfo->client;
+        if ($restInfo) {
+            $restInfo->status = $status;
+            $restInfo->save();
+            if($status == 'Accepted') {
+                // Mail::to($client->email)->send(new VisaAcceptedMail($client));
+            } elseif ($status == 'Denied') {
+                // Mail::to($client->email)->send(new VisaDeniedMail($client));
+            }
+            // Mail::to($client->email)->send(new ApplicationStatusChangeMail($client, $restInfo));
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Status updated successfully.'
+            ]);
         }
     }
 }

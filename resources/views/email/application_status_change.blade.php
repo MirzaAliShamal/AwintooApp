@@ -53,7 +53,7 @@
         </div>
         <div class="content">
             <p>Dear <strong>{{ $client->full_name }}</strong>,</p>
-            <p>Your visa application status has been updated to "<strong>{{ $client->status }}</strong>".</p>
+            <p>Your visa application status has been updated to "<strong>{{ $restInfo->status }}</strong>".</p>
             <p>Please log in to your client dashboard for further details. If you have any questions, please feel free to contact us.</p>
             <p>Sincerely,</p>
             <p>The Protech Training Center Team</p>
