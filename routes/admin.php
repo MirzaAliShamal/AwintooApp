@@ -96,6 +96,7 @@ Route::middleware('auth')->group(function () {
     // Client 
     Route::controller('ClientController')->name('client.')->group(function () {
         Route::get('clients', 'index')->name('index');
+        // Route::get('clients/unique-id', 'generateMissingClientIds')->name('index');
         Route::post('clients/import', 'import')->name('import');
         Route::get('search/clients', 'search')->name('search');
         Route::get('add/client', 'create')->name('create');

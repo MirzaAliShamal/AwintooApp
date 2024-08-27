@@ -47,25 +47,34 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Urgent: Additional Documents Required</h1>
-        </div>
-        <div class="content">
-            <p>Dear <strong>{{ $agent->name }}</strong>,</p>
-            <p>I hope this email finds you well. I am writing to follow up on <strong>{{ $client->full_name }}</strong>'s application, which is currently in "additional document needed" status.</p>
-            <p>We require the following documents to proceed with the evaluation:</p>
-            <p>{{ $customMessage }}</p>
-            <br>
-            <p>Please kindly request the applicant to submit these documents at their earliest convenience. Once we receive them, we will resume processing the application promptly.</p>
-            <p>If you or the applicant have any questions or concerns, please do not hesitate to contact us.</p>
-            <p>Thank you for your cooperation and assistance.</p>
-            <p>Sincerely,</p>
-            <p>The Protech Training Center Team</p>
-        </div>
-        <div class="footer">
-            <p>&copy; 2024 Protech Training Center. All rights reserved.</p>
-        </div>
+   <div class="container">
+    <div class="header">
+        <h1>Urgent: Additional Documents Required</h1>
     </div>
+    <div class="content">
+        <p>Dear <strong>{{ $agent->name }}</strong>,</p>
+        <p>I hope this email finds you well. I am writing to follow up on <strong>{{ $client->full_name }}</strong>'s application, which is currently in "additional document needed" status.</p>
+        <p>We require the following documents to proceed with the evaluation:</p>
+        <ul>
+            @foreach($selectedDocuments as $document)
+                <li>{{ $document }}</li>
+            @endforeach
+        </ul>
+        <!-- Check if 'other' option was selected and display the textarea content -->
+        @if(!empty($otherText))
+            <p><strong>Additional Information:</strong> {{ $otherText }}</p>
+        @endif
+        <p>Please kindly request the applicant to submit these documents at their earliest convenience. Once we receive them, we will resume processing the application promptly.</p>
+        <p>If you or the applicant have any questions or concerns, please do not hesitate to contact us.</p>
+        <p>Thank you for your cooperation and assistance.</p>
+        <p>Sincerely,</p>
+        <p>The Protech Training Center Team</p>
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 Protech Training Center. All rights reserved.</p>
+    </div>
+</div>
+
+
 </body>
 </html>

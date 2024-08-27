@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('rest_informations', function (Blueprint $table) {
-            $table->string('status')->default('Visa Application Started')->after('phone_abroad');
+            $table->string('status')->default('Waiting Documents')->after('phone_abroad');
         });
     }
 

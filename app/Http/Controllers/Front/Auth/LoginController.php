@@ -42,7 +42,7 @@ class LoginController extends Controller
             'job_id'=> 'required|exists:jobs,id',
         ]);
 
-        if($validator->passes()){
+        if($validator->passes()) {
 
             $client = new Client;
             $client->full_name = $request->name;

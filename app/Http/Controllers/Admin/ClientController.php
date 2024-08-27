@@ -17,17 +17,17 @@ use App\Mail\ClientAdditionalInformationMail;
 
 class ClientController extends Controller
 {
-    public function generateMissingClientIds()
-    {
-        $clients = Client::where('unique_id_number', '')->get();
-        foreach ($clients as $client) {
-            $client->save();
-        }
-        return response()->json([
-            'message' => 'Client IDs generated successfully!',
-            'generated_count' => $clients->count(),
-        ]);
-    }
+    // public function generateMissingClientIds()
+    // {
+    //     $clients = Client::where('unique_id_number', '')->get();
+    //     foreach ($clients as $client) {
+    //         $client->save();
+    //     }
+    //     return response()->json([
+    //         'message' => 'Client IDs generated successfully!',
+    //         'generated_count' => $clients->count(),
+    //     ]);
+    // }
     
     public function index() 
     {
@@ -45,11 +45,14 @@ class ClientController extends Controller
     {
         $query = $request->input('search');
         if ($query) {
-            $clients = Client::with('job', 'agent')->where('full_name', 'like', "%$query%")->get();
+            $clients = Client::with('job', 'agent')->where(function($q) use ($query) {
+                    $q->where('unique_id_number', 'like', "%$query%")
+                      ->orWhere('full_name', 'like', "%$query%");
+                })->get();
         } else {
             $clients = Client::with('job', 'agent')->get();
         }
-        return response()->json([
+            return response()->json([
             'status' => true,
             'data' => $clients,
         ]);

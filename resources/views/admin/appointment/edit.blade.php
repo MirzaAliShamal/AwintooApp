@@ -43,10 +43,22 @@
                                         <p></p>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                               <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="location">Location</label>
-                                        <input type="text" id="location" name="location" value="{{ $appointment->location }}" class="form-control" placeholder="Location">
+                                        <select id="location" name="location" class="form-control">
+                                            <option value="">Choose a location</option>
+                                            <option value="Romanian Embassy in Hanoi" {{ $appointment->location == 'Romanian Embassy in Hanoi' ? 'selected' : '' }}>Romanian Embassy in Hanoi</option>
+                                            <option value="Romanian Embassy in Manila" {{ $appointment->location == 'Romanian Embassy in Manila' ? 'selected' : '' }}>Romanian Embassy in Manila</option>
+                                            <option value="Romanian Embassy in UAE" {{ $appointment->location == 'Romanian Embassy in UAE' ? 'selected' : '' }}>Romanian Embassy in UAE</option>
+                                            <option value="Romanian Embassy in Saudi Arabia" {{ $appointment->location == 'Romanian Embassy in Saudi Arabia' ? 'selected' : '' }}>Romanian Embassy in Saudi Arabia</option>
+                                            <option value="ProTech Training Center Piatra Neamt" {{ $appointment->location == 'ProTech Training Center Piatra Neamt' ? 'selected' : '' }}>ProTech Training Center Piatra Neamt</option>
+                                            <option value="ProTech Training Center Bucuresti" {{ $appointment->location == 'ProTech Training Center Bucuresti' ? 'selected' : '' }}>ProTech Training Center Bucuresti</option>
+                                            <option value="ProTech Training Center Iasi" {{ $appointment->location == 'ProTech Training Center Iasi' ? 'selected' : '' }}>ProTech Training Center Iasi</option>
+                                            <option value="ProTech Training Center Cluj" {{ $appointment->location == 'ProTech Training Center Cluj' ? 'selected' : '' }}>ProTech Training Center Cluj</option>
+                                            <option value="ProTech Training Center Mehedinti" {{ $appointment->location == 'ProTech Training Center Mehedinti' ? 'selected' : '' }}>ProTech Training Center Mehedinti</option>
+                                            <option value="ProTech Service and Support" {{ $appointment->location == 'ProTech Service and Support' ? 'selected' : '' }}>ProTech Service and Support</option>
+                                        </select>
                                         <p></p>
                                     </div>
                                 </div>

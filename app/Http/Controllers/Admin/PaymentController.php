@@ -49,7 +49,7 @@ class PaymentController extends Controller
                 return back();
             }
         } else {
-                return back();
+            return back();
         }
     }
 
@@ -146,11 +146,9 @@ class PaymentController extends Controller
         if (!$payment) {
             return redirect()->route('admin.payment.index')->with('error', 'Payment not found.');
         }
-
         $fileTypes = [
             'proof_of_payment' => $payment->proof_of_payment ? strtolower(pathinfo($payment->proof_of_payment, PATHINFO_EXTENSION)) : null,
         ];
-
         if ($user->role == 2) {
             $client = $payment->client;
             if ($client && $client->user_id != $user->id) {
@@ -159,11 +157,9 @@ class PaymentController extends Controller
         }
         $clients = Client::all();
         $jobs = Job::all();
-
         if ($user->role == 2) {
             $clients = Client::where('user_id', $user->id)->get();
         }
-
         return view('admin.payment.edit', compact('clients', 'jobs', 'payment', 'pageTitle', 'fileTypes'));
     }
 
@@ -284,6 +280,5 @@ class PaymentController extends Controller
             'status' => true,
             'message' => 'Status updated successfully.'
         ]);
-        
     }
 }

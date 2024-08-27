@@ -8,7 +8,7 @@ use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Mail\VisaAcceptedMail;
 use App\Mail\ClientValidationMail;
-use App\Mail\DocumentsRequiestMail;
+use App\Mail\DocumentsRequestMail;
 use App\Mail\ApplicationRejectMail;
 use App\Http\Controllers\Controller;
 
@@ -39,11 +39,14 @@ class ClientEvaluationController extends Controller
     {
         $query = $request->input('search');
         if ($query) {
-            $clients = Client::with('job', 'agent')->where('unique_id_number', 'like', "%$query%")->get();
+            $clients = Client::with('job', 'agent')->where(function($q) use ($query) {
+                    $q->where('unique_id_number', 'like', "%$query%")
+                      ->orWhere('full_name', 'like', "%$query%");
+                })->get();
         } else {
             $clients = Client::with('job', 'agent')->get();
         }
-        return response()->json([
+            return response()->json([
             'status' => true,
             'data' => $clients,
         ]);
@@ -52,28 +55,31 @@ class ClientEvaluationController extends Controller
     public function clientValidationMail(Request $request) 
     {
         $clientId = $request->client_id;
-        $message = $request->message;
-        $client = Client::where('unique_id_number' ,$clientId)->first();
-        if($client) {
+        $validationOption = $request->input('validation_option'); 
+
+        $client = Client::where('unique_id_number', $clientId)->first();
+        if ($client) {
             $agent = User::where('id', $client->user_id)->first();
-            // Mail::to($agent->email)->send(new ClientValidationMail($client, $agent, $message)); 
-            return back();
+            // Mail::to($agent->email)->send(new ClientValidationMail($client, $agent, $validationOption)); 
+            return back()->with('status', 'Client validation email sent successfully!');
         } else {
-            return back();
+            return back()->withErrors('Client not found.');
         }
     }
 
     public function clientDocsRequiredMail(Request $request) 
     {
         $clientId = $request->client_id;
-        $message = $request->message;
-        $client = Client::where('unique_id_number' ,$clientId)->first();
-        if($client) {
+        $selectedDocuments = $request->input('documents', []); 
+        $otherText = $request->input('other_text'); 
+
+        $client = Client::where('unique_id_number', $clientId)->first();
+        if ($client) {
             $agent = User::where('id', $client->user_id)->first();
-            // Mail::to($agent->email)->send(new DocumentsRequiestMail($client, $agent, $message)); 
-            return back();
+            // Mail::to($agent->email)->send(new DocumentsRequestMail($client, $agent, $selectedDocuments, $otherText)); 
+            return back()->with('status', 'Document request email sent successfully!');
         } else {
-            return back();
+            return back()->withErrors('Client not found.');
         }
     }
 

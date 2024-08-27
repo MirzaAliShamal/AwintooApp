@@ -36,9 +36,9 @@
                  <tbody>
                     @forelse($data as $row)
                     <tr>
-                        <td>{{ $row->client_id }}</td>
+                        <td>{{ $row->client->unique_id_number }}</td>
                         <td>{{ $row->full_name }}</td>
-                        <td>{{ $row->expiry_date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($row->expiry_date)->format('d-m-Y') }}</td>
                         <td>{{ $row->days_left }}</td>
                         <td>
                             <a href="#" data-destroy="{{ route('admin.notify.destroy', $row->id) }}" class="btn btn-sm btn-outline-danger deleteAction mr-1">

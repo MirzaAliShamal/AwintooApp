@@ -133,12 +133,12 @@
 
                         $.each(response.data, function(index, row) {
                             rows += '<tr>';
-                            rows += '<td>' + row.id + '</td>';
+                            rows += '<td>' + row.unique_id_number + '</td>';
                             rows += '<td>' + row.full_name + '</td>';
                             rows += '<td>' + row.phone_number + '</td>';
                             rows += '<td>' + row.email + '</td>';
                             rows += '<td>' + row.job.job_name + '</td>';
-                            if (row.agent.role !== 2) {
+                            if (row.agent.role == 2) {
                                 rows += '<td>' + row.agent.name + '</td>';
                             }
                             rows += '<td>';

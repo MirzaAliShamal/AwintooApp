@@ -25,12 +25,12 @@ class NotificationController extends Controller
         if(auth()->user()->role == 2) {
             $userId = auth()->id();
             $clients = Client::where('user_id', $userId)->pluck('id');
-            $data = Notification::whereIn('client_id', $clients)->where('type', $type)->orderBy('created_at', 'desc')->get();
+            $data = Notification::with('client')->whereIn('client_id', $clients)->where('type', $type)->orderBy('created_at', 'desc')->get();
         } else {
-            $data = Notification::orderBy('created_at', 'desc')->where('type', $type)->get();
+            $data = Notification::with('client')->orderBy('created_at', 'desc')->where('type', $type)->get();
         }
         if ($readIds) {
-            Notification::where('id', $readIds)->update(['read' => 1]);
+            Notification::with('client')->where('id', $readIds)->update(['read' => 1]);
         }
         return view('admin.notification.list', compact('pageTitle', 'data'));
     }

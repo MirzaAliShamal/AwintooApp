@@ -39,7 +39,6 @@ class UserController extends Controller
             'role' => 'required|in:1,2',
             'password' => 'required|string',
         ]);
-
         if ($validator->passes()) {
             $email = $request->input('email');
             if (User::where('email', $email)->exists()) {
@@ -48,7 +47,6 @@ class UserController extends Controller
                     'message' => 'Email already exists.'
                 ]);
             }
-
             $data = $request->only(['name', 'agency_name', 'email', 'phone_number', 'password', 'role']);
             if ($request->role == 1) {
                 User::create($data);
@@ -59,7 +57,6 @@ class UserController extends Controller
                 $roleName = 'User';
                 $redirect = route('admin.user.index');
             }
-
             return response()->json([
                 'status' => true,
                 'redirect' => $redirect,
@@ -143,7 +140,6 @@ class UserController extends Controller
                 'redirect' => route('admin.user.index'),
             ]);
         }
-
         return response()->json(['status' => false, 'message' => 'Invalid user type.'], 400);
     }
 

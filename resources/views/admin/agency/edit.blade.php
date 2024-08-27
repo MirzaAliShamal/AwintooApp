@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="contract_name">Contract Name</label>
+                                        <label for="contract_name">Contact Person Name</label>
                                         <input type="text" name="contract_name" id="contract_name" class="form-control" value="{{ old('contract_name', $agency->contract_name) }}">
                                     </div>
                                 </div>

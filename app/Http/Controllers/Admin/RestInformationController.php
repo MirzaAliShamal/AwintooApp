@@ -163,7 +163,7 @@ class RestInformationController extends Controller
         if(!empty($request->visa_application_number)) {
             // Mail::to($client->email)->send(new VisaApplicationSubmittedMail($client));
         } else {
-            $restInfo->status = "Waiting";
+            $restInfo->status = "Waiting Documents";
             $restInfo->save();
         }
 
@@ -438,7 +438,6 @@ class RestInformationController extends Controller
                 // Mail::to($client->email)->send(new VisaDeniedMail($client));
             }
             // Mail::to($client->email)->send(new ApplicationStatusChangeMail($client, $restInfo));
-
             return response()->json([
                 'status' => true,
                 'message' => 'Status updated successfully.'

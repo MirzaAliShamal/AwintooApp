@@ -25,7 +25,7 @@
                         <th>Company Name</th>
                         <th>Director Name</th>
                         <th>Company Registration Number</th>
-                        <th>quota</th>
+                        <th>Quota</th>
                         <th width="100">Action</th>
                     </tr>
                 </thead>

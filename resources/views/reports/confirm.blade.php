@@ -88,7 +88,7 @@
             <table class="footer-table">
                 <tr>
                     <td class="left">
-                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/logo/protech.png'))) }}" alt="Logo">
+                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents('assets/images/logo/protech.png')) }}" alt="Logo">
                     </td>
                     <td class="right">
                         @php

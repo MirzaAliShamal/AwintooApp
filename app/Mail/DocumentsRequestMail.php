@@ -9,19 +9,21 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class DocumentsRequiestMail extends Mailable
+class DocumentsRequestMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $client;
     public $agent;
-    public $message;
+    public $selectedDocuments;
+    public $otherText;
 
-    public function __construct($client, $agent, $message)
+    public function __construct($client, $agent, $selectedDocuments, $otherText)
     {
         $this->client = $client;
         $this->agent = $agent;
-        $this->message = $message;
+        $this->selectedDocuments = $selectedDocuments;
+        $this->otherText = $otherText;
     }
 
     public function envelope(): Envelope
@@ -35,7 +37,11 @@ class DocumentsRequiestMail extends Mailable
     {
         return new Content(
             view: 'email.document_request',
-            with: ['client' => $this->client, 'agent' => $this->agent, 'customMessage' => $this->message,]
+            with: ['client' => $this->client, 
+                'agent' => $this->agent,
+                'selectedDocuments' => $this->selectedDocuments,
+                'otherText' => $this->otherText
+            ]
         );
     }
 }

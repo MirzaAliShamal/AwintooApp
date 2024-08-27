@@ -45,7 +45,19 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="location">Location</label>
-                                        <input type="text" id="location" name="location" class="form-control" placeholder="Location">
+                                        <select id="location" name="location" class="form-control">
+                                            <option value="">Choose a location</option>
+                                            <option value="Romanian Embassy in Hanoi">Romanian Embassy in Hanoi</option>
+                                            <option value="Romanian Embassy in Manila">Romanian Embassy in Manila</option>
+                                            <option value="Romanian Embassy in UAE">Romanian Embassy in UAE</option>
+                                            <option value="Romanian Embassy in Saudi Arabia">Romanian Embassy in Saudi Arabia</option>
+                                            <option value="ProTech Training Center Piatra Neamt">ProTech Training Center Piatra Neamt</option>
+                                            <option value="ProTech Training Center Bucuresti">ProTech Training Center Bucuresti</option>
+                                            <option value="ProTech Training Center Iasi">ProTech Training Center Iasi</option>
+                                            <option value="ProTech Training Center Cluj">ProTech Training Center Cluj</option>
+                                            <option value="ProTech Training Center Mehedinti">ProTech Training Center Mehedinti</option>
+                                            <option value="ProTech Service and Support">ProTech Service and Support</option>
+                                        </select>
                                         <p></p>
                                     </div>
                                 </div>

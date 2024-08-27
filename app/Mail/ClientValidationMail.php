@@ -15,13 +15,13 @@ class ClientValidationMail extends Mailable
 
     public $client;
     public $agent;
-    public $message;
+    public $validationOption;
 
-    public function __construct($client, $agent, $message)
+    public function __construct($client, $agent, $validationOption)
     {
         $this->client = $client;
         $this->agent = $agent;
-        $this->message = $message;
+        $this->validationOption = $validationOption;
     }
 
     public function envelope(): Envelope
@@ -35,7 +35,7 @@ class ClientValidationMail extends Mailable
     {
         return new Content(
             view: 'email.client_validation',
-            with: ['client' => $this->client, 'agent' => $this->agent, 'customMessage' => $this->message,]
+            with: ['client' => $this->client, 'agent' => $this->agent, 'validationOption' => $this->validationOption,]
         );
     }
 }
