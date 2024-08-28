@@ -48,17 +48,15 @@ class JobController extends Controller
         }
     }
 
-    public function edit($id) {
-
+    public function edit($id) 
+    {
         $pageTitle = "Edit Job";
         $job = Job::find($id);
         if (empty($job)) {
-            return redirect()->route('admin.job.index');
+            return redirect()->route('admin.job.index')->with('error', 'Job not found.');
         }
-
         return view('admin.job.edit', compact('job', 'pageTitle'));
     }
-
 
     public function update(Request $request, $id) {
         $validator = Validator::make($request->all(), [
@@ -73,8 +71,6 @@ class JobController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
-
-       
         $job = Job::find($id);
         if (!$job) {
             return response()->json([
@@ -82,9 +78,7 @@ class JobController extends Controller
                 'message' => 'Job not found.'
             ]);
         }
-
         $job->update($request->only(['job_name', 'price']));
-
         return response()->json([
             'status' => true,
             'message' => 'Job updated successfully.',

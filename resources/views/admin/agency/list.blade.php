@@ -15,6 +15,7 @@
 <section class="content">
     <div class="container-fluid">
     <div class="message"></div>
+    @include('admin.response.message')
         <div class="card">
         <div class="card-body table-responsive">                                 
             <table id="datatable" class="table table-hover text-nowrap text-center">
@@ -40,7 +41,6 @@
                         <td>{{ $row->director_name }}</td>
                         <td>{{ $row->company_registration_number }}</td>
                         <td>{{ $row->quota }}</td>
-                       
                         <td>
                             <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.agency.edit', $row->id) }}">
                                 <i class="fa fa-pen"></i>
@@ -58,8 +58,8 @@
                 </tbody>
             </table>     
             <div class="mt-2">
-                {{ $agency->links() }}
-            </div>                             
+                {{ $agency->links('admin.pagination.page_limits') }}
+            </div>                            
         </div>
     </div>
 </div>

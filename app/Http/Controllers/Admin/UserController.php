@@ -77,9 +77,8 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $agencies = Agency::get();
-
         if (!$user) {
-            return redirect()->back()->with('error', 'Admin not found.');
+            return redirect()->route('admin.user.index')->with('error', 'Not found.');
         }
         if ($user->role == 1) {
             $pageTitle = 'Edit Admin';

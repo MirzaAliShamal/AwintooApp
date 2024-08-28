@@ -180,7 +180,7 @@ class RestInformationController extends Controller
         $user = Auth::user();
         
         if (empty($restInfo)) {
-            return redirect()->route('admin.info.index')->with('error', 'Rest Info not found.');
+            return redirect()->route('admin.info.index')->with('error', 'Rest Information not found.');
         }
         
         $client = Client::find($restInfo->client_id);

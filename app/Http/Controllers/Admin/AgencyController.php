@@ -69,6 +69,9 @@ class AgencyController extends Controller
     {
         $pageTitle = "Edit Agency";
         $agency = Agency::find($id);
+        if (empty($agency)) {
+            return redirect()->route('admin.agency.index')->with('error', 'Agency not found.');
+        }
         return view('admin.agency.edit', compact('pageTitle', 'agency'));
     }
 

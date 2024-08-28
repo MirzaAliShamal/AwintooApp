@@ -117,6 +117,7 @@ Route::middleware('auth')->group(function () {
         Route::post('client-docs/mail', 'clientDocsRequiredMail')->name('clientDocsRequiredMail');
         Route::post('client-reject/mail', 'clientRejectMail')->name('clientRejectMail');
         Route::post('client-application/mail', 'clientApplicationCompleteMail')->name('clientApplicationCompleteMail');
+        Route::delete('/client/document/{id}/{document}', 'deleteDocument')->name('document.delete');
     });
 
     // Payment 

@@ -113,6 +113,29 @@ $(document).ready(function(){
         }
     });
 
+    // Delete Document
+    $('.delete-doc').click(function(e) {
+        e.preventDefault();
+        var deleteRoute = $(this).data('delete-doc');
+        if (confirm("Are you sure you want to delete this document?")) {
+            $.ajax({
+                url: deleteRoute,
+                type: 'DELETE',
+                success: function(response) {
+                    if (response.status === true) {
+                        messageShow("<div class='alert alert-success'>" + response['message'] + "</div>");
+                        window.location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr) {
+                    alert('An error occurred while deleting the document.');
+                }
+            });
+        }
+    });
+
     $('#client_id').change(function() {
         var clientId = $(this).val();
 

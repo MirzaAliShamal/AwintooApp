@@ -24,7 +24,7 @@
                     <table class="table table-bordered">
                         <tbody>
                             <tr>
-                                <th>Unique ID Number</th>
+                                <th>Client ID</th>
                                 <td>{{ $client->unique_id_number }}</td>
                             </tr>
                             <tr>
@@ -41,7 +41,7 @@
                             </tr>
                             <tr>
                                 <th>Gender</th>
-                                <td>{{ $client->gender }}</td>
+                                <td>{{ ucfirst($client->gender) }}</td>
                             </tr>
                             <tr>
                                 <th>Date of Birth</th>
@@ -88,7 +88,7 @@
                                 <td>{{ Carbon\Carbon::parse($client->police_certificate_issue_date)->format('d-m-Y') }}</td>
                             </tr>
                             <tr>
-                                <th>User ID</th>
+                                <th>Agent Name</th>
                                 <td>{{ $client->agent->name }}</td>
                             </tr>
                         </tbody>

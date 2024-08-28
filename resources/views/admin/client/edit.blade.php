@@ -161,7 +161,7 @@
                                     </div>
                                 </div>
                                 @if(auth()->user()->role == 1)
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="user_id">Agent Name</label>
                                         <select class="form-control" name="user_id" id="user_id">
@@ -171,6 +171,17 @@
                                             @empty
                                             <option>No Record Found</option>
                                             @endforelse
+                                        </select>
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="validation_status">Validation Status</label>
+                                        <select class="form-control" name="validation_status" id="validation_status">
+                                            <option value="">Select Validation Status</option>
+                                            <option value="Validate" {{ ($client->validation_status === 'Validate') ? 'selected' : '' }}>Validate</option>
+                                            <option value="Not Validate" {{ ($client->validation_status === 'Not Validate') ? 'selected' : '' }}>Not Validate</option>
                                         </select>
                                         <p></p>
                                     </div>

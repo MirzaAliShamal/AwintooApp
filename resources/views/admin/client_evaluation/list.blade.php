@@ -18,6 +18,7 @@
 <section class="content">
     <div class="container-fluid">
         <div class="message"></div>
+        @include('admin.response.message')
         <div class="card">
             <div class="card-header">
                 <div class="card-tools">
@@ -36,6 +37,7 @@
                             <th>Email</th>
                             <th>Job</th>
                             <th>Agent</th>
+                            <th>Status</th>
                             <th width="100">Action</th>
                         </tr>
                     </thead>
@@ -48,6 +50,13 @@
                             <td>{{ $row->email }}</td>
                             <td>{{ $row->job->job_name }}</td>
                             <td>{{ $row->agent->name }}</td>
+                            <td>
+                                @if($row->validation_status === 'Not Validate')
+                                    <span class="badge badge-danger">{{ $row->validation_status }}</span>
+                                @else
+                                    <span class="badge badge-success">{{ $row->validation_status }}</span>
+                                @endif
+                            </td>
                             <td>
                                 <a href="{{ route('admin.eavaluation.showData', $row->id) }}" class="btn btn-sm btn-outline-success">
                                     <i class="fa fa-eye"></i>
@@ -65,8 +74,8 @@
                         </tbody>
                     </table>                                
                     <div class="mt-2">
-                        {{ $clients->links() }}
-                    </div>
+                        {{ $clients->links('admin.pagination.page_limits') }}
+                    </div> 
                 </div>
             </div>
         </div>
@@ -100,8 +109,8 @@
 
     @push('script')
     <script>
-      $(document).ready(function() {
-     $('#mailModal').on('show.bs.modal', function (event) {
+    $(document).ready(function() {
+    $('#mailModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var route = button.data('route');
     var title = button.data('title');
@@ -112,12 +121,10 @@
     modal.find('.dynamic-label').text(label);
     modal.find('form').attr('action', route);
 
-    // Clear previous dynamic content
     var form = modal.find('form');
-    form.find('.form-group').not(':first').remove(); // Keep only the first form-group (Client ID)
+    form.find('.form-group').not(':first').remove();
 
     if (title.includes('Client Validation')) {
-        // Add radio options for client validation
         var radioOptions = `
             <div class="form-group">
                 <label>Client Validation Options</label><br>
@@ -150,7 +157,7 @@
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="documents[]" value="Id Card Back" id="id_back">
-                    <label class="form-check-label" for="id_back">ID Back</label>
+                    <label class="form-check-label" for="id_back">ID Card Back</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="documents[]" value="License Front" id="license_front">

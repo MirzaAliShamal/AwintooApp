@@ -15,12 +15,7 @@
 <section class="content">
     <div class="container-fluid">
     <div class="message"></div>
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+    @include('admin.response.message')
         <div class="card">
         <div class="card-body table-responsive">                                 
             <table id="datatable" class="table table-hover text-nowrap text-center">
@@ -85,8 +80,8 @@
                 </tbody>
             </table>  
             <div class="mt-2">
-                {{ $data->links() }}
-            </div>                              
+                {{ $data->links('admin.pagination.page_limits') }}
+            </div>                            
         </div>
     </div>
 </div>

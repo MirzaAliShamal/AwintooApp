@@ -199,7 +199,7 @@ class ClientController extends Controller
         $client = Client::find($id);
 
         if (empty($client)) {
-            return redirect()->route('admin.client.index');
+            return redirect()->route('admin.client.index')->with('error', 'Client not found.');
         }
         
         if ($user->role == 2 && $client->user_id != $user->id) {

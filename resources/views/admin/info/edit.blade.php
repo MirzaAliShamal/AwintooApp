@@ -291,6 +291,7 @@
                                             @else
                                             
                                             <input type="file" name="five_minutes_work_video" id="five_minutes_work_video" class="form-control">
+                                            <p></p>
                                             @endif
                                         </div>
                                         @endif
@@ -328,6 +329,7 @@
                                             @endif
                                             @else
                                             <input type="file" name="legalized_police_certificate" id="legalized_police_certificate" class="form-control">
+                                            <p></p>
                                             @endif
                                         </div>
                                         @endif
@@ -365,6 +367,7 @@
                                             @endif
                                             @else
                                             <input type="file" name="legalized_school_certificate" id="legalized_school_certificate" class="form-control">
+                                            <p></p>
                                             @endif
                                         </div>
                                         @endif
@@ -401,6 +404,7 @@
                                             @endif
                                             @else
                                             <input type="file" name="legalized_driver_license" id="legalized_driver_license" class="form-control">
+                                            <p></p>
                                             @endif
                                         </div>
                                         @endif

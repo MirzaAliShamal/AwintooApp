@@ -20,6 +20,7 @@
 <section class="content">
     <div class="container-fluid">
     <div class="message"></div>
+    @include('admin.response.message')
         <div class="card">
             {{-- <div class="card-header">
                 <div class="card-tools">
@@ -39,6 +40,7 @@
                         <th>Job</th>
                         @if(auth()->user()->role == 1)
                             <th>Agent</th>
+                            <th>Status</th>
                         @endif
                         <th width="100">Action</th>
                     </tr>
@@ -53,6 +55,13 @@
                         <td>{{ $row->job->job_name }}</td>
                         @if(auth()->user()->role == 1)
                             <td>{{ $row->agent->name }}</td>
+                            <td>
+                                @if($row->validation_status === 'Not Validate')
+                                    <span class="badge badge-danger">{{ $row->validation_status }}</span>
+                                @else
+                                    <span class="badge badge-success">{{ $row->validation_status }}</span>
+                                @endif
+                            </td>
                         @endif
                         @if((auth()->user()->role == 2))
                         @php
@@ -109,8 +118,8 @@
                 </tbody>
             </table>                                
             <div class="mt-2">
-                {{ $data->links() }}
-            </div>
+                {{ $data->links('admin.pagination.page_limits') }}
+            </div> 
         </div>
     </div>
 </div>

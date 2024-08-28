@@ -16,6 +16,7 @@
 <section class="content">
     <div class="container-fluid">
     <div class="message"></div>
+    @include('admin.response.message')
         <div class="card">
         <div class="card-body table-responsive">                                 
             <table id="datatable" class="table table-hover text-nowrap">
@@ -48,10 +49,10 @@
                     </tr>
                     @endforelse
                 </tbody>
-            </table>  
+            </table>         
             <div class="mt-2">
-                {{ $admins->links() }}
-            </div>                              
+                {{ $admins->links('admin.pagination.page_limits') }}
+            </div>                         
         </div>
     </div>
 </div>
