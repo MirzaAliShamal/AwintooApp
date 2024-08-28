@@ -23,61 +23,85 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="agency_name">Agency Name</label>
-                                        <input type="text" name="agency_name" id="agency_name" class="form-control" required>
+                                        <input type="text" name="agency_name" id="agency_name" placeholder="Agency Name" class="form-control">
+                                        <p></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="company_name">Company Name</label>
-                                        <input type="text" name="company_name" id="company_name" class="form-control" required>
+                                        <input type="text" name="company_name" id="company_name" placeholder="Company Name" class="form-control">
+                                        <p></p>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="company_address">Company Address</label>
-                                        <textarea name="company_address" id="company_address" class="form-control" rows="3" required></textarea>
+                                        <textarea name="company_address" id="company_address" class="form-control" rows="3"></textarea>
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="phone_number">Phone Number</label>
+                                        <input type="text" name="phone_number" id="phone_number" placeholder="Phone Number" class="form-control">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="email">Email</label>
+                                        <input type="email" name="email" id="email" class="form-control" placeholder="Email">
+                                        <p></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="director_name">Director Name</label>
-                                        <input type="text" name="director_name" id="director_name" class="form-control" required>
+                                        <input type="text" name="director_name" id="director_name" class="form-control" placeholder="Director Name">
+                                        <p></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="company_registration_number">Company Registration Number</label>
-                                        <input type="text" name="company_registration_number" id="company_registration_number" class="form-control">
+                                        <input type="text" name="company_registration_number" id="company_registration_number" class="form-control" placeholder="Company Registration Number">
+                                        <p></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="company_tax_number">Company Tax Number</label>
-                                        <input type="text" name="company_tax_number" id="company_tax_number" class="form-control">
+                                        <input type="text" name="company_tax_number" id="company_tax_number" class="form-control" placeholder="Company Tax Number">
+                                        <p></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="company_bank_account">Company Bank Account</label>
-                                        <input type="text" name="company_bank_account" id="company_bank_account" class="form-control">
+                                        <input type="text" name="company_bank_account" id="company_bank_account" class="form-control" placeholder="Company Bank Account">
+                                        <p></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="bank_name">Bank Name</label>
-                                        <input type="text" name="bank_name" id="bank_name" class="form-control">
+                                        <input type="text" name="bank_name" id="bank_name" class="form-control" placeholder="Bank Name">
+                                        <p></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="contract_name">Contact Person Name</label>
-                                        <input type="text" name="contract_name" id="contract_name" class="form-control">
+                                        <input type="text" name="contract_name" id="contract_name" class="form-control" placeholder="Contact Person Name">
+                                        <p></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="quota">Quota (Number of Clients per Job)</label>
-                                        <input type="number" name="quota" id="quota" class="form-control" min="0" required>
+                                        <input type="number" name="quota" id="quota" class="form-control" min="1" placeholder="Quota">
+                                        <p></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -85,6 +109,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label for="agency_logo">Agency Logo</label>
                                             <input type="file" name="agency_logo" id="agency_logo" class="form-control">
+                                            <p></p>
                                         </div>
                                         <div class="col-md-6 text-center">
                                             <img id="photo_preview" src="#" class="img-fluid img-thumbnail" alt="Image preview" style="display:none; max-width: 50%; height: auto;">

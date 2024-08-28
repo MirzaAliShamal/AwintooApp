@@ -32,7 +32,7 @@
                     @forelse($users as $user)
                     <tr>
                         <td>{{ $user->name }}</td>
-                        <td>{{ $user->agency_name }}</td>
+                      <td>{{ $user->agency ? $user->agency->agency_name : '' }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone_number }}</td>
                         <td>

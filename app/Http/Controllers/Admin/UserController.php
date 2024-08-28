@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Hash;
 use App\Models\User;
+use App\Models\Agency;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -27,7 +28,8 @@ class UserController extends Controller
     public function create() 
     {
         $pageTitle = 'Add';
-        return view('admin.user.add', compact('pageTitle'));
+        $agencies = Agency::get();
+        return view('admin.user.add', compact('pageTitle', 'agencies'));
     }
 
     public function store(Request $request) 
@@ -47,7 +49,7 @@ class UserController extends Controller
                     'message' => 'Email already exists.'
                 ]);
             }
-            $data = $request->only(['name', 'agency_name', 'email', 'phone_number', 'password', 'role']);
+            $data = $request->only(['name', 'agency_id', 'email', 'phone_number', 'password', 'role']);
             if ($request->role == 1) {
                 User::create($data);
                 $roleName = 'Admin';
@@ -74,6 +76,7 @@ class UserController extends Controller
     public function edit($id) 
     {
         $user = User::find($id);
+        $agencies = Agency::get();
 
         if (!$user) {
             return redirect()->back()->with('error', 'Admin not found.');
@@ -85,7 +88,7 @@ class UserController extends Controller
         } elseif ($user->role == 2) {
             $pageTitle = 'Edit Agent';
             $type = 'Agnet';
-            return view('admin.user.edit', compact('user', 'pageTitle', 'type'));
+            return view('admin.user.edit', compact('user', 'agencies', 'pageTitle', 'type'));
         }
     }
 
@@ -120,7 +123,7 @@ class UserController extends Controller
                 'message' => 'Email already exists.'
             ]);
         }
-        $updateData = $request->only(['name', 'agency_name', 'email', 'phone_number', 'role']);
+        $updateData = $request->only(['name', 'agency_id', 'email', 'phone_number', 'role']);
         if ($request->filled('password')) {
             $updateData['password'] = Hash::make($request->password);
         }

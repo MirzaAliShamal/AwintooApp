@@ -60,7 +60,12 @@ class ClientEvaluationController extends Controller
         $client = Client::where('unique_id_number', $clientId)->first();
         if ($client) {
             $agent = User::where('id', $client->user_id)->first();
-            // Mail::to($agent->email)->send(new ClientValidationMail($client, $agent, $validationOption)); 
+            $agency = $agent->agency;
+            // $mail = Mail::to($agent->email);
+            // if ($agency && $agency->email) {
+                // $mail->cc($agency->email);
+            // }
+            // $mail->send(new ClientValidationMail($client, $agent, $validationOption));
             return back()->with('status', 'Client validation email sent successfully!');
         } else {
             return back()->withErrors('Client not found.');
@@ -76,7 +81,12 @@ class ClientEvaluationController extends Controller
         $client = Client::where('unique_id_number', $clientId)->first();
         if ($client) {
             $agent = User::where('id', $client->user_id)->first();
-            // Mail::to($agent->email)->send(new DocumentsRequestMail($client, $agent, $selectedDocuments, $otherText)); 
+            $agency = $agent->agency;
+            // $mail = Mail::to($agent->email);
+            // if ($agency && $agency->email) {
+            //     $mail->cc($agency->email);
+            // }
+            // $mail->send(new DocumentsRequestMail($client, $agent, $selectedDocuments, $otherText));
             return back()->with('status', 'Document request email sent successfully!');
         } else {
             return back()->withErrors('Client not found.');

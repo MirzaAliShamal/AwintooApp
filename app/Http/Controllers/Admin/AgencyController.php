@@ -33,6 +33,8 @@ class AgencyController extends Controller
             'agency_name' => 'required|string|max:255',
             'company_name' => 'required|string|max:255',
             'company_address' => 'required|string|max:500',
+            'phone_number' => 'required|string|max:15',
+            'email' => 'required|string|email|max:255|unique:agencies',
             'director_name' => 'required|string|max:255',
             'company_registration_number' => 'nullable|string|max:255',
             'company_tax_number' => 'nullable|string|max:255',
@@ -78,6 +80,8 @@ class AgencyController extends Controller
             'agency_name' => 'required|string|max:255',
             'company_name' => 'required|string|max:255',
             'company_address' => 'required|string|max:500',
+            'phone_number' => 'required|string|max:15',
+            'email' => 'required|string|email|max:255|unique:agencies,email,' . $agency->id,
             'director_name' => 'required|string|max:255',
             'company_registration_number' => 'nullable|string|max:255',
             'company_tax_number' => 'nullable|string|max:255',
@@ -104,6 +108,8 @@ class AgencyController extends Controller
         $agency->agency_name = $request->agency_name;
         $agency->company_name = $request->company_name;
         $agency->company_address = $request->company_address;
+        $agency->phone_number = $request->phone_number;
+        $agency->email = $request->email;
         $agency->director_name = $request->director_name;
         $agency->company_registration_number = $request->company_registration_number;
         $agency->company_tax_number = $request->company_tax_number;

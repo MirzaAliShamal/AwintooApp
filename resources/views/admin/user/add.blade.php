@@ -21,8 +21,13 @@
                                 @if(Request::get('type'))
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label for="agency_name">Agency Name</label>
-                                        <input type="text" name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
+                                        <label for="agency_id">Agency Name</label>
+                                        <select class="form-control" name="agency_id" id="agency_id">
+                                            <option>Select Agency</option>
+                                            @foreach($agencies as $row)
+                                                <option value="{{ $row->id }}">{{ $row->agency_name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 @endif

@@ -56,7 +56,6 @@
             <p>I'm pleased to inform you that <strong>{{ $client->full_name }}</strong>'s application has been successfully validated. We can now proceed with the next steps.</p>
             <p>Please provide the following:</p>
             
-            <!-- Display the selected validation option -->
             <p><strong>Proof of Payment:</strong> {{ $validationOption }}</p>
 
             <p>Once we receive the payment confirmation, we'll initiate the visa application and will send you details.</p>

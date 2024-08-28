@@ -43,4 +43,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Client::class);
     }
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
 }

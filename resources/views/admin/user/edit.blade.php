@@ -22,8 +22,15 @@
                                  @if($type)
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label for="agency_name">Agency Name</label>
-                                        <input type="text" name="agency_name" id="agency_name" value="{{ $user->agency_name }}" class="form-control" placeholder="Agency Name">
+                                        <label for="agency_id">Agency Name</label>
+                                        <select class="form-control" name="agency_id" id="agency_id">
+                                            <option>Please Select Agency</option>
+                                            @forelse($agencies as $row)
+                                                <option value="{{ $row->id }}" {{ ($row->id == $user->agency_id) ? 'selected' : '' }}>{{ $row->agency_name }}</option>
+                                            @empty
+                                                <option>No Record Found</option>
+                                            @endforelse
+                                        </select>
                                     </div>
                                 </div>
                                 @endif
