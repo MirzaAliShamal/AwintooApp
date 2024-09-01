@@ -6,10 +6,12 @@ use Auth;
 use App\Models\Job;
 use App\Models\User;
 use App\Models\Client;
-use App\Models\Payment;
 use App\Models\Agency;
+use App\Models\Student;
+use App\Models\Payment;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use App\Models\PracticePlace;
 use App\Models\RestInformation;
 use Illuminate\Validation\Rule;
 use App\Rules\FileTypeValidate;
@@ -21,14 +23,18 @@ class AdminController extends Controller
     public function dashboard()
     {
         $pageTitle = 'Dashboard';
+        
         $user = Auth::user(); 
-        $totalClients = Client::count();
-        $totalInfo = RestInformation::count();
+        $totalJobs = Job::count();
         $totalUsers = User::count();
         $totalAgency = Agency::count();
-        $totalJobs = Job::count();
+        $totalClients = Client::count();
+        $totalStudents = Student::count();
         $totalPayments = Payment::count();
+        $totalInfo = RestInformation::count();
         $totalAppointment = Appointment::count();
+        $totalPracticePlace = PracticePlace::count();
+
         if($user->role == 2) {
             $totalClients = Client::where('user_id', $user->id)->count();
             $totalInfo = RestInformation::whereHas('client', function($query) use ($user) {
@@ -38,7 +44,7 @@ class AdminController extends Controller
                 $query->where('user_id', $user->id);
             })->count();
         } 
-        return view('admin.dashboard', compact('pageTitle', 'totalClients', 'totalInfo', 'totalUsers', 'totalJobs', 'totalPayments', 'totalAppointment', 'totalAgency'));
+        return view('admin.dashboard', compact('pageTitle', 'totalClients', 'totalInfo', 'totalUsers', 'totalJobs', 'totalPayments', 'totalAppointment', 'totalAgency', 'totalPracticePlace', 'totalStudents'));
     }
 
     public function profile()

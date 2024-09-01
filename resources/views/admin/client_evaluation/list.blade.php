@@ -23,7 +23,7 @@
             <div class="card-header">
                 <div class="card-tools">
                     <div class="input-group input-group" style="width: 250px;">
-                        <input type="text" name="keyword" id="keyword" class="form-control float-right" placeholder="Search by client id">
+                        <input type="text" name="keyword" id="keyword" class="form-control float-right" placeholder="Search by client id or name">
                     </div>
                 </div>
             </div>

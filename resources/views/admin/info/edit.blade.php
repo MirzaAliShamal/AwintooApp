@@ -54,8 +54,15 @@
 
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label for="training_program">Training Program</label>
-                                        <input type="text" name="training_program" id="training_program" value="{{ $restInfo->training_program }}" class="form-control" placeholder="Training Program">
+                                        <label for="practice_places_id">Training Program</label>
+                                        <select class="form-control" name="practice_places_id" id="practice_places_id">
+                                            <option value="">Select Client</option>
+                                            @forelse($training as $row)
+                                            <option value="{{ $row->id }}" {{ ($restInfo->practice_places_id == $row->id) ? 'selected' : '' }}>{{ $row->practice_and_work_fields }}</option>
+                                            @empty
+                                            <option>No Record Found</option>
+                                            @endforelse
+                                        </select>
                                         <p></p>
                                     </div>
                                 </div>
@@ -261,7 +268,6 @@
                                     </div>
                                 </div>
 
-
                                 <div class="mt-2">
                                     <h3>Documents To Upload</h3>
                                 </div>
@@ -272,7 +278,6 @@
                                         <label for="five_minutes_work_video">Video at least 5 minutes on working (Zip File Compressed)</label>
                                         @if (auth()->user()->role == 1)
                                         <div class="col-md-6">
-                                           
                                             <input type="file" name="five_minutes_work_video" id="five_minutes_work_video" class="form-control">
                                             <p></p>
                                         </div>
@@ -289,7 +294,6 @@
                                             @if (isset($restInfo->five_minutes_work_video) && !empty($restInfo->five_minutes_work_video))
                                             <p>File: {{ $restInfo->five_minutes_work_video }}</p>
                                             @else
-                                            
                                             <input type="file" name="five_minutes_work_video" id="five_minutes_work_video" class="form-control">
                                             <p></p>
                                             @endif

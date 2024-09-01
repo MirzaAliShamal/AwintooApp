@@ -13,6 +13,7 @@
     </div>
 </section>
 <section class="content">
+    <div class="message"></div>
     <div class="container-fluid">
         <form class="saveForm" data-storeURL="{{ route('admin.agency.store') }}">
             <div class="row">

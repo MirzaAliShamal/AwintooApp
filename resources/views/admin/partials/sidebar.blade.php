@@ -83,6 +83,22 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{ route('admin.practice.index') }}" class="nav-link {{ menuActive('admin.practice.*') }}">
+              <i class="nav-icon fas fa-chalkboard-teacher"></i>
+              <p>
+                Training & Practice
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.student.index') }}" class="nav-link {{ menuActive('admin.student.*') }}">
+              <i class="nav-icon fas fa-user-graduate"></i>
+              <p>
+                Students In RO
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ route('admin.agency.index') }}" class="nav-link {{ menuActive('admin.agency.*') }}">
               <i class="nav-icon fas fa-building"></i>
               <p>

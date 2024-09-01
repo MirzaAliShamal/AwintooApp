@@ -96,11 +96,18 @@ class FileInfo
             'path'      =>'assets/admin/images/profile',
             'size'      =>'400x400',
         ];
-
+        // Default Error Page
+        $data['errors'] = [
+            'path'      =>'assets/images/errors/',
+        ];
         // Agency Logo Pic 
         $data['agencyLogo'] = [
             'path'      =>'assets/admin/agency_logo',
             'size'      =>'400x400',
+        ];
+        // Student Excel File 
+        $data['monthly_time_sheet'] = [
+            'path'      =>'assets/admin/monthly_time_sheet',
         ];
         return $data;
 	}

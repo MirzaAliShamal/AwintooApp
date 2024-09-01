@@ -158,7 +158,7 @@ $(document).ready(function(){
                 }
             });
         } else {
-            $('#full_name').val('');
+            $('#client_name').val('');
         }
     });
 
@@ -181,5 +181,41 @@ $(document).ready(function(){
                 alert('An error occurred while updating the status.');
             }
         });
+    });
+
+
+    // Multi-Select
+    $('#select-all').on('click', function() {
+        $('.student-checkbox').prop('checked', this.checked);
+    });
+
+    $('.send-notification').on('click', function(e) {
+        e.preventDefault();
+        var mailRoute = $(this).data('mail');
+        let selectedStudents = [];
+        $('.student-checkbox:checked').each(function() {
+            selectedStudents.push($(this).val());
+        });
+        $('#loading-screen').fadeIn();
+        if (confirm("Are you sure you want to send mail?")) {
+            if (selectedStudents.length > 0) {
+                $.ajax({
+                    url: mailRoute,
+                    type: 'POST',
+                    data: { student_ids: selectedStudents },
+                    success: function(response) {
+                        messageShow("<div class='alert alert-success'>" + response['message'] + "</div>");
+                        $('#loading-screen').fadeOut();
+                    },
+                    error: function(response) {
+                    $('#loading-screen').fadeOut();
+                        alert('Failed to send notifications.');
+                    }
+                });
+            } else {
+                $('#loading-screen').fadeOut();
+                alert('Please select at least one student.');
+            }
+        }
     });
 });

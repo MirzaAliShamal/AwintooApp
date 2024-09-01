@@ -2,6 +2,22 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/down', function () {
+    $exitCode = Artisan::call('down', [
+        '--secret' => 'work-zone',
+    ]);
+    if ($exitCode === 0) {
+        return 'Server down successfully with a secret key';
+    } else {
+        return 'Failed to put the server down. Exit code: ' . $exitCode;
+    }
+});
+
+Route::get('/up', function () {
+    $exitCode = Artisan::call('up');
+    return 'Server is back online';
+});
+
 Route::get('/migrations', function () {
     $exitCode = Artisan::call('migrate');
     if ($exitCode === 0) {

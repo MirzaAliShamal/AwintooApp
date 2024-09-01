@@ -6,6 +6,7 @@ use Auth, Mail;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Mail\VisaDeniedMail;
+use App\Models\PracticePlace;
 use App\Mail\VisaAcceptedMail;
 use Illuminate\Validation\Rule;
 use App\Rules\FileTypeValidate;
@@ -71,11 +72,12 @@ class RestInformationController extends Controller
     {
         $pageTitle = 'Add';
         $clients = Client::get();
+        $training = PracticePlace::get();
         $user = Auth::user();
         if($user->role == 2) {
             $clients = Client::where('user_id', $user->id)->get();
         }
-        return view('admin.info.add', compact('pageTitle', 'clients'));
+        return view('admin.info.add', compact('pageTitle', 'clients', 'training'));
     }
 
     public function store(Request $request) 
@@ -84,7 +86,7 @@ class RestInformationController extends Controller
             'client_id' => 'required|exists:clients,id',
             'body_size' => 'required|string|max:255',
             'name_with_vietnam_characters' => 'required|string|max:255',
-            'training_program' => 'nullable|string|max:255',
+            'practice_places_id' => 'required|exists:practice_places,id',
             'system_email' => 'nullable|email|max:255',
             'place_of_birth' => 'required|string',
             'nationality' => 'required|string',
@@ -178,6 +180,7 @@ class RestInformationController extends Controller
     {
         $restInfo = RestInformation::find($id);
         $user = Auth::user();
+        $training = PracticePlace::get();
         
         if (empty($restInfo)) {
             return redirect()->route('admin.info.index')->with('error', 'Rest Information not found.');
@@ -221,7 +224,7 @@ class RestInformationController extends Controller
             $clients = Client::get();
             $pageTitle = "Edit Rest Information";
 
-            return view('admin.info.edit', compact('restInfo', 'pageTitle', 'clients', 'fileTypes'));
+            return view('admin.info.edit', compact('restInfo', 'pageTitle', 'clients', 'fileTypes', 'training'));
         }
     }
 
@@ -246,7 +249,7 @@ class RestInformationController extends Controller
             'client_id' => 'required|exists:clients,id',
             'body_size' => 'required|string|max:255',
             'name_with_vietnam_characters' => 'required|string|max:255',
-            'training_program' => 'nullable|string|max:255',
+            'practice_places_id' => 'required|exists:practice_places,id',
             'system_email' => 'nullable|email|max:255',
             'place_of_birth' => 'required|string',
             'nationality' => 'required|string',

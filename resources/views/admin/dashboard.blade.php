@@ -99,6 +99,30 @@
               <a href="{{ route('admin.agency.create') }}" class="small-box-footer">Add Agency <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-dark">
+              <div class="inner">
+                <h3>{{ $totalPracticePlace }}</h3>
+                <p>Training / Practice</p>
+              </div>
+              <div class="icon">
+                <i class="text-muted fas fa-chalkboard-teacher"></i>
+              </div>
+              <a href="{{ route('admin.practice.create') }}" class="small-box-footer">Add Training <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-dark">
+              <div class="inner">
+                <h3>{{ $totalStudents }}</h3>
+                <p>Students RO</p>
+              </div>
+              <div class="icon">
+                <i class="text-muted fas fa-user-graduate"></i>
+              </div>
+              <a href="{{ route('admin.student.create') }}" class="small-box-footer">Add Studnets RO <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
           @endif
         </div>
       </div>

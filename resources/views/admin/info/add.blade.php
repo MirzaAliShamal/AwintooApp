@@ -53,8 +53,15 @@
 
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        <label for="training_program">Training Program</label>
-                                        <input type="text" name="training_program" id="training_program" class="form-control" placeholder="Training Program">
+                                        <label for="practice_places_id">Training Program</label>
+                                        <select class="form-control" name="practice_places_id" id="practice_places_id">
+                                            <option value="">Select Training Program</option>
+                                            @forelse($training as $row)
+                                            <option value="{{ $row->id }}">{{ $row->practice_and_work_fields }}</option>
+                                            @empty
+                                            <option>No Record Found</option>
+                                            @endforelse
+                                        </select>
                                         <p></p>
                                     </div>
                                 </div>

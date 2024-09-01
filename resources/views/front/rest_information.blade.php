@@ -22,7 +22,7 @@
             </tr>
             <tr>
                 <th colspan="2">Training Program</th>
-                <td colspan="2">{{ $client->restInfo->training_program }}</td>
+                <td colspan="2">{{ $client->restInfo->practicePlace->practice_and_work_fields }}</td>
             </tr>
             <tr>
                 <th colspan="4">Driver License</th>

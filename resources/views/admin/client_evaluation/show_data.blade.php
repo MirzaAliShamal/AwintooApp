@@ -113,7 +113,7 @@
                                 </tr>
                                 <tr>
                                     <th>Training Program</th>
-                                    <td>{{ $client->restInfo->training_program }}</td>
+                                    <td>{{ $client->restInfo->practicePlace->practice_and_work_fields }}</td>
                                 </tr>
                                 <tr>
                                     <th>System Email</th>

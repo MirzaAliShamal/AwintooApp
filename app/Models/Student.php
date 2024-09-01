@@ -5,21 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RestInformation extends Model
+class Student extends Model
 {
     use HasFactory;
-
-    protected $table = 'rest_informations';
 
     protected $guarded = [];
 
     public function client()
     {
         return $this->belongsTo(Client::class);
-    }
-
-    public function practicePlace()
-    {
-        return $this->belongsTo(PracticePlace::class, 'practice_places_id');
     }
 }

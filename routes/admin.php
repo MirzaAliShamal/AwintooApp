@@ -81,6 +81,32 @@ Route::middleware('auth')->group(function () {
         Route::delete('delete/{id}/agency', 'destroy')->name('destroy');
     });
 
+    // Training / Practice
+    Route::controller('PracticePlaceController')->name('practice.')->group(function () {
+        Route::get('practice', 'index')->name('index');
+        Route::get('add/practice', 'create')->name('create');
+        Route::post('add/practice', 'store')->name('store');
+        Route::get('edit/{id}/practice', 'edit')->name('edit');
+        Route::put('update/{id}/practice', 'update')->name('update');
+        Route::delete('delete/{id}/practice', 'destroy')->name('destroy');
+    });
+
+    // Student
+    Route::controller('StudentController')->name('student.')->group(function () {
+        Route::get('student', 'index')->name('index');
+        Route::get('add/student', 'create')->name('create');
+        Route::post('add/student', 'store')->name('store');
+        Route::get('edit/{id}/student', 'edit')->name('edit');
+        Route::put('update/{id}/student', 'update')->name('update');
+        Route::delete('delete/{id}/student', 'destroy')->name('destroy');
+        Route::get('search/student', 'search')->name('search');
+        Route::get('client-information/{id}', 'getClientInfo')->name('info');
+        Route::get('/student/filter', 'filter')->name('filter');
+        Route::post('student/sendArrivalNotification', 'sendArrivalNotification')->name('sendArrivalNotification');
+        Route::post('student/sendPaymentNotification', 'sendPaymentNotification')->name('sendPaymentNotification');
+        Route::post('/student/monthlyReport', 'sendMonthlyReport')->name('monthlyReport');
+    });
+
     // Rest Information 
     Route::controller('RestInformationController')->name('info.')->group(function () {
         Route::get('informations', 'index')->name('index');
