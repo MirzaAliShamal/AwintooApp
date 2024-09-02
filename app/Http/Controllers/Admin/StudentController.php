@@ -23,7 +23,7 @@ class StudentController extends Controller
 
     public function create() 
     {
-        $clients = Client::get();
+        $clients = Client::whereHas('restInfo')->get();
         $pageTitle = 'Add Student';
         return view('admin.Student.add', compact('pageTitle', 'clients'));
     }
@@ -89,6 +89,19 @@ class StudentController extends Controller
             'message' => 'Payment notifications sent successfully!',
         ]);
     }
+
+    public function sendMonthlyReport(Request $request)
+    {
+        $studentIds = $request->student_ids;
+        $hrEmail = $request->hr_email;
+        $students = Student::with('client')->whereIn('id', $studentIds)->get();
+        Mail::to($hrEmail)->send(new MonthlyReportMail($students));
+        return response()->json([
+            'success' => true,
+            'message' => 'Mail sent to HR successfully'
+        ]);
+    }
+
     
     public function getClientInfo($id)
     {
@@ -187,7 +200,7 @@ class StudentController extends Controller
     {
         $pageTitle = "Edit Student Data";
         $student = Student::find($id);
-        $clients = Client::get();
+        $clients = Client::whereHas('restInfo')->get();
         if (empty($student)) {
             return redirect()->route('admin.student.index')->with('error', 'Student not found.');
         }

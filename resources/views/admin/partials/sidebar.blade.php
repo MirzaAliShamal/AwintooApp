@@ -86,7 +86,7 @@
             <a href="{{ route('admin.practice.index') }}" class="nav-link {{ menuActive('admin.practice.*') }}">
               <i class="nav-icon fas fa-chalkboard-teacher"></i>
               <p>
-                Training & Practice
+                Work & Practice
               </p>
             </a>
           </li>

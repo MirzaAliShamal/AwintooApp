@@ -57,6 +57,9 @@
     justify-content: center;
     align-items: center;
 }
+.select2-selection__choice {
+    background-color: #222222 !important;
+}
 
 .loading-content {
     text-align: center;

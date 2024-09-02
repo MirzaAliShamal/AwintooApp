@@ -14,7 +14,7 @@
                     <a href="#" data-mail="{{ route('admin.student.sendArrivalNotification') }}" class="btn btn-outline-dark send-notification">Send Arrival Notification</a>
                 </div>
                 <div class="col-sm-4">
-                    <a href="#" id="monthly-report" data-route="{{ route('admin.student.monthlyReport') }}" data-title="Send Monthly Mail" data-toggle="modal" data-target="#mailModal" class="btn btn-outline-dark">Send Monthly Time Sheet to HR</a>
+                    <a href="#" id="monthly-report" class="btn btn-outline-dark">Send Monthly Time Sheet to HR</a>
                 </div>
                 <div class="col-sm-4">
                     <a href="#" data-mail="{{ route('admin.student.sendPaymentNotification') }}" class="btn btn-outline-dark send-notification">Send Salary Payment Notification</a>
@@ -90,12 +90,88 @@
         </div>
     </div>
 </section>
+<!-- Modal -->
+<div class="modal fade" id="mailModal" tabindex="-1" role="dialog" aria-labelledby="mailModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mailModalLabel">Send Monthly Time Sheet to HR</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="hr-email">HR Email Address:</label>
+                    <input type="email" class="form-control" id="hr-email" placeholder="Enter HR email">
+                </div>
+                <ul id="selected-student-info"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="send-report" class="btn btn-primary">Send Report</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 @endsection
 @push('script')
 <script>
     $(document).ready(function() {
+
+   $('#monthly-report').on('click', function(e) {
+        e.preventDefault();
+
+        // Clear previous list items
+        $('#selected-student-info').empty();
+
+        // Get selected student IDs and names
+        let selectedStudents = [];
+        $('.student-checkbox:checked').each(function() {
+            selectedStudents.push({
+                id: $(this).val(),
+                name: $(this).closest('tr').find('td:nth-child(3)').text()
+            });
+        });
+
+        if (selectedStudents.length > 0) {
+            $('#mailModal').modal('show');
+
+            // Append each selected student's name to the list
+            selectedStudents.forEach(function(student) {
+                $('#selected-student-info').append('<li>' + student.name + '</li>');
+            });
+        } else {
+            alert('Please select at least one student.');
+        }
+    });
+   
+    $('#send-report').on('click', function() {
+        let hrEmail = $('#hr-email').val();
+        let studentIds = $('.student-checkbox:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        if (hrEmail && studentIds.length > 0) {
+            $.ajax({
+                url: '{{ route('admin.student.monthlyReport') }}',
+                type: 'POST',
+                data: { hr_email: hrEmail, student_ids: studentIds },
+                success: function(response) {
+                    alert('Monthly report sent successfully!');
+                    $('#mailModal').modal('hide');
+                },
+                error: function(response) {
+                    alert('Failed to send the report.');
+                }
+            });
+        } else {
+            alert('Please enter the HR email address and select at least one student.');
+        }
+    });
 
         $('#keyword').on('keyup', function() {
             var query = $(this).val();

@@ -29,7 +29,7 @@
                                 <div class="mb-3">
                                     <label for="client_id">Select Student ID</label>
                                     <select class="form-control" name="client_id" id="client_id">
-                                        <option value="">Select Client</option>
+                                        <option value="">Select Student</option>
                                         @forelse($clients as $client)
                                         <option value="{{ $client->id }}">{{ $client->unique_id_number }} - {{ $client->full_name }}</option>
                                         @empty

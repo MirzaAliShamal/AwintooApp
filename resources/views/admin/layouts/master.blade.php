@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="{{ asset('assets/global/css/all.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('assets/admin/css/adminlte.min.css') }}">
+  {{-- Select 2 --}}
+  <link rel="stylesheet" href="{{ asset('assets/admin/css/select2.min.css') }}">
   <!-- Custom style -->
   <link rel="stylesheet" href="{{ asset('assets/admin/css/custom.css?v=0.1') }}">
   @stack('style')
@@ -28,6 +30,8 @@
 <script src="{{ asset('assets/global/js/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('assets/global/js/bootstrap.bundle.min.js') }}"></script>
+{{-- Select 2 --}}
+<script src="{{ asset('assets/admin/js/select2.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('assets/admin/js/adminlte.min.js') }}"></script>
 <!-- Custom JS -->

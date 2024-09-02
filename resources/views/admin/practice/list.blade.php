@@ -36,7 +36,13 @@
                         <td>{{ $row->company_tax_number }}</td>
                         <td>{{ $row->company_email }}</td>
                         <td>{{ $row->company_phone_number }}</td>
-                        <td>{{ $row->practice_and_work_fields }}</td>
+                        <td>
+                            @if (is_array($row->practice_and_work_fields))
+                                {{ implode(', ', $row->practice_and_work_fields) }}
+                            @else
+                                No fields selected
+                            @endif
+                        </td>
                         <td>
                             <a class="btn btn-sm btn-outline-primary" href="{{ route('admin.practice.edit', $row->id) }}">
                                 <i class="fa fa-pen"></i>

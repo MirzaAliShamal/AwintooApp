@@ -103,12 +103,12 @@
             <div class="small-box bg-dark">
               <div class="inner">
                 <h3>{{ $totalPracticePlace }}</h3>
-                <p>Training / Practice</p>
+                <p>Work / Practice</p>
               </div>
               <div class="icon">
                 <i class="text-muted fas fa-chalkboard-teacher"></i>
               </div>
-              <a href="{{ route('admin.practice.create') }}" class="small-box-footer">Add Training <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{ route('admin.practice.create') }}" class="small-box-footer">Add Work/Practice <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <div class="col-lg-3 col-6">

@@ -87,19 +87,19 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label for="practice_and_work_fields">Practice & Work Fields</label>
-                                        <select name="practice_and_work_fields" id="practice_and_work_fields" class="form-control">
-                                            <option value="" disabled>Select Practice & Work Field</option>
-                                            <option value="Welder" {{ old('practice_and_work_fields', $practice->practice_and_work_fields) == 'Welder' ? 'selected' : '' }}>Welder</option>
-                                            <option value="Locksmiths" {{ old('practice_and_work_fields', $practice->practice_and_work_fields) == 'Locksmiths' ? 'selected' : '' }}>Locksmiths</option>
-                                            <option value="Driver" {{ old('practice_and_work_fields', $practice->practice_and_work_fields) == 'Driver' ? 'selected' : '' }}>Driver</option>
-                                            <option value="Electrician" {{ old('practice_and_work_fields', $practice->practice_and_work_fields) == 'Electrician' ? 'selected' : '' }}>Electrician</option>
-                                            <option value="Regular Job Not Skilled" {{ old('practice_and_work_fields', $practice->practice_and_work_fields) == 'Regular Job Not Skilled' ? 'selected' : '' }}>Regular Job Not Skilled</option>
-                                            <option value="Baker" {{ old('practice_and_work_fields', $practice->practice_and_work_fields) == 'Baker' ? 'selected' : '' }}>Baker</option>
-                                            <option value="Teacher" {{ old('practice_and_work_fields', $practice->practice_and_work_fields) == 'Teacher' ? 'selected' : '' }}>Teacher</option>
-                                            <option value="HR" {{ old('practice_and_work_fields', $practice->practice_and_work_fields) == 'HR' ? 'selected' : '' }}>HR</option>
-                                            <option value="Secretary" {{ old('practice_and_work_fields', $practice->practice_and_work_fields) == 'Secretary' ? 'selected' : '' }}>Secretary</option>
-                                            <option value="Manager" {{ old('practice_and_work_fields', $practice->practice_and_work_fields) == 'Manager' ? 'selected' : '' }}>Manager</option>
+                                        <label for="practice_and_work_fields">Work & Practice</label>
+                                        <select name="practice_and_work_fields[]" id="practice_and_work_fields" class="form-control" multiple>
+                                            <option value="" disabled>Select Work & Practice</option>
+                                            <option value="Welder" {{ in_array('Welder', old('practice_and_work_fields', $practice->practice_and_work_fields)) ? 'selected' : '' }}>Welder</option>
+                                            <option value="Locksmiths" {{ in_array('Locksmiths', old('practice_and_work_fields', $practice->practice_and_work_fields)) ? 'selected' : '' }}>Locksmiths</option>
+                                            <option value="Driver" {{ in_array('Driver', old('practice_and_work_fields', $practice->practice_and_work_fields)) ? 'selected' : '' }}>Driver</option>
+                                            <option value="Electrician" {{ in_array('Electrician', old('practice_and_work_fields', $practice->practice_and_work_fields)) ? 'selected' : '' }}>Electrician</option>
+                                            <option value="Regular Job Not Skilled" {{ in_array('Regular Job Not Skilled', old('practice_and_work_fields', $practice->practice_and_work_fields)) ? 'selected' : '' }}>Regular Job Not Skilled</option>
+                                            <option value="Baker" {{ in_array('Baker', old('practice_and_work_fields', $practice->practice_and_work_fields)) ? 'selected' : '' }}>Baker</option>
+                                            <option value="Teacher" {{ in_array('Teacher', old('practice_and_work_fields', $practice->practice_and_work_fields)) ? 'selected' : '' }}>Teacher</option>
+                                            <option value="HR" {{ in_array('HR', old('practice_and_work_fields', $practice->practice_and_work_fields)) ? 'selected' : '' }}>HR</option>
+                                            <option value="Secretary" {{ in_array('Secretary', old('practice_and_work_fields', $practice->practice_and_work_fields)) ? 'selected' : '' }}>Secretary</option>
+                                            <option value="Manager" {{ in_array('Manager', old('practice_and_work_fields', $practice->practice_and_work_fields)) ? 'selected' : '' }}>Manager</option>
                                         </select>
                                         <p></p>
                                     </div>
@@ -116,3 +116,14 @@
     </div>
 </section>
 @endsection
+
+@push('script')
+<script>
+    $(document).ready(function() {
+        $('#practice_and_work_fields').select2({
+            placeholder: "Select Work & Practice",
+            allowClear: true,
+        });
+    });
+</script>
+@endpush

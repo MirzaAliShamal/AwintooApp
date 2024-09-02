@@ -11,7 +11,7 @@ class PracticePlaceController extends Controller
 {
     public function index() 
     {
-        $pageTitle = "Training / Practice";
+        $pageTitle = "Work / Practice";
         $practice = PracticePlace::orderBy('created_at', 'desc')->paginate(7);
         return view('admin.practice.list', compact('pageTitle', 'practice'));
     }
@@ -34,11 +34,13 @@ class PracticePlaceController extends Controller
             'legal_representative_email' => 'nullable|email|max:255|unique:practice_places,legal_representative_email',
             'contact_person_name' => 'nullable|string|max:255',
             'contact_person_email' => 'nullable|email|max:255|unique:practice_places,contact_person_email',
-            'practice_and_work_fields' => 'required|string|in:Welder,Locksmiths,Driver,Electrician,Regular Job Not Skilled,Baker,Teacher,HR,Secretary,Manager',
+            'practice_and_work_fields' => 'required',
         ]);
 
         if ($validator->passes()) {
             $practiceData = $request->all();
+            $selectedValues = $request->input('practice_and_work_fields', []);
+            $practiceData['practice_and_work_fields'] = json_encode($selectedValues);
             PracticePlace::create($practiceData);
             return response()->json([
                 'status' => true,
@@ -77,7 +79,7 @@ class PracticePlaceController extends Controller
             'legal_representative_email' => 'nullable|string|email|max:255|unique:practice_places,legal_representative_email,' . $practice->id,
             'contact_person_name' => 'nullable|string|max:255',
             'contact_person_email' => 'nullable|string|email|max:255|unique:practice_places,contact_person_email,' . $practice->id,
-            'practice_and_work_fields' => 'required|string|in:Welder,Locksmiths,Driver,Electrician,Regular Job Not Skilled,Baker,Teacher,HR,Secretary,Manager',
+            'practice_and_work_fields' => 'required',
         ]);
         if(!$practice) {
             return response()->json([
@@ -87,6 +89,8 @@ class PracticePlaceController extends Controller
         }
         if ($validator->passes()) {
             $practiceData = $request->all();
+            $selectedValues = $request->input('practice_and_work_fields', []);
+            $practiceData['practice_and_work_fields'] = json_encode($selectedValues);
             $practice->update($practiceData);
             return response()->json([
                 'status' => true,

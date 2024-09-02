@@ -22,7 +22,13 @@
             </tr>
             <tr>
                 <th colspan="2">Training Program</th>
-                <td colspan="2">{{ $client->restInfo->practicePlace->practice_and_work_fields }}</td>
+                <td colspan="2">
+                    @if (is_array($client->restInfo->practicePlace->practice_and_work_fields))
+                        {{ implode(', ', $client->restInfo->practicePlace->practice_and_work_fields) }}
+                    @else
+                        No fields selected
+                    @endif
+                </td>
             </tr>
             <tr>
                 <th colspan="4">Driver License</th>

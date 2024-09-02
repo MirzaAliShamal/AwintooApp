@@ -37,7 +37,13 @@
                     <tr>
                         <td>{{ $row->client->full_name }}</td>
                         <td>{{ $row->body_size }}</td>
-                        <td>{{ $row->practicePlace->practice_and_work_fields }}</td>
+                        <td>
+                            @if (is_array($row->practicePlace->practice_and_work_fields))
+                                {{ implode(', ', $row->practicePlace->practice_and_work_fields) }}
+                            @else
+                                No fields selected
+                            @endif
+                         </td>
                         @if((auth()->user()->role == 2))
                         @if(empty($row->five_minutes_work_video) || empty($row->legalized_police_certificate) || empty($row->legalized_school_certificate) || empty($row->legalized_driver_license))
                             <td>

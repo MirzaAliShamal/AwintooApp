@@ -183,7 +183,6 @@ $(document).ready(function(){
         });
     });
 
-
     // Multi-Select
     $('#select-all').on('click', function() {
         $('.student-checkbox').prop('checked', this.checked);
@@ -216,6 +215,8 @@ $(document).ready(function(){
                 $('#loading-screen').fadeOut();
                 alert('Please select at least one student.');
             }
+        } else {
+            $('#loading-screen').fadeOut();
         }
     });
 });

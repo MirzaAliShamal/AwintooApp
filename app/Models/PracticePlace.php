@@ -15,4 +15,10 @@ class PracticePlace extends Model
     {
         return $this->hasMany(RestInformation::class, 'practice_places_id');
     }
+
+    public function getPracticeAndWorkFieldsAttribute($value)
+    {
+        $fields = json_decode($value, true);
+        return is_array($fields) ? $fields : [];
+    }
 }

@@ -86,9 +86,8 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label for="practice_and_work_fields">Practice & Work</label>
-                                        <select name="practice_and_work_fields" id="practice_and_work_fields" class="form-control">
-                                            <option value="" disabled selected>Select Practice & Work</option>
+                                        <label for="practice_and_work_fields">Work & Practice</label>
+                                        <select name="practice_and_work_fields[]" id="practice_and_work_fields" class="form-control" multiple>
                                             <option value="Welder">Welder</option>
                                             <option value="Locksmiths">Locksmiths</option>
                                             <option value="Driver">Driver</option>
@@ -115,3 +114,14 @@
     </div>
 </section>
 @endsection
+
+@push('script')
+<script>
+    $(document).ready(function() {
+        $('#practice_and_work_fields').select2({
+            placeholder: "Select Work & Practice",
+            allowClear: true,
+        });
+    });
+</script>
+@endpush

@@ -58,7 +58,13 @@
                                         <select class="form-control" name="practice_places_id" id="practice_places_id">
                                             <option value="">Select Client</option>
                                             @forelse($training as $row)
-                                            <option value="{{ $row->id }}" {{ ($restInfo->practice_places_id == $row->id) ? 'selected' : '' }}>{{ $row->practice_and_work_fields }}</option>
+                                            <option value="{{ $row->id }}" {{ ($restInfo->practice_places_id == $row->id) ? 'selected' : '' }}>
+                                                @if (is_array($row->practice_and_work_fields))
+                                                    {{ implode(', ', $row->practice_and_work_fields) }}
+                                                @else
+                                                    No fields selected
+                                                @endif
+                                            </option>
                                             @empty
                                             <option>No Record Found</option>
                                             @endforelse

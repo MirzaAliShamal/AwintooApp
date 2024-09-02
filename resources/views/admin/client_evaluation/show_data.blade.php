@@ -113,7 +113,13 @@
                                 </tr>
                                 <tr>
                                     <th>Training Program</th>
-                                    <td>{{ $client->restInfo->practicePlace->practice_and_work_fields }}</td>
+                                    <td>
+                                        @if (is_array($client->restInfo->practicePlace->practice_and_work_fields))
+                                            {{ implode(', ', $client->restInfo->practicePlace->practice_and_work_fields) }}
+                                        @else
+                                            No fields selected
+                                        @endif
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>System Email</th>
